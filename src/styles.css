@@ -17,7 +17,7 @@
   --scanline-opacity: 0.08;
   --terminal-font: "Cascadia Code", "Cascadia Mono", "Fira Code", "JetBrains Mono", Consolas, monospace;
   --prompt-font: "Cascadia Code", "Cascadia Mono", "Fira Code", Consolas, monospace;
-  --ubuntu-mark: url("data:image/svg+xml,%3Csvg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='32' cy='32' r='17' fill='none' stroke='black' stroke-width='8'/%3E%3Ccircle cx='32' cy='8' r='7' fill='black'/%3E%3Ccircle cx='11' cy='44' r='7' fill='black'/%3E%3Ccircle cx='53' cy='44' r='7' fill='black'/%3E%3Cpath d='M32 15v10M17 40l9-5M47 40l-9-5' stroke='black' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E");
+  --ubuntu-mark: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='black' d='M17.61.455a3.41 3.41 0 0 0-3.41 3.41 3.41 3.41 0 0 0 3.41 3.41 3.41 3.41 0 0 0 3.41-3.41 3.41 3.41 0 0 0-3.41-3.41zM12.92.8C8.923.777 5.137 2.941 3.148 6.451a4.5 4.5 0 0 1 .26-.007 4.92 4.92 0 0 1 2.585.737A8.316 8.316 0 0 1 12.688 3.6 4.944 4.944 0 0 1 13.723.834 11.008 11.008 0 0 0 12.92.8zm9.226 4.994a4.915 4.915 0 0 1-1.918 2.246 8.36 8.36 0 0 1-.273 8.303 4.89 4.89 0 0 1 1.632 2.54 11.156 11.156 0 0 0 .559-13.089zM3.41 7.932A3.41 3.41 0 0 0 0 11.342a3.41 3.41 0 0 0 3.41 3.409 3.41 3.41 0 0 0 3.41-3.41 3.41 3.41 0 0 0-3.41-3.41zm2.027 7.866a4.908 4.908 0 0 1-2.915.358 11.1 11.1 0 0 0 7.991 6.698 11.234 11.234 0 0 0 2.422.249 4.879 4.879 0 0 1-.999-2.85 8.484 8.484 0 0 1-.836-.136 8.304 8.304 0 0 1-5.663-4.32zm11.405.928a3.41 3.41 0 0 0-3.41 3.41 3.41 3.41 0 0 0 3.41 3.41 3.41 3.41 0 0 0 3.41-3.41 3.41 3.41 0 0 0-3.41-3.41z'/%3E%3C/svg%3E");
   font-family: var(--terminal-font);
 }
 
@@ -94,7 +94,17 @@ body {
 .terminal .cmd-prompt,
 .terminal .cmd-prompt span,
 .cmd .cmd-prompt,
-.cmd .cmd-prompt span {
+.cmd .cmd-prompt span,
+.terminal .cmd-wrapper,
+.terminal .cmd-wrapper span,
+.terminal .cmd-cursor-line,
+.terminal .cmd-cursor-line span,
+.terminal .cmd-editable,
+.terminal .cmd-editable span,
+.terminal .cmd-cursor,
+.terminal .end,
+.terminal-output .command,
+.terminal-output .command span {
   font-family: var(--prompt-font) !important;
   font-size: 17px !important;
   font-weight: 600 !important;
@@ -273,23 +283,28 @@ body {
 
 .command-help {
   display: grid;
-  gap: 5px;
-  margin: 8px 0 14px;
+  gap: 1px;
+  margin: 4px 0 8px;
+  line-height: 1.28;
 }
 
 .command-help div {
   display: grid;
   grid-template-columns: minmax(160px, 260px) 1fr;
-  gap: 16px;
+  gap: 14px;
+  min-height: 0;
+  line-height: 1.28;
 }
 
 .command-help span {
   color: var(--green);
+  line-height: 1.28;
 }
 
 .command-help em {
   color: var(--muted);
   font-style: normal;
+  line-height: 1.28;
 }
 
 .post-list {
@@ -506,7 +521,17 @@ body {
   .terminal .cmd-prompt,
   .terminal .cmd-prompt span,
   .cmd .cmd-prompt,
-  .cmd .cmd-prompt span {
+  .cmd .cmd-prompt span,
+  .terminal .cmd-wrapper,
+  .terminal .cmd-wrapper span,
+  .terminal .cmd-cursor-line,
+  .terminal .cmd-cursor-line span,
+  .terminal .cmd-editable,
+  .terminal .cmd-editable span,
+  .terminal .cmd-cursor,
+  .terminal .end,
+  .terminal-output .command,
+  .terminal-output .command span {
     font-size: 15px !important;
   }
 
