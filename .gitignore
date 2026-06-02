@@ -1,0 +1,8 @@
+node_modules/
+dist/
+coverage/
+.vite/
+*.local
+*.tsbuildinfo
+ascii-art-*.zip
+converted_scan/

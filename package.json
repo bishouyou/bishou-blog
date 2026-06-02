@@ -1,0 +1,27 @@
+{
+  "name": "terminal-markdown-blog",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@chenglou/pretext": "^0.0.7",
+    "gray-matter": "^4.0.3",
+    "jquery": "^3.7.1",
+    "jquery.terminal": "^2.46.1",
+    "marked": "^18.0.4"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.5.33",
+    "@types/node": "^25.9.1",
+    "fast-glob": "^3.3.3",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.16",
+    "vitest": "^4.0.14"
+  }
+}
