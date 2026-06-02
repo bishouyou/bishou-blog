@@ -57,7 +57,7 @@ export function renderPostList(posts: Post[], heading = 'posts'): string {
         <article class="post-row">
           <button class="post-title link-command" data-command="cat ${escapeAttr(post.meta.slug)}">${escapeHtml(post.meta.title)}</button>
           <span class="post-date">${escapeHtml(post.meta.date)}</span>
-          <span class="post-reading">${post.readingTime} min</span>
+          <span class="post-reading">${formatReadingTime(post.readingTime)}</span>
           <div class="post-summary">${flowBlock(post.meta.summary, 'summary-flow')}</div>
           <div class="post-tags">${tags}</div>
         </article>
@@ -90,7 +90,7 @@ export function renderArticle(post: Post): string {
     <article class="article">
       <header>
         <h1>${escapeHtml(post.meta.title)}</h1>
-        <div class="article-meta">${escapeHtml(post.meta.date)} · ${post.readingTime} min · ${post.meta.tags
+        <div class="article-meta">${escapeHtml(post.meta.date)} · ${formatReadingTime(post.readingTime)} · ${post.meta.tags
           .map(escapeHtml)
           .join(', ')}</div>
         ${flowBlock(post.meta.summary, 'article-summary')}
@@ -134,4 +134,8 @@ function escapeHtml(value: string): string {
 
 function escapeAttr(value: string): string {
   return escapeHtml(value).replace(/`/g, '&#96;');
+}
+
+function formatReadingTime(minutes: number): string {
+  return `约 ${minutes} 分钟`;
 }

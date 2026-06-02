@@ -1,20 +1,20 @@
 :root {
   color-scheme: dark;
-  --bg: #0a0a0a;
-  --surface: #0d1117;
-  --surface-soft: #1a1a1a;
-  --text: #e0e0e0;
-  --muted: #666666;
+  --bg: #181825;
+  --surface: #1e1e2e;
+  --surface-soft: #24273a;
+  --text: #cdd6f4;
+  --muted: #6c7086;
   --os: #acb0be;
-  --blue: #00d4ff;
-  --pink: #ff00ff;
-  --lavender: #a855f7;
-  --green: #00ff41;
-  --yellow: #ffb000;
-  --red: #ff3333;
-  --border: #333333;
-  --accent-glow: rgba(0, 255, 65, 0.3);
-  --scanline-opacity: 0.08;
+  --blue: #89b4fa;
+  --pink: #f5c2e7;
+  --lavender: #b4befe;
+  --green: #a6e3a1;
+  --yellow: #f9e2af;
+  --red: #f38ba8;
+  --border: #313244;
+  --accent-glow: rgba(166, 227, 161, 0.26);
+  --scanline-opacity: 0.045;
   --terminal-font: "Cascadia Code", "Cascadia Mono", "Fira Code", "JetBrains Mono", Consolas, monospace;
   --prompt-font: "Cascadia Code", "Cascadia Mono", "Fira Code", Consolas, monospace;
   --ubuntu-mark: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='black' d='M17.61.455a3.41 3.41 0 0 0-3.41 3.41 3.41 3.41 0 0 0 3.41 3.41 3.41 3.41 0 0 0 3.41-3.41 3.41 3.41 0 0 0-3.41-3.41zM12.92.8C8.923.777 5.137 2.941 3.148 6.451a4.5 4.5 0 0 1 .26-.007 4.92 4.92 0 0 1 2.585.737A8.316 8.316 0 0 1 12.688 3.6 4.944 4.944 0 0 1 13.723.834 11.008 11.008 0 0 0 12.92.8zm9.226 4.994a4.915 4.915 0 0 1-1.918 2.246 8.36 8.36 0 0 1-.273 8.303 4.89 4.89 0 0 1 1.632 2.54 11.156 11.156 0 0 0 .559-13.089zM3.41 7.932A3.41 3.41 0 0 0 0 11.342a3.41 3.41 0 0 0 3.41 3.409 3.41 3.41 0 0 0 3.41-3.41 3.41 3.41 0 0 0-3.41-3.41zm2.027 7.866a4.908 4.908 0 0 1-2.915.358 11.1 11.1 0 0 0 7.991 6.698 11.234 11.234 0 0 0 2.422.249 4.879 4.879 0 0 1-.999-2.85 8.484 8.484 0 0 1-.836-.136 8.304 8.304 0 0 1-5.663-4.32zm11.405.928a3.41 3.41 0 0 0-3.41 3.41 3.41 3.41 0 0 0 3.41 3.41 3.41 3.41 0 0 0 3.41-3.41 3.41 3.41 0 0 0-3.41-3.41z'/%3E%3C/svg%3E");
@@ -58,7 +58,7 @@ body {
   border-radius: 8px;
   background: var(--surface);
   box-shadow:
-    0 0 24px rgba(0, 255, 65, 0.08),
+    0 0 24px rgba(137, 180, 250, 0.08),
     inset 0 0 28px rgba(0, 0, 0, 0.46);
   overflow: visible;
   isolation: isolate;
@@ -225,8 +225,8 @@ body {
   overflow: hidden;
   text-shadow:
     0 0 8px var(--green),
-    0 0 18px rgba(0, 255, 65, 0.42),
-    0 0 30px rgba(0, 255, 65, 0.2);
+    0 0 18px rgba(166, 227, 161, 0.34),
+    0 0 30px rgba(166, 227, 161, 0.16);
 }
 
 .ascii-avatar-colored {
@@ -262,8 +262,20 @@ body {
   margin: 0 0 2px;
   text-shadow:
     0 0 8px var(--green),
-    0 0 18px rgba(0, 255, 65, 0.28);
+    0 0 18px rgba(166, 227, 161, 0.24);
   animation: logo-flicker 4s infinite;
+}
+
+.terminal .cmd-wrapper {
+  position: relative;
+}
+
+.terminal .cmd-wrapper[data-ghost]::after {
+  content: attr(data-ghost);
+  color: var(--muted);
+  opacity: 0.52;
+  pointer-events: none;
+  white-space: pre;
 }
 
 .boot-line {
@@ -457,6 +469,16 @@ body {
   box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.35);
 }
 
+.article-body img {
+  display: block;
+  max-width: min(100%, 920px);
+  height: auto;
+  margin: 14px 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface-soft);
+}
+
 .article-body code {
   color: var(--green);
 }
@@ -535,24 +557,24 @@ body {
     opacity: 1;
     text-shadow:
       0 0 10px var(--green),
-      0 0 20px rgba(0, 255, 65, 0.4),
-      0 0 30px rgba(0, 255, 65, 0.2);
+      0 0 20px rgba(166, 227, 161, 0.34),
+      0 0 30px rgba(166, 227, 161, 0.16);
   }
 
   50% {
     opacity: 0.95;
     text-shadow:
       0 0 5px var(--green),
-      0 0 15px rgba(0, 255, 65, 0.3),
-      0 0 25px rgba(0, 255, 65, 0.15);
+      0 0 15px rgba(166, 227, 161, 0.24),
+      0 0 25px rgba(166, 227, 161, 0.12);
   }
 
   52% {
     opacity: 1;
     text-shadow:
       0 0 15px var(--green),
-      0 0 25px rgba(0, 255, 65, 0.5),
-      0 0 35px rgba(0, 255, 65, 0.3);
+      0 0 25px rgba(166, 227, 161, 0.42),
+      0 0 35px rgba(166, 227, 161, 0.22);
   }
 
   54% {

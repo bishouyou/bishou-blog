@@ -13,15 +13,15 @@ export const siteConfig: SiteConfig = {
   avatarAscii: avatarAscii as AvatarAsciiArt,
   theme: {
     os: '#ACB0BE',
-    blue: '#00D4FF',
-    pink: '#FF00FF',
-    lavender: '#A855F7',
-    text: '#E0E0E0',
-    muted: '#666666',
-    background: '#0A0A0A',
-    surface: '#0D1117',
-    green: '#00FF41',
-    yellow: '#FFB000',
-    red: '#FF3333'
+    blue: '#89B4FA',
+    pink: '#F5C2E7',
+    lavender: '#B4BEFE',
+    text: '#CDD6F4',
+    muted: '#6C7086',
+    background: '#181825',
+    surface: '#1E1E2E',
+    green: '#A6E3A1',
+    yellow: '#F9E2AF',
+    red: '#F38BA8'
   }
 };

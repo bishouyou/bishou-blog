@@ -7,6 +7,7 @@ import 'jquery.terminal/css/jquery.terminal.min.css';
 import posts from 'virtual:posts';
 import { findPost, listTags, parseCommand, postsByTag, searchPosts } from './content/commands';
 import { siteConfig } from './site.config';
+import { completeInput as buildCompletions, getGhostSuffix as findGhostSuffix } from './terminal/completion';
 import { scheduleFlowHydration, watchFlowResize } from './terminal/flow';
 import {
   renderArticle,
@@ -30,10 +31,12 @@ window.jQuery = $;
 (installTerminal as unknown as (root: Window, jquery: typeof $) => typeof $)(window, $);
 
 type TerminalApi = {
+  complete?: (commands: string[], options?: Record<string, unknown>) => boolean;
   echo: (value: string, options?: { raw?: boolean }) => void;
   clear: () => void;
   exec: (command: string) => void;
   focus?: () => void;
+  get_command?: () => string;
   set_prompt: (prompt: string) => void;
 };
 
@@ -51,7 +54,8 @@ const terminal = terminalElement.terminal(
     name: 'bishou-blog-terminal',
     prompt: buildPrompt(),
     checkArity: false,
-    completion: ['help', 'ls', 'cat', 'search', 'tags', 'tag', 'about', 'clear'],
+    completion: completeInput,
+    wordAutocomplete: false,
     keymap: {
       'CTRL+L': (_event: KeyboardEvent, term: TerminalApi) => {
         term.clear();
@@ -62,6 +66,23 @@ const terminal = terminalElement.terminal(
       },
       'CTRL+C': () => {
         return false;
+      },
+      'TAB': function (this: TerminalApi, event: KeyboardEvent) {
+        event.preventDefault();
+        const command = this.get_command?.() ?? '';
+        const candidates = completeInput(command);
+        if (candidates.length > 0) {
+          this.complete?.(candidates, {
+            caseSensitive: false,
+            doubleTab: true,
+            echo: true,
+            echoCommand: false,
+            escape: false,
+            word: false
+          });
+        }
+        updateGhostHint();
+        return false;
       }
     }
   }
@@ -71,19 +92,7 @@ terminal.set_prompt(buildPrompt());
 watchFlowResize(document);
 printWelcome(terminal);
 scheduleFlowHydration(document);
-
-terminalElement.get(0)?.addEventListener(
-  'wheel',
-  (event) => {
-    event.preventDefault();
-    window.scrollBy({
-      top: event.deltaY,
-      left: 0,
-      behavior: 'auto'
-    });
-  },
-  { capture: true, passive: false }
-);
+installGhostHint();
 
 document.addEventListener('click', (event) => {
   const target = (event.target as HTMLElement).closest<HTMLElement>('[data-command]');
@@ -185,6 +194,36 @@ function scrollTerminalToBottom(): void {
       behavior: 'auto'
     });
   });
+}
+
+function completeInput(input: string): string[] {
+  return buildCompletions(input, posts, listTags(posts));
+}
+
+function installGhostHint(): void {
+  updateGhostHint();
+  terminalElement.on('keydown keyup input paste', () => {
+    window.requestAnimationFrame(updateGhostHint);
+  });
+}
+
+function updateGhostHint(): void {
+  const wrapper = document.querySelector<HTMLElement>('.cmd-wrapper');
+  if (!wrapper) {
+    return;
+  }
+
+  const command = terminal.get_command?.() ?? '';
+  const hint = getGhostSuffix(command);
+  if (hint) {
+    wrapper.dataset.ghost = hint;
+  } else {
+    delete wrapper.dataset.ghost;
+  }
+}
+
+function getGhostSuffix(command: string): string {
+  return findGhostSuffix(command, completeInput(command));
 }
 
 function buildPrompt(): string {
