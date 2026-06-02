@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { completeInput, getGhostSuffix } from '../src/terminal/completion';
-import type { Post } from '../src/content/types';
+import type { KnowledgeBaseEntry, Post } from '../src/content/types';
 
 const posts: Post[] = [
   {
@@ -39,6 +39,23 @@ const tags = [
   { tag: 'blog', count: 1 },
   { tag: 'pretext', count: 1 },
   { tag: 'terminal', count: 2 }
+];
+
+const knowledgeBaseEntries: KnowledgeBaseEntry[] = [
+  {
+    meta: {
+      title: 'Terminal Workflow',
+      date: '2026-06-02',
+      slug: 'terminal-workflow',
+      summary: 'Shell notes',
+      draft: false
+    },
+    path: 'tools/terminal-workflow',
+    segments: ['tools', 'terminal-workflow'],
+    html: '<p>Shell notes</p>',
+    plainText: 'Shell notes',
+    readingTime: 1
+  }
 ];
 
 describe('terminal completion', () => {
@@ -81,6 +98,23 @@ describe('terminal completion', () => {
     const candidates = completeInput('tag p', posts, tags);
     expect(candidates).toContain('tag pretext');
     expect(getGhostSuffix('tag p', candidates)).toBe('retext');
+  });
+
+  it('completes cd targets for blog and knowledge base folders', () => {
+    const candidates = completeInput('cd k', posts, tags, { knowledgeBaseEntries });
+    expect(candidates).toContain('cd blog');
+    expect(candidates).toContain('cd "knowledge base"');
+    expect(candidates).toContain('cd "knowledge base/tools"');
+  });
+
+  it('completes knowledge base cat targets', () => {
+    const candidates = completeInput('cat t', posts, tags, {
+      currentPath: ['knowledge base'],
+      knowledgeBaseEntries
+    });
+    expect(candidates).toContain('cat tools/terminal-workflow');
+    expect(candidates).toContain('cat terminal-workflow');
+    expect(candidates).toContain('cat "Terminal Workflow"');
   });
 
   it('does not complete free-form search text', () => {

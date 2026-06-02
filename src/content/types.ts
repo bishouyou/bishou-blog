@@ -42,3 +42,20 @@ export interface Post {
   plainText: string;
   readingTime: number;
 }
+
+export interface KnowledgeBaseEntryMeta {
+  title: string;
+  date: string;
+  slug: string;
+  summary: string;
+  draft: boolean;
+}
+
+export interface KnowledgeBaseEntry {
+  meta: KnowledgeBaseEntryMeta;
+  path: string;
+  segments: string[];
+  html: string;
+  plainText: string;
+  readingTime: number;
+}

@@ -1,10 +1,10 @@
 import { readFile } from 'node:fs/promises';
-import { basename, extname, join } from 'node:path';
+import { basename, extname, join, relative } from 'node:path';
 import fg from 'fast-glob';
 import matter from 'gray-matter';
 import { marked } from 'marked';
 import { pinyin } from 'pinyin-pro';
-import type { Post, PostMeta } from './types';
+import type { KnowledgeBaseEntry, KnowledgeBaseEntryMeta, Post, PostMeta } from './types';
 
 interface RawFrontmatter {
   title?: unknown;
@@ -34,9 +34,28 @@ export async function loadPosts(postsDir: string): Promise<Post[]> {
     .sort((a, b) => b.meta.date.localeCompare(a.meta.date));
 }
 
+export async function loadKnowledgeBase(kbDir: string): Promise<KnowledgeBaseEntry[]> {
+  const files = await fg('**/*.md', {
+    cwd: kbDir,
+    absolute: true,
+    onlyFiles: true
+  });
+
+  const entries = await Promise.all(files.map((file) => loadKnowledgeBaseEntry(file, kbDir)));
+  return entries
+    .filter((entry) => !entry.meta.draft)
+    .sort((a, b) => a.path.localeCompare(b.path));
+}
+
 export async function loadPost(filePath: string): Promise<Post> {
   const source = await readFile(filePath, 'utf8');
   return parsePost(source, fallbackSlug(filePath));
+}
+
+export async function loadKnowledgeBaseEntry(filePath: string, kbDir: string): Promise<KnowledgeBaseEntry> {
+  const source = await readFile(filePath, 'utf8');
+  const relativePath = relative(kbDir, filePath);
+  return parseKnowledgeBaseEntry(source, relativePath);
 }
 
 export function parsePost(source: string, defaultSlug: string): Post {
@@ -64,6 +83,34 @@ export function parsePost(source: string, defaultSlug: string): Post {
     html,
     plainText,
     readingTime
+  };
+}
+
+export function parseKnowledgeBaseEntry(source: string, relativePath: string): KnowledgeBaseEntry {
+  const parsed = matter(source);
+  const data = parsed.data as RawFrontmatter;
+  const pathParts = relativePath.replace(/\\/g, '/').split('/');
+  const filename = pathParts.at(-1) ?? 'note.md';
+  const defaultSlug = fallbackSlug(filename);
+  const title = stringValue(data.title) ?? defaultSlug;
+  const summary = stringValue(data.summary) ?? '';
+  const meta: KnowledgeBaseEntryMeta = {
+    title,
+    date: normalizeDate(data.date),
+    slug: slugify(stringValue(data.slug) ?? defaultSlug),
+    summary,
+    draft: Boolean(data.draft)
+  };
+  const html = marked.parse(parsed.content) as string;
+  const plainText = markdownToPlainText(parsed.content);
+
+  return {
+    meta,
+    path: pathParts.join('/').replace(/\.md$/i, ''),
+    segments: pathParts.map((part, index) => (index === pathParts.length - 1 ? part.replace(/\.md$/i, '') : part)),
+    html,
+    plainText,
+    readingTime: estimateReadingTime(plainText)
   };
 }
 

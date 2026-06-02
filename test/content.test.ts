@@ -2,7 +2,15 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { describe, expect, it } from 'vitest';
-import { estimateReadingTime, loadPosts, parsePost, slugify, titleToPinyinSlug } from '../src/content/build';
+import {
+  estimateReadingTime,
+  loadKnowledgeBase,
+  loadPosts,
+  parseKnowledgeBaseEntry,
+  parsePost,
+  slugify,
+  titleToPinyinSlug
+} from '../src/content/build';
 
 describe('markdown content pipeline', () => {
   it('parses Hexo-style frontmatter and markdown body', () => {
@@ -75,6 +83,56 @@ draft`
 
       const posts = await loadPosts(dir);
       expect(posts.map((post) => post.meta.slug)).toEqual(['new', 'old']);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('parses knowledge base entries with folder paths', () => {
+    const entry = parseKnowledgeBaseEntry(
+      `---
+title: Terminal Workflow
+date: 2026-06-02
+summary: Shell notes
+slug: terminal-workflow
+draft: false
+---
+
+KB body.
+`,
+      'tools/terminal-workflow.md'
+    );
+
+    expect(entry.path).toBe('tools/terminal-workflow');
+    expect(entry.segments).toEqual(['tools', 'terminal-workflow']);
+    expect(entry.meta.title).toBe('Terminal Workflow');
+    expect(entry.plainText).toContain('KB body');
+  });
+
+  it('loads knowledge base entries and skips drafts', async () => {
+    const dir = await mkdtemp(join(tmpdir(), 'terminal-kb-'));
+    try {
+      await writeFile(
+        join(dir, 'published.md'),
+        `---
+title: Published
+date: 2026-06-02
+draft: false
+---
+published`
+      );
+      await writeFile(
+        join(dir, 'draft.md'),
+        `---
+title: Draft
+date: 2026-06-02
+draft: true
+---
+draft`
+      );
+
+      const entries = await loadKnowledgeBase(dir);
+      expect(entries.map((entry) => entry.meta.title)).toEqual(['Published']);
     } finally {
       await rm(dir, { recursive: true, force: true });
     }

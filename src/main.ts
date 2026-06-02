@@ -4,15 +4,20 @@ import '@fontsource/cascadia-code/latin-600.css';
 import '@fontsource/cascadia-code/latin-700.css';
 import installTerminal from 'jquery.terminal';
 import 'jquery.terminal/css/jquery.terminal.min.css';
+import knowledgeBaseEntries from 'virtual:knowledge-base';
 import posts from 'virtual:posts';
 import { findPost, listTags, parseCommand, postsByTag, searchPosts } from './content/commands';
+import type { KnowledgeBaseEntry } from './content/types';
 import { siteConfig } from './site.config';
 import { completeInput as buildCompletions, getGhostSuffix as findGhostSuffix } from './terminal/completion';
 import { scheduleFlowHydration, watchFlowResize } from './terminal/flow';
 import {
+  type DirectoryItem,
   renderArticle,
+  renderDirectoryList,
   renderError,
   renderHelp,
+  renderKnowledgeEntry,
   renderPostList,
   renderTags,
   renderWelcome
@@ -43,6 +48,7 @@ type TerminalApi = {
 const terminalElement = $('#terminal');
 const theme = siteConfig.theme;
 let articleViewer: HTMLElement | undefined;
+let currentPath: string[] = [];
 let savedScrollY = 0;
 
 terminalElement.addClass('is-starting');
@@ -126,7 +132,17 @@ function execute(input: string, term: TerminalApi): void {
       print(term, renderHelp());
       return;
     case 'ls':
-      print(term, renderPostList(posts));
+      listPath(term, parsed.rawArgs);
+      return;
+    case 'cd':
+      changeDirectory(term, parsed.rawArgs);
+      return;
+    case 'kb':
+      setPath(['knowledge base']);
+      print(term, renderDirectoryList(getDirectoryItems(currentPath), formatPath(currentPath)));
+      return;
+    case 'pwd':
+      print(term, `<div class="path-output">${escapeHtml(formatPath(currentPath))}</div>`);
       return;
     case 'cat':
     case 'open':
@@ -153,13 +169,20 @@ function execute(input: string, term: TerminalApi): void {
 }
 
 function openPost(term: TerminalApi, query: string): void {
+  const kbEntry = findKnowledgeEntry(query);
+  if (kbEntry) {
+    openArticleViewer(renderKnowledgeEntry(kbEntry), kbEntry.meta.title, `kb ${kbEntry.path}`);
+    term.focus?.();
+    return;
+  }
+
   const post = findPost(posts, query);
   if (!post) {
     print(term, renderError(`没有找到文章: ${query || '(空)'}`));
     return;
   }
 
-  openArticleViewer(post);
+  openArticleViewer(renderArticle(post), post.meta.title, `cat ${post.meta.titlePinyin || post.meta.slug}`);
   term.focus?.();
 }
 
@@ -204,7 +227,10 @@ function scrollTerminalToBottom(): void {
 }
 
 function completeInput(input: string): string[] {
-  return buildCompletions(input, posts, listTags(posts));
+  return buildCompletions(input, posts, listTags(posts), {
+    currentPath,
+    knowledgeBaseEntries
+  });
 }
 
 function installGhostHint(): void {
@@ -233,17 +259,240 @@ function getGhostSuffix(command: string): string {
   return findGhostSuffix(command, completeInput(command));
 }
 
-function openArticleViewer(post: (typeof posts)[number]): void {
+function listPath(term: TerminalApi, pathInput: string): void {
+  const targetPath = pathInput.trim() ? resolvePath(pathInput) : currentPath;
+  if (!targetPath || !isDirectory(targetPath)) {
+    print(term, renderError(`路径不存在: ${pathInput}`));
+    return;
+  }
+
+  if (isBlogPath(targetPath)) {
+    print(term, renderPostList(posts, 'blog / recent'));
+    return;
+  }
+
+  print(term, renderDirectoryList(getDirectoryItems(targetPath), formatPath(targetPath)));
+}
+
+function changeDirectory(term: TerminalApi, pathInput: string): void {
+  const targetPath = resolvePath(pathInput || '~');
+  if (!targetPath || !isDirectory(targetPath)) {
+    print(term, renderError(`路径不存在: ${pathInput || '~'}`));
+    return;
+  }
+
+  setPath(targetPath);
+}
+
+function setPath(path: string[]): void {
+  currentPath = path;
+  terminal.set_prompt(buildPrompt());
+  updateGhostHint();
+}
+
+function getDirectoryItems(path: string[]): DirectoryItem[] {
+  if (path.length === 0) {
+    return [
+      {
+        command: 'cd blog',
+        description: '最近上传的 blog 文章',
+        kind: 'dir',
+        label: 'blog',
+        meta: `${posts.length} posts`
+      },
+      {
+        command: 'kb',
+        description: '分层知识库',
+        kind: 'dir',
+        label: 'knowledge base',
+        meta: `${knowledgeBaseEntries.length} notes`
+      },
+      ...posts.slice(0, 3).map((post): DirectoryItem => ({
+        command: `cat ${post.meta.slug}`,
+        description: post.meta.summary,
+        kind: 'post',
+        label: post.meta.title,
+        meta: post.meta.date
+      }))
+    ];
+  }
+
+  if (isBlogPath(path)) {
+    return posts.map((post): DirectoryItem => ({
+      command: `cat ${post.meta.slug}`,
+      description: post.meta.summary,
+      kind: 'post',
+      label: post.meta.title,
+      meta: post.meta.date
+    }));
+  }
+
+  const kbSegments = path.slice(1);
+  const folders = new Set<string>();
+  const files: DirectoryItem[] = [];
+
+  for (const entry of knowledgeBaseEntries) {
+    if (!startsWithSegments(entry.segments, kbSegments)) {
+      continue;
+    }
+
+    const rest = entry.segments.slice(kbSegments.length);
+    if (rest.length === 1) {
+      files.push({
+        command: `cat ${entry.path}`,
+        description: entry.meta.summary,
+        kind: 'file',
+        label: entry.meta.title,
+        meta: entry.meta.date
+      });
+    } else if (rest[0]) {
+      folders.add(rest[0]);
+    }
+  }
+
+  return [
+    ...[...folders].sort().map((folder): DirectoryItem => ({
+      command: `cd ${quotePath([...path, folder])}`,
+      description: 'knowledge base folder',
+      kind: 'dir',
+      label: folder
+    })),
+    ...files.sort((a, b) => a.label.localeCompare(b.label))
+  ];
+}
+
+function findKnowledgeEntry(query: string): KnowledgeBaseEntry | undefined {
+  const normalized = normalizePathToken(query);
+  if (!normalized) {
+    return undefined;
+  }
+
+  const scopedEntries = isKnowledgeBasePath(currentPath)
+    ? knowledgeBaseEntries.filter((entry) => startsWithSegments(entry.segments, currentPath.slice(1)))
+    : knowledgeBaseEntries;
+
+  return scopedEntries.find((entry) => {
+    const fileName = entry.segments.at(-1) ?? '';
+    return [
+      entry.path,
+      entry.meta.slug,
+      entry.meta.title,
+      fileName
+    ].some((value) => normalizePathToken(value) === normalized);
+  });
+}
+
+function resolvePath(input: string): string[] | undefined {
+  const normalizedInput = unquoteInput(input.trim());
+  if (!normalizedInput || normalizedInput === '~' || normalizedInput === '/') {
+    return [];
+  }
+
+  if (normalizedInput.toLowerCase() === 'kb') {
+    return ['knowledge base'];
+  }
+  if (normalizedInput.toLowerCase() === 'blog') {
+    return ['blog'];
+  }
+  if (['knowledge base', 'knowledge-base'].includes(normalizedInput.toLowerCase())) {
+    return ['knowledge base'];
+  }
+
+  const absolute = normalizedInput.startsWith('/') || normalizedInput.startsWith('~/');
+  const base = absolute ? [] : [...currentPath];
+  const cleanInput = normalizedInput.replace(/^~?\//, '');
+  const parts = cleanInput.split('/').map((part) => part.trim()).filter(Boolean);
+  const path = [...base];
+
+  for (const part of parts) {
+    const lowered = part.toLowerCase();
+    if (lowered === '.' || lowered === '') {
+      continue;
+    }
+    if (lowered === '..') {
+      path.pop();
+      continue;
+    }
+    if (lowered === 'kb') {
+      path.push('knowledge base');
+      continue;
+    }
+    path.push(lowered === 'knowledge-base' ? 'knowledge base' : part.toLowerCase());
+  }
+
+  return normalizePath(path);
+}
+
+function normalizePath(path: string[]): string[] | undefined {
+  if (path.length === 0) {
+    return [];
+  }
+  if (path[0] === 'blog') {
+    return path.length === 1 ? ['blog'] : undefined;
+  }
+  if (path[0] === 'knowledge base') {
+    return path;
+  }
+  return undefined;
+}
+
+function isDirectory(path: string[]): boolean {
+  if (path.length === 0 || isBlogPath(path)) {
+    return true;
+  }
+  if (!isKnowledgeBasePath(path)) {
+    return false;
+  }
+  const kbSegments = path.slice(1);
+  return knowledgeBaseEntries.some((entry) => startsWithSegments(entry.segments.slice(0, -1), kbSegments));
+}
+
+function isBlogPath(path: string[]): boolean {
+  return path.length === 1 && path[0] === 'blog';
+}
+
+function isKnowledgeBasePath(path: string[]): boolean {
+  return path.length >= 1 && path[0] === 'knowledge base';
+}
+
+function startsWithSegments(value: string[], prefix: string[]): boolean {
+  return prefix.every((segment, index) => value[index] === segment);
+}
+
+function formatPath(path: string[]): string {
+  return path.length === 0 ? '~' : `~/${path.join('/')}`;
+}
+
+function quotePath(path: string[]): string {
+  const rendered = path.join('/');
+  return /[\s"'()]/.test(rendered) ? `"${rendered.replace(/"/g, '\\"')}"` : rendered;
+}
+
+function normalizePathToken(value: string): string {
+  return unquoteInput(value).trim().toLowerCase();
+}
+
+function unquoteInput(value: string): string {
+  if (
+    (value.startsWith('"') && value.endsWith('"')) ||
+    (value.startsWith("'") && value.endsWith("'"))
+  ) {
+    return value.slice(1, -1);
+  }
+  return value;
+}
+
+function openArticleViewer(articleHtml: string, title: string, commandLabel: string): void {
   const viewer = getArticleViewer();
   savedScrollY = window.scrollY;
   viewer.innerHTML = `
-    <section class="article-viewer-panel" role="dialog" aria-modal="true" aria-label="${escapeAttr(post.meta.title)}">
+    <section class="article-viewer-panel" role="dialog" aria-modal="true" aria-label="${escapeAttr(title)}">
       <header class="article-viewer-bar">
         <button class="article-viewer-close" type="button" data-article-close aria-label="退出阅读">← exit</button>
-        <div class="article-viewer-title">cat ${escapeHtml(post.meta.titlePinyin || post.meta.slug)}</div>
+        <div class="article-viewer-title">${escapeHtml(commandLabel)}</div>
         <div class="article-viewer-mode">NORMAL</div>
       </header>
-      <main class="article-viewer-scroll">${renderArticle(post)}</main>
+      <main class="article-viewer-scroll">${articleHtml}</main>
       <footer class="article-viewer-status">ESC close · terminal history preserved</footer>
     </section>
   `;
@@ -295,7 +544,7 @@ function buildPrompt(): string {
   return [
     `[[;${theme.os};]ubuntu ]`,
     `[[;${theme.blue};]${siteConfig.user}@${siteConfig.host} ]`,
-    `[[;${theme.pink};]${siteConfig.homePath} ]`,
+    `[[;${theme.pink};]${formatPath(currentPath)} ]`,
     `[[;${theme.os};]› ]`
   ].join('');
 }

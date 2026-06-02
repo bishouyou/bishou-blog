@@ -377,7 +377,12 @@ body.article-open {
   margin: 8px 0 18px;
 }
 
+.directory-list {
+  margin: 8px 0 18px;
+}
+
 .post-list h2,
+.directory-list h2,
 .article h1,
 .article h2,
 .article h3 {
@@ -385,6 +390,46 @@ body.article-open {
   color: var(--lavender);
   font-size: 18px;
   line-height: 1.35;
+}
+
+.directory-row {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.9fr) auto auto;
+  gap: 3px 12px;
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
+}
+
+.directory-row:first-of-type {
+  border-top: 0;
+}
+
+.directory-name {
+  min-width: 0;
+  color: var(--blue);
+  font-weight: 700;
+}
+
+.directory-row-dir .directory-name {
+  color: var(--green);
+}
+
+.directory-row-post .directory-name {
+  color: var(--pink);
+}
+
+.directory-kind,
+.directory-meta {
+  color: var(--muted);
+}
+
+.directory-description {
+  grid-column: 1 / -1;
+  color: var(--text);
+}
+
+.path-output {
+  color: var(--pink);
 }
 
 .post-row {
@@ -751,6 +796,10 @@ body.article-open {
   }
 
   .post-row {
+    grid-template-columns: 1fr;
+  }
+
+  .directory-row {
     grid-template-columns: 1fr;
   }
 

@@ -1,7 +1,15 @@
 import { renderAvatarAscii } from '../avatar/render';
 import type { AvatarAsciiArt } from '../avatar/types';
-import type { Post } from '../content/types';
+import type { KnowledgeBaseEntry, Post } from '../content/types';
 import { flowBlock } from './flow';
+
+export interface DirectoryItem {
+  command: string;
+  description: string;
+  kind: 'dir' | 'file' | 'post';
+  label: string;
+  meta?: string;
+}
 
 export function renderWelcome(
   asciiArt: string,
@@ -26,7 +34,7 @@ export function renderWelcomeParts(
     `<div class="boot-line boot-step-avatar"><div class="ascii-avatar-shell" aria-label="${escapeAttr(nickname)} avatar">${avatar}</div></div>`,
     `<div class="boot-line boot-step-name welcome-name">${escapeHtml(nickname)}</div>`,
     `<div class="boot-line boot-step-about">${flowBlock(about, 'welcome-flow')}</div>`,
-    `<div class="boot-line boot-step-hint hint">输入 <button class="link-command" data-command="help">help</button> 查看命令，或输入 <button class="link-command" data-command="ls">ls</button> 阅读文章。</div>`
+    `<div class="boot-line boot-step-hint hint">输入 <button class="link-command" data-command="help">help</button> 查看命令，或输入 <button class="link-command" data-command="ls">ls</button> 浏览目录。</div>`
   ];
 }
 
@@ -34,8 +42,11 @@ export function renderHelp(): string {
   return `
     <div class="command-help">
       <div><span>help</span><em>列出可用命令</em></div>
-      <div><span>ls</span><em>列出文章，标题可点击</em></div>
+      <div><span>ls [path]</span><em>列出当前目录或指定目录</em></div>
+      <div><span>cd &lt;path&gt;</span><em>切换目录</em></div>
+      <div><span>kb</span><em>进入 knowledge base</em></div>
       <div><span>cat &lt;slug|拼音|标题&gt;</span><em>阅读文章</em></div>
+      <div><span>pwd</span><em>显示当前路径</em></div>
       <div><span>search &lt;keyword&gt;</span><em>搜索标题、摘要、标签和正文</em></div>
       <div><span>tags</span><em>列出标签</em></div>
       <div><span>tag &lt;name&gt;</span><em>查看某个标签下的文章</em></div>
@@ -43,6 +54,28 @@ export function renderHelp(): string {
       <div><span>clear</span><em>清屏</em></div>
     </div>
   `;
+}
+
+export function renderDirectoryList(items: DirectoryItem[], heading: string): string {
+  if (items.length === 0) {
+    return `<div class="empty">当前目录为空。</div>`;
+  }
+
+  const rows = items
+    .map((item) => {
+      const marker = item.kind === 'dir' ? '/' : '';
+      return `
+        <div class="directory-row directory-row-${item.kind}">
+          <button class="directory-name link-command" data-command="${escapeAttr(item.command)}">${escapeHtml(item.label)}${marker}</button>
+          <span class="directory-kind">${item.kind}</span>
+          <span class="directory-meta">${escapeHtml(item.meta ?? '')}</span>
+          <div class="directory-description">${escapeHtml(item.description)}</div>
+        </div>
+      `;
+    })
+    .join('');
+
+  return `<section class="directory-list"><h2>${escapeHtml(heading)}</h2>${rows}</section>`;
 }
 
 export function renderPostList(posts: Post[], heading = 'posts'): string {
@@ -96,6 +129,19 @@ export function renderArticle(post: Post): string {
         ${flowBlock(post.meta.summary, 'article-summary')}
       </header>
       <div class="article-body">${decorateArticleHtml(post.html)}</div>
+    </article>
+  `;
+}
+
+export function renderKnowledgeEntry(entry: KnowledgeBaseEntry): string {
+  return `
+    <article class="article">
+      <header>
+        <h1>${escapeHtml(entry.meta.title)}</h1>
+        <div class="article-meta">${escapeHtml(entry.meta.date)} · ${formatReadingTime(entry.readingTime)} · ${escapeHtml(entry.path)}</div>
+        ${flowBlock(entry.meta.summary, 'article-summary')}
+      </header>
+      <div class="article-body">${decorateArticleHtml(entry.html)}</div>
     </article>
   `;
 }

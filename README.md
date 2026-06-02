@@ -8,6 +8,8 @@
 
 - 终端交互：基于 `jquery.terminal` 实现命令输入、历史、Tab 补全和快捷键。
 - Markdown 写作：支持 Hexo 风格 YAML frontmatter。
+- 虚拟文件系统：根目录包含 `blog/` 和 `knowledge base/` 两个基础文件夹，`cd` 会改变 prompt 路径。
+- Knowledge Base：`content/kb/` 按文件夹层级组织知识库，`kb` 可快速进入。
 - 独立阅读界面：`cat <文章>` 会打开类似 vim/nano 的全屏阅读层，按 `Esc` 或点击左上角 `exit` 返回终端，终端历史保留。
 - 拼音打开文章：中文标题会生成连续拼音别名，例如 `文字潮汐` 可用 `cat wenzichaoxi` 打开。
 - 输入虚影提示：输入行会显示命令补全 ghost hint，并和 Tab 补全联动。
@@ -53,7 +55,10 @@ npm run preview
 | Command | Description |
 | --- | --- |
 | `help` | 查看可用命令 |
-| `ls` | 列出文章 |
+| `ls [path]` | 列出当前目录或指定目录 |
+| `cd <path>` | 切换目录 |
+| `kb` | 快速进入 `knowledge base/` |
+| `pwd` | 显示当前路径 |
 | `cat <slug\|拼音\|标题>` | 打开文章阅读界面 |
 | `open <slug\|拼音\|标题>` | `cat` 的别名 |
 | `search <keyword>` | 搜索标题、摘要、标签、分类和正文 |
@@ -103,6 +108,51 @@ cat post-slug
 cat wenzichaoxi
 cat "文字潮汐"
 ```
+
+## Knowledge Base
+
+知识库放在 `content/kb/`，目录结构会映射到终端里的 `knowledge base/`：
+
+```text
+content/kb/
+  tools/
+    terminal-workflow.md
+  reading/
+    pretext.md
+```
+
+知识库 Markdown 同样使用 frontmatter：
+
+```md
+---
+title: "终端工作流"
+date: "2026-06-02"
+summary: "记录常用终端操作。"
+slug: "terminal-workflow"
+draft: false
+---
+
+正文内容。
+```
+
+终端中可以这样访问：
+
+```sh
+ls
+kb
+ls
+cd tools
+ls
+cat terminal-workflow
+cd ..
+cd blog
+```
+
+根目录 `ls` 会显示：
+
+- `blog/`
+- `knowledge base/`
+- 最近上传的 blog 文章
 
 ## Images
 
@@ -197,6 +247,7 @@ https://bishouyou.github.io/bishou-blog/
 
 ```text
 content/posts/              Markdown 文章
+content/kb/                 分层知识库 Markdown
 scripts/generate-ascii.mjs  头像转 ASCII 数据脚本
 src/assets/                 头像源图、ASCII 文本和生成数据
 src/avatar/                 ASCII 头像渲染
