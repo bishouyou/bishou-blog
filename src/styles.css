@@ -84,7 +84,7 @@ body {
 
 .ascii-avatar-shell {
   position: relative;
-  width: fit-content;
+  width: min-content;
   max-width: 100%;
   margin: 0 0 12px;
   padding: 12px;
@@ -94,9 +94,24 @@ body {
     linear-gradient(180deg, rgba(205, 214, 244, 0.04), transparent 38%),
     #0a0a0a;
   overflow: hidden;
+  cursor: default;
   box-shadow:
     0 0 0 1px rgba(137, 180, 250, 0.04) inset,
     0 0 22px rgba(180, 190, 254, 0.12);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.ascii-avatar-shell:hover,
+.ascii-avatar-shell:focus-within {
+  border-color: rgba(245, 194, 231, 0.58);
+  box-shadow:
+    0 0 0 1px rgba(245, 194, 231, 0.1) inset,
+    0 0 26px rgba(245, 194, 231, 0.2),
+    0 0 44px rgba(137, 180, 250, 0.14);
+  transform: translateY(-2px);
 }
 
 .ascii-avatar-shell::before,
@@ -133,23 +148,59 @@ body {
   animation: ascii-sweep 5.6s ease-in-out infinite;
 }
 
+.ascii-avatar-shell:hover::before {
+  opacity: 0.32;
+}
+
+.ascii-avatar-shell:hover::after {
+  animation-duration: 2.4s;
+}
+
 .ascii-avatar {
   position: relative;
   z-index: 1;
   margin: 0;
-  color: #e0e0e0;
+  color: transparent;
   font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
-  font-size: clamp(6px, 0.86vw, 10px);
+  font-size: clamp(5px, 0.72vw, 9px);
   line-height: 1;
   letter-spacing: 0;
   white-space: pre;
-  text-shadow:
-    0 0 1.2px #e0e0e0,
-    0 0 2.4px rgba(224, 224, 224, 0.42),
-    0 0 4.8px rgba(180, 190, 254, 0.34);
+  background:
+    radial-gradient(circle at 22% 52%, #f9e2af 0 8%, transparent 18%),
+    linear-gradient(
+      105deg,
+      #89b4fa 0%,
+      #b4befe 18%,
+      #f5c2e7 34%,
+      #f9e2af 48%,
+      #a6e3a1 62%,
+      #89dceb 78%,
+      #89b4fa 100%
+    );
+  background-size: 180% 100%, 260% 100%;
+  background-position: 0 50%, 0 50%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter:
+    drop-shadow(0 0 1.2px rgba(205, 214, 244, 0.7))
+    drop-shadow(0 0 4.8px rgba(180, 190, 254, 0.28));
   animation:
     ascii-flicker 4s infinite,
-    ascii-rise 480ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    ascii-rise 480ms cubic-bezier(0.2, 0.8, 0.2, 1) both,
+    ascii-color-wave 7.5s ease-in-out infinite;
+  transition:
+    filter 180ms ease,
+    transform 180ms ease;
+}
+
+.ascii-avatar-shell:hover .ascii-avatar {
+  filter:
+    drop-shadow(0 0 1.6px rgba(245, 194, 231, 0.85))
+    drop-shadow(0 0 8px rgba(137, 180, 250, 0.4));
+  transform: scale(1.012);
+  animation-duration: 4s, 480ms, 2.8s;
 }
 
 .welcome-name {
@@ -423,6 +474,21 @@ body {
   }
 }
 
+@keyframes ascii-color-wave {
+  0%,
+  100% {
+    background-position: 0 50%, 0 50%;
+  }
+
+  45% {
+    background-position: 32% 50%, 85% 50%;
+  }
+
+  70% {
+    background-position: 62% 50%, 145% 50%;
+  }
+}
+
 @media (max-width: 720px) {
   #app {
     padding: 0;
@@ -454,12 +520,11 @@ body {
   }
 
   .ascii-avatar-shell {
-    overflow-x: auto;
     max-width: 100%;
     padding: 8px;
   }
 
   .ascii-avatar {
-    font-size: 6px;
+    font-size: clamp(3.8px, 1.15vw, 5.4px);
   }
 }
