@@ -15,8 +15,7 @@
     "gray-matter": "^4.0.3",
     "jquery": "^3.7.1",
     "jquery.terminal": "^2.46.1",
-    "marked": "^18.0.4",
-    "textmode.js": "^0.15.0"
+    "marked": "^18.0.4"
   },
   "devDependencies": {
     "@types/jquery": "^3.5.33",

@@ -15,7 +15,11 @@
   --border: #333333;
   --accent-glow: rgba(0, 255, 65, 0.3);
   --scanline-opacity: 0.08;
-  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
+  --terminal-font: "CaskaydiaCove Nerd Font Mono", "CaskaydiaCove Nerd Font", "Cascadia Code", "Cascadia Mono",
+    "Fira Code", "JetBrains Mono", Consolas, monospace;
+  --prompt-font: "CaskaydiaCove Nerd Font Mono", "CaskaydiaCove Nerd Font", "Cascadia Mono", "Cascadia Code",
+    "FiraCode Nerd Font", "Fira Code", Consolas, monospace;
+  font-family: var(--terminal-font);
 }
 
 * {
@@ -78,10 +82,29 @@ body {
 .terminal .terminal-output div div,
 .terminal .cmd span,
 .terminal .prompt {
-  font-family: "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+  font-family: var(--terminal-font);
   font-size: 16px;
   line-height: 1.62;
   letter-spacing: 0;
+}
+
+.terminal .prompt,
+.terminal .prompt span,
+.cmd .prompt,
+.cmd .prompt span,
+.terminal .cmd-prompt,
+.terminal .cmd-prompt span,
+.cmd .cmd-prompt,
+.cmd .cmd-prompt span {
+  font-family: var(--prompt-font) !important;
+  font-size: 17px !important;
+  font-weight: 600 !important;
+  line-height: 1.45 !important;
+  letter-spacing: 0;
+  font-variant-ligatures: contextual;
+  font-feature-settings: "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
 }
 
 .terminal {
@@ -119,47 +142,13 @@ body {
   border-radius: 0;
   background: transparent;
   overflow: hidden;
-  cursor: crosshair;
   box-shadow: none;
   isolation: isolate;
-}
-
-.ascii-avatar-shell::before,
-.ascii-avatar-shell::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0;
-}
-
-.ascii-avatar-shell::before {
-  background:
-    repeating-linear-gradient(90deg, rgba(0, 255, 65, 0.1) 0 1px, transparent 1px 7px),
-    repeating-linear-gradient(0deg, rgba(0, 212, 255, 0.08) 0 1px, transparent 1px 5px);
-  transition: opacity 180ms ease;
-}
-
-.ascii-avatar-shell::after {
-  width: 64px;
-  background: linear-gradient(90deg, transparent, rgba(255, 0, 255, 0.24), transparent);
-  transform: translateX(-12px);
 }
 
 .ascii-avatar-shell:hover,
 .ascii-avatar-shell:focus-within {
   outline: none;
-}
-
-.ascii-avatar-shell:hover::before,
-.ascii-avatar-shell:focus-within::before {
-  opacity: 0.24;
-}
-
-.ascii-avatar-shell:hover::after,
-.ascii-avatar-shell:focus-within::after {
-  animation: avatar-glitch-scan 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 .ascii-avatar {
@@ -168,7 +157,7 @@ body {
   display: inline-block;
   margin: 0;
   color: var(--green);
-  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
+  font-family: var(--terminal-font);
   font-size: clamp(5px, 0.72vw, 10px);
   line-height: 1;
   letter-spacing: 0;
@@ -179,27 +168,6 @@ body {
     0 0 8px var(--green),
     0 0 18px rgba(0, 255, 65, 0.42),
     0 0 30px rgba(0, 255, 65, 0.2);
-  animation:
-    ascii-rise 480ms cubic-bezier(0.2, 0.8, 0.2, 1) both,
-    logo-flicker 4s infinite;
-  transition:
-    color 180ms ease,
-    text-shadow 180ms ease,
-    transform 180ms ease,
-    filter 180ms ease;
-}
-
-.ascii-avatar-shell:hover .ascii-avatar {
-  filter: brightness(1.12);
-  transform: translate(2px, -1px);
-}
-
-.ascii-avatar-shell:hover .ascii-avatar:not(.ascii-avatar-colored) {
-  color: var(--blue);
-  text-shadow:
-    0 0 7px var(--blue),
-    0 0 16px rgba(0, 212, 255, 0.48),
-    0 0 26px rgba(255, 0, 255, 0.26);
 }
 
 .ascii-avatar-colored {
@@ -209,10 +177,11 @@ body {
   width: max-content;
   max-width: 100%;
   color: inherit;
-  font-size: clamp(4.8px, 0.58vw, 9px);
+  font-size: clamp(4.2px, 0.52vw, 8px);
   line-height: 1.08;
   white-space: normal;
   text-shadow: none;
+  user-select: none;
 }
 
 .ascii-avatar-colored .ascii-pixel {
@@ -220,57 +189,10 @@ body {
   width: 1ch;
   height: 1em;
   text-align: center;
-  transform: translate3d(var(--gather-x, 0px), var(--gather-y, 0px), 0) scale(var(--gather-scale, 1));
-  transform-origin: center;
-  transition:
-    filter 160ms ease,
-    opacity 160ms ease,
-    transform 160ms ease;
-  will-change: filter, opacity, transform;
-}
-
-.ascii-avatar-colored .ascii-pixel-bg {
-  color: transparent !important;
-  opacity: 0;
-  text-shadow: none;
-}
-
-.ascii-avatar-colored .ascii-pixel-active {
-  opacity: var(--pixel-opacity, 1);
+  opacity: 1;
   text-shadow:
-    0 0 2px currentColor,
-    0 0 8px currentColor,
-    0 0 18px rgba(0, 212, 255, 0.1);
-  filter: brightness(var(--gather-brightness, 1)) saturate(var(--gather-saturation, 1));
-}
-
-.ascii-avatar-shell.is-gathering .ascii-avatar-colored .ascii-pixel-active {
-  transition-duration: 80ms;
-}
-
-.ascii-avatar-shell:hover .ascii-avatar-colored {
-  text-shadow: none;
-}
-
-.ascii-avatar-shell:hover .ascii-avatar-colored .ascii-pixel-active {
-  animation: ascii-pixel-wave 900ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  animation-delay: calc((var(--x) * 9ms) + (var(--y) * 14ms));
-  filter: brightness(var(--gather-brightness, 1.08)) saturate(var(--gather-saturation, 1.18));
-}
-
-.ascii-avatar-textmode {
-  position: absolute;
-  inset: 0 auto auto 0;
-  z-index: 2;
-  display: block;
-  pointer-events: none;
-  opacity: 0;
-  mix-blend-mode: screen;
-  transition: opacity 260ms ease;
-}
-
-.ascii-avatar-shell.is-textmode-ready .ascii-avatar-textmode {
-  opacity: 0.34;
+    0 0 1px color-mix(in srgb, currentColor 72%, transparent),
+    0 0 5px color-mix(in srgb, currentColor 28%, transparent);
 }
 
 .welcome-name {
@@ -526,65 +448,6 @@ body {
   }
 }
 
-@keyframes ascii-rise {
-  from {
-    opacity: 0;
-    filter: blur(3px);
-    transform: translateY(8px);
-  }
-
-  to {
-    opacity: 1;
-    filter: blur(0);
-    transform: translateY(0);
-  }
-}
-
-@keyframes avatar-glitch-scan {
-  0%,
-  88%,
-  100% {
-    opacity: 0;
-    transform: translateX(-12px);
-  }
-
-  91% {
-    opacity: 0.55;
-    transform: translateX(28%);
-  }
-
-  93% {
-    opacity: 0;
-    transform: translateX(62%);
-  }
-
-  95% {
-    opacity: 0.42;
-    transform: translateX(98%);
-  }
-}
-
-@keyframes ascii-pixel-wave {
-  0%,
-  100% {
-    opacity: 1;
-    translate: 0 0;
-    scale: 1;
-  }
-
-  38% {
-    opacity: 0.92;
-    translate: 0 -0.22em;
-    scale: 1.03;
-  }
-
-  62% {
-    opacity: 1;
-    translate: 0 0.1em;
-    scale: 0.99;
-  }
-}
-
 @media (max-width: 720px) {
   #app {
     padding: 0;
@@ -603,6 +466,17 @@ body {
   .terminal .cmd span,
   .terminal .prompt {
     font-size: 14px;
+  }
+
+  .terminal .prompt,
+  .terminal .prompt span,
+  .cmd .prompt,
+  .cmd .prompt span,
+  .terminal .cmd-prompt,
+  .terminal .cmd-prompt span,
+  .cmd .cmd-prompt,
+  .cmd .cmd-prompt span {
+    font-size: 15px !important;
   }
 
   .command-help div,
@@ -629,20 +503,8 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ascii-avatar,
-  .ascii-avatar-shell::after,
   .flow-line,
-  .welcome-name,
-  .ascii-avatar-shell:hover .ascii-avatar-colored .ascii-pixel-active {
+  .welcome-name {
     animation: none;
-  }
-
-  .ascii-avatar-colored .ascii-pixel {
-    transform: none;
-    transition: none;
-  }
-
-  .ascii-avatar-textmode {
-    display: none;
   }
 }

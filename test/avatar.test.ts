@@ -6,13 +6,13 @@ import avatarAscii from '../src/assets/avatar-ascii.json';
 const avatar = avatarAscii as AvatarAsciiArt;
 
 describe('avatar ascii data', () => {
-  it('generates a fixed terminal-sized grid with visible cells only', () => {
+  it('generates a fixed terminal-sized full-frame grid', () => {
     expect(avatar.columns).toBe(96);
     expect(avatar.rows).toBe(48);
+    expect(avatar.mode).toBe('full-frame');
     expect(avatar.sourceWidth).toBe(1237);
     expect(avatar.sourceHeight).toBe(1236);
-    expect(avatar.cells.length).toBeGreaterThan(500);
-    expect(avatar.cells.length).toBeLessThan(1000);
+    expect(avatar.cells.length).toBe(avatar.columns * avatar.rows);
   });
 
   it('stores safe coordinates, glyphs, and hex colors', () => {
@@ -30,13 +30,14 @@ describe('avatar ascii data', () => {
 });
 
 describe('avatar ascii renderer', () => {
-  it('renders data attributes for DOM interaction and textmode enhancement', () => {
+  it('renders static full-frame data attributes', () => {
     const html = renderAvatarAscii(avatar);
 
-    expect(html).toContain('class="ascii-avatar ascii-avatar-colored"');
+    expect(html).toContain('class="ascii-avatar ascii-avatar-colored ascii-avatar-static"');
+    expect(html).toContain('data-mode="full-frame"');
     expect(html).toContain('data-columns="96"');
     expect(html).toContain('data-rows="48"');
-    expect(html).toContain('class="ascii-pixel ascii-pixel-active"');
+    expect(html).toContain('class="ascii-pixel"');
     expect(html).toContain('data-intensity=');
   });
 });

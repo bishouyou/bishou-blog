@@ -2,11 +2,9 @@ import $ from 'jquery';
 import installTerminal from 'jquery.terminal';
 import 'jquery.terminal/css/jquery.terminal.min.css';
 import posts from 'virtual:posts';
-import { scheduleTextmodeAvatarLayer } from './avatar/textmodeLayer';
 import { findPost, listTags, parseCommand, postsByTag, searchPosts } from './content/commands';
 import { siteConfig } from './site.config';
 import { scheduleFlowHydration, watchFlowResize } from './terminal/flow';
-import { installAsciiAvatarInteraction } from './terminal/asciiInteraction';
 import {
   renderArticle,
   renderError,
@@ -145,8 +143,6 @@ function showTag(term: TerminalApi, tag: string): void {
 
 function printWelcome(term: TerminalApi): void {
   print(term, renderWelcome(siteConfig.asciiArt, siteConfig.nickname, siteConfig.about, siteConfig.avatarAscii));
-  installAsciiAvatarInteraction(document);
-  scheduleTextmodeAvatarLayer(document);
 }
 
 function print(term: TerminalApi, html: string): void {

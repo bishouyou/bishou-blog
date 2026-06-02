@@ -8,8 +8,6 @@ const outputPath = resolve(projectRoot, 'src/assets/avatar-ascii.json');
 
 const columns = 96;
 const rows = 48;
-const backgroundLuminance = 215;
-const backgroundSaturation = 48;
 const glyphs = ['░', '▒', '▓', '█'];
 
 const image = sharp(inputPath, { failOn: 'error' }).ensureAlpha();
@@ -23,27 +21,19 @@ const cells = [];
 
 for (let y = 0; y < rows; y += 1) {
   for (let x = 0; x < columns; x += 1) {
-    if (isSourceEdge(x, y)) {
-      continue;
-    }
-
     const index = (y * columns + x) * 4;
     const r = data[index];
     const g = data[index + 1];
     const b = data[index + 2];
     const a = data[index + 3];
     const luminance = getLuminance(r, g, b);
-    const saturation = Math.max(r, g, b) - Math.min(r, g, b);
-
-    if (a < 20 || (luminance >= backgroundLuminance && saturation <= backgroundSaturation)) {
-      continue;
-    }
-
     const intensity = clamp(1 - luminance / 255, 0, 1);
+    const adjustedIntensity = Math.pow(intensity, 0.86);
+
     cells.push({
       x,
       y,
-      char: glyphs[Math.min(glyphs.length - 1, Math.floor(intensity * glyphs.length))],
+      char: a < 8 ? '░' : glyphs[Math.min(glyphs.length - 1, Math.round(adjustedIntensity * (glyphs.length - 1)))],
       color: toHex(r, g, b),
       intensity: Number(intensity.toFixed(3))
     });
@@ -53,12 +43,9 @@ for (let y = 0; y < rows; y += 1) {
 const output = {
   columns,
   rows,
+  mode: 'full-frame',
   sourceWidth: metadata.width ?? 0,
   sourceHeight: metadata.height ?? 0,
-  transparentBackground: {
-    luminance: backgroundLuminance,
-    saturation: backgroundSaturation
-  },
   cells
 };
 
@@ -79,8 +66,4 @@ function toHex(r, g, b) {
 
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
-}
-
-function isSourceEdge(x, y) {
-  return x <= 3 || x >= columns - 2 || y <= 1 || y >= rows - 1;
 }

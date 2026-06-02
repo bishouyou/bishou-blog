@@ -9,11 +9,8 @@ export interface AvatarAsciiCell {
 export interface AvatarAsciiArt {
   columns: number;
   rows: number;
+  mode: 'full-frame';
   sourceWidth: number;
   sourceHeight: number;
-  transparentBackground: {
-    luminance: number;
-    saturation: number;
-  };
   cells: AvatarAsciiCell[];
 }
