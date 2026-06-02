@@ -1,5 +1,6 @@
 import type { SiteConfig } from './content/types';
 import asciiArt from './assets/ascii-art.txt?raw';
+import asciiArtHtmlUrl from './assets/ascii-art-colored.html?url';
 
 export const siteConfig: SiteConfig = {
   nickname: 'bishou',
@@ -8,6 +9,7 @@ export const siteConfig: SiteConfig = {
   homePath: '~',
   about: 'bishou 的个人终端博客。这里记录工程、阅读、工具链和一些短小锋利的想法。',
   asciiArt: asciiArt.trimEnd(),
+  asciiArtHtmlUrl,
   theme: {
     os: '#ACB0BE',
     blue: '#00D4FF',

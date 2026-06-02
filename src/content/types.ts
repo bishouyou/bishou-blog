@@ -19,6 +19,7 @@ export interface SiteConfig {
   homePath: string;
   about: string;
   asciiArt: string;
+  asciiArtHtmlUrl?: string;
   theme: SiteTheme;
 }
 

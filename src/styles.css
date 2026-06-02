@@ -165,6 +165,7 @@ body {
 .ascii-avatar {
   position: relative;
   z-index: 1;
+  display: inline-block;
   margin: 0;
   color: var(--green);
   font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
@@ -189,13 +190,65 @@ body {
 }
 
 .ascii-avatar-shell:hover .ascii-avatar {
+  filter: brightness(1.12);
+  transform: translate(2px, -1px);
+}
+
+.ascii-avatar-shell:hover .ascii-avatar:not(.ascii-avatar-colored) {
   color: var(--blue);
   text-shadow:
     0 0 7px var(--blue),
     0 0 16px rgba(0, 212, 255, 0.48),
     0 0 26px rgba(255, 0, 255, 0.26);
-  filter: brightness(1.12);
-  transform: translate(2px, -1px);
+}
+
+.ascii-avatar-colored {
+  color: inherit;
+  font-size: clamp(6px, 0.78vw, 12px);
+  line-height: 1.08;
+  text-shadow: none;
+}
+
+.ascii-avatar-colored .ascii-pixel {
+  display: inline-block;
+  width: 1ch;
+  text-align: center;
+  transform: translate3d(var(--gather-x, 0px), var(--gather-y, 0px), 0) scale(var(--gather-scale, 1));
+  transform-origin: center;
+  transition:
+    filter 160ms ease,
+    opacity 160ms ease,
+    transform 160ms ease;
+  will-change: filter, opacity, transform;
+}
+
+.ascii-avatar-colored .ascii-pixel-bg {
+  color: transparent !important;
+  opacity: 0;
+  text-shadow: none;
+}
+
+.ascii-avatar-colored .ascii-pixel-active {
+  opacity: var(--pixel-opacity, 1);
+  text-shadow:
+    0 0 2px currentColor,
+    0 0 8px currentColor,
+    0 0 18px rgba(0, 212, 255, 0.1);
+  filter: brightness(var(--gather-brightness, 1)) saturate(var(--gather-saturation, 1));
+}
+
+.ascii-avatar-shell.is-gathering .ascii-avatar-colored .ascii-pixel-active {
+  transition-duration: 80ms;
+}
+
+.ascii-avatar-shell:hover .ascii-avatar-colored {
+  text-shadow: none;
+}
+
+.ascii-avatar-shell:hover .ascii-avatar-colored .ascii-pixel-active {
+  animation: ascii-pixel-wave 900ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc((var(--x) * 9ms) + (var(--y) * 14ms));
+  filter: brightness(var(--gather-brightness, 1.08)) saturate(var(--gather-saturation, 1.18));
 }
 
 .welcome-name {
@@ -489,6 +542,27 @@ body {
   }
 }
 
+@keyframes ascii-pixel-wave {
+  0%,
+  100% {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
+
+  38% {
+    opacity: 0.92;
+    translate: 0 -0.22em;
+    scale: 1.03;
+  }
+
+  62% {
+    opacity: 1;
+    translate: 0 0.1em;
+    scale: 0.99;
+  }
+}
+
 @media (max-width: 720px) {
   #app {
     padding: 0;
@@ -525,5 +599,20 @@ body {
 
   .ascii-avatar {
     font-size: clamp(3.8px, 1.15vw, 5.4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ascii-avatar,
+  .ascii-avatar-shell::after,
+  .flow-line,
+  .welcome-name,
+  .ascii-avatar-shell:hover .ascii-avatar-colored .ascii-pixel-active {
+    animation: none;
+  }
+
+  .ascii-avatar-colored .ascii-pixel {
+    transform: none;
+    transition: none;
   }
 }

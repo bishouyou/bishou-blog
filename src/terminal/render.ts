@@ -1,9 +1,18 @@
 import type { Post } from '../content/types';
 import { flowBlock } from './flow';
 
-export function renderWelcome(asciiArt: string, nickname: string, about: string): string {
+export function renderWelcome(
+  asciiArt: string,
+  nickname: string,
+  about: string,
+  asciiArtHtml?: string
+): string {
+  const avatar = asciiArtHtml
+    ? `<pre class="ascii-avatar ascii-avatar-colored">${asciiArtHtml}</pre>`
+    : `<pre class="ascii-avatar">${escapeHtml(asciiArt)}</pre>`;
+
   return [
-    `<div class="ascii-avatar-shell" aria-label="${escapeAttr(nickname)} avatar"><pre class="ascii-avatar">${escapeHtml(asciiArt)}</pre></div>`,
+    `<div class="ascii-avatar-shell" aria-label="${escapeAttr(nickname)} avatar">${avatar}</div>`,
     `<div class="welcome-name">${escapeHtml(nickname)}</div>`,
     flowBlock(about, 'welcome-flow'),
     `<div class="hint">输入 <button class="link-command" data-command="help">help</button> 查看命令，或输入 <button class="link-command" data-command="ls">ls</button> 阅读文章。</div>`

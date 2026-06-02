@@ -5,6 +5,7 @@ import posts from 'virtual:posts';
 import { findPost, listTags, parseCommand, postsByTag, searchPosts } from './content/commands';
 import { siteConfig } from './site.config';
 import { hydrateFlowBlocks, scheduleFlowHydration, watchFlowResize } from './terminal/flow';
+import { installAsciiAvatarInteraction } from './terminal/asciiInteraction';
 import {
   renderArticle,
   renderError,
@@ -35,6 +36,7 @@ type TerminalApi = {
 
 const terminalElement = $('#terminal');
 const theme = siteConfig.theme;
+let coloredAsciiArtHtml: string | undefined;
 
 const terminal = terminalElement.terminal(
   async (input: string, term: TerminalApi) => {
@@ -58,8 +60,7 @@ const terminal = terminalElement.terminal(
 
 terminal.set_prompt(buildPrompt());
 watchFlowResize(document);
-printWelcome(terminal);
-scheduleFlowHydration(document);
+void start();
 
 document.addEventListener('click', (event) => {
   const target = (event.target as HTMLElement).closest<HTMLElement>('[data-command]');
@@ -142,7 +143,8 @@ function showTag(term: TerminalApi, tag: string): void {
 }
 
 function printWelcome(term: TerminalApi): void {
-  print(term, renderWelcome(siteConfig.asciiArt, siteConfig.nickname, siteConfig.about));
+  print(term, renderWelcome(siteConfig.asciiArt, siteConfig.nickname, siteConfig.about, coloredAsciiArtHtml));
+  installAsciiAvatarInteraction(document);
 }
 
 function print(term: TerminalApi, html: string): void {
@@ -157,4 +159,28 @@ function buildPrompt(): string {
     `[[;${theme.pink};]${siteConfig.homePath} ]`,
     `[[;${theme.os};]› ]`
   ].join('');
+}
+
+async function start(): Promise<void> {
+  coloredAsciiArtHtml = await loadColoredAsciiArt();
+  printWelcome(terminal);
+  scheduleFlowHydration(document);
+}
+
+async function loadColoredAsciiArt(): Promise<string | undefined> {
+  const url = siteConfig.asciiArtHtmlUrl;
+  if (!url) {
+    return undefined;
+  }
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      return undefined;
+    }
+
+    return (await response.text()).trimEnd();
+  } catch {
+    return undefined;
+  }
 }
