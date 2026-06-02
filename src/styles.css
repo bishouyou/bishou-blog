@@ -103,8 +103,10 @@ body {
 .terminal .cmd-editable span,
 .terminal .cmd-cursor,
 .terminal .end,
-.terminal-output .command,
-.terminal-output .command span {
+.terminal .terminal-command,
+.terminal .terminal-command span,
+.terminal-output .terminal-command,
+.terminal-output .terminal-command span {
   font-family: var(--prompt-font) !important;
   font-size: 17px !important;
   font-weight: 600 !important;
@@ -117,7 +119,8 @@ body {
 }
 
 .terminal .cmd-prompt > span:first-child,
-.cmd .cmd-prompt > span:first-child {
+.cmd .cmd-prompt > span:first-child,
+.terminal .terminal-command span[data-text="ubuntu "] {
   display: inline-flex !important;
   width: 1.25em;
   min-width: 1.25em;
@@ -134,7 +137,8 @@ body {
 }
 
 .terminal .cmd-prompt > span:first-child::before,
-.cmd .cmd-prompt > span:first-child::before {
+.cmd .cmd-prompt > span:first-child::before,
+.terminal .terminal-command span[data-text="ubuntu "]::before {
   content: "";
   display: block;
   position: absolute;
@@ -282,26 +286,30 @@ body {
 }
 
 .command-help {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 1px;
   margin: 4px 0 8px;
   line-height: 1.28;
 }
 
 .command-help div {
-  display: grid;
-  grid-template-columns: minmax(160px, 260px) 1fr;
+  display: flex;
   gap: 14px;
+  align-items: baseline;
   min-height: 0;
   line-height: 1.28;
 }
 
 .command-help span {
+  flex: 0 0 min(260px, 34vw);
   color: var(--green);
   line-height: 1.28;
 }
 
 .command-help em {
+  flex: 1 1 auto;
+  min-width: 0;
   color: var(--muted);
   font-style: normal;
   line-height: 1.28;
@@ -530,14 +538,23 @@ body {
   .terminal .cmd-editable span,
   .terminal .cmd-cursor,
   .terminal .end,
-  .terminal-output .command,
-  .terminal-output .command span {
+  .terminal .terminal-command,
+  .terminal .terminal-command span,
+  .terminal-output .terminal-command,
+  .terminal-output .terminal-command span {
     font-size: 15px !important;
   }
 
-  .command-help div,
   .post-row {
     grid-template-columns: 1fr;
+  }
+
+  .command-help div {
+    gap: 10px;
+  }
+
+  .command-help span {
+    flex-basis: min(190px, 42vw);
   }
 
   .post-date,
