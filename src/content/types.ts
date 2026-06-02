@@ -27,6 +27,7 @@ export interface SiteConfig {
 
 export interface PostMeta {
   title: string;
+  titlePinyin: string;
   date: string;
   slug: string;
   tags: string[];

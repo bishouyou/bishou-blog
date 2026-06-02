@@ -12,6 +12,7 @@ const posts: Post[] = [
   {
     meta: {
       title: '你好，终端博客',
+      titlePinyin: 'nihaozhongduanboke',
       date: '2026-06-01',
       slug: 'hello-terminal',
       tags: ['blog', 'terminal'],
@@ -26,6 +27,7 @@ const posts: Post[] = [
   {
     meta: {
       title: '文字潮汐',
+      titlePinyin: 'wenzichaoxi',
       date: '2026-06-01',
       slug: 'pretext-flow',
       tags: ['pretext', 'terminal'],
@@ -53,9 +55,10 @@ describe('terminal command helpers', () => {
     });
   });
 
-  it('finds posts by slug or exact title', () => {
+  it('finds posts by slug, exact title, or title pinyin', () => {
     expect(findPost(posts, 'hello-terminal')?.meta.title).toBe('你好，终端博客');
     expect(findPost(posts, '文字潮汐')?.meta.slug).toBe('pretext-flow');
+    expect(findPost(posts, 'wenzichaoxi')?.meta.slug).toBe('pretext-flow');
     expect(findPost(posts, 'missing')).toBeUndefined();
   });
 

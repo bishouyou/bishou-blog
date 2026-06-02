@@ -3,6 +3,7 @@ import { basename, extname, join } from 'node:path';
 import fg from 'fast-glob';
 import matter from 'gray-matter';
 import { marked } from 'marked';
+import { pinyin } from 'pinyin-pro';
 import type { Post, PostMeta } from './types';
 
 interface RawFrontmatter {
@@ -45,6 +46,7 @@ export function parsePost(source: string, defaultSlug: string): Post {
   const summary = stringValue(data.summary) ?? '';
   const meta: PostMeta = {
     title,
+    titlePinyin: titleToPinyinSlug(title),
     date: normalizeDate(data.date),
     slug: slugify(stringValue(data.slug) ?? defaultSlug),
     tags: stringArray(data.tags),
@@ -81,6 +83,16 @@ export function estimateReadingTime(text: string): number {
   const cjkChars = text.match(/[\u3400-\u9fff]/g)?.length ?? 0;
   const units = latinWords + cjkChars / 2;
   return Math.max(1, Math.ceil(units / 220));
+}
+
+export function titleToPinyinSlug(title: string): string {
+  return pinyin(title, {
+    toneType: 'none',
+    type: 'array'
+  })
+    .join('')
+    .replace(/[^A-Za-z0-9]/g, '')
+    .toLowerCase();
 }
 
 function fallbackSlug(filePath: string): string {

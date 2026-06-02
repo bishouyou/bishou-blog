@@ -19,10 +19,13 @@ export function completeInput(input: string, posts: Post[], tags: TagCount[]): s
   }
 
   if (command === 'cat' || command === 'open') {
-    return posts.flatMap((post) => [
-      `${leading}${command} ${quoteCompletion(post.meta.slug)}`,
-      `${leading}${command} ${quoteCompletion(post.meta.title)}`
-    ]);
+    return unique(
+      posts.flatMap((post) => [
+        `${leading}${command} ${quoteCompletion(post.meta.slug)}`,
+        `${leading}${command} ${quoteCompletion(post.meta.titlePinyin)}`,
+        `${leading}${command} ${quoteCompletion(post.meta.title)}`
+      ])
+    );
   }
 
   if (command === 'tag') {
@@ -48,4 +51,8 @@ function quoteCompletion(value: string): string {
   }
 
   return `"${value.replace(/"/g, '\\"')}"`;
+}
+
+function unique(values: string[]): string[] {
+  return [...new Set(values)];
 }

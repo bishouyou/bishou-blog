@@ -43,6 +43,7 @@ type TerminalApi = {
 const terminalElement = $('#terminal');
 const theme = siteConfig.theme;
 
+terminalElement.addClass('is-starting');
 const terminal = terminalElement.terminal(
   async (input: string, term: TerminalApi) => {
     execute(input, term);
@@ -93,6 +94,9 @@ watchFlowResize(document);
 printWelcome(terminal);
 scheduleFlowHydration(document);
 installGhostHint();
+window.setTimeout(() => {
+  terminalElement.removeClass('is-starting');
+}, 3200);
 
 document.addEventListener('click', (event) => {
   const target = (event.target as HTMLElement).closest<HTMLElement>('[data-command]');
@@ -208,17 +212,17 @@ function installGhostHint(): void {
 }
 
 function updateGhostHint(): void {
-  const wrapper = document.querySelector<HTMLElement>('.cmd-wrapper');
-  if (!wrapper) {
+  const target = document.querySelector<HTMLElement>('.cmd-cursor .end');
+  if (!target) {
     return;
   }
 
   const command = terminal.get_command?.() ?? '';
   const hint = getGhostSuffix(command);
   if (hint) {
-    wrapper.dataset.ghost = hint;
+    target.dataset.ghost = hint;
   } else {
-    delete wrapper.dataset.ghost;
+    delete target.dataset.ghost;
   }
 }
 

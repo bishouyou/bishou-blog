@@ -6,6 +6,7 @@ const posts: Post[] = [
   {
     meta: {
       title: 'Hello Terminal',
+      titlePinyin: 'helloterminal',
       date: '2026-06-01',
       slug: 'hello-terminal',
       tags: ['blog', 'terminal'],
@@ -20,6 +21,7 @@ const posts: Post[] = [
   {
     meta: {
       title: 'Pretext Flow',
+      titlePinyin: 'pretextflow',
       date: '2026-06-01',
       slug: 'pretext-flow',
       tags: ['pretext', 'terminal'],
@@ -50,6 +52,29 @@ describe('terminal completion', () => {
     expect(candidates).toContain('cat hello-terminal');
     expect(candidates).toContain('cat "Hello Terminal"');
     expect(getGhostSuffix('cat h', candidates)).toBe('ello-terminal');
+  });
+
+  it('completes cat targets by pinyin alias', () => {
+    const chinesePosts: Post[] = [
+      {
+        meta: {
+          title: '文字潮汐',
+          titlePinyin: 'wenzichaoxi',
+          date: '2026-06-01',
+          slug: 'pretext-flow',
+          tags: ['pretext'],
+          categories: ['lab'],
+          summary: 'flow',
+          draft: false
+        },
+        html: '<p>flow</p>',
+        plainText: 'flow',
+        readingTime: 1
+      }
+    ];
+    const candidates = completeInput('cat w', chinesePosts, []);
+    expect(candidates).toContain('cat wenzichaoxi');
+    expect(getGhostSuffix('cat w', candidates)).toBe('enzichaoxi');
   });
 
   it('completes tag names', () => {

@@ -16,7 +16,8 @@
     "gray-matter": "^4.0.3",
     "jquery": "^3.7.1",
     "jquery.terminal": "^2.46.1",
-    "marked": "^18.0.4"
+    "marked": "^18.0.4",
+    "pinyin-pro": "^3.28.1"
   },
   "devDependencies": {
     "@emnapi/core": "^1.10.0",

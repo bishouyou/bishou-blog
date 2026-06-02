@@ -30,7 +30,8 @@ export function findPost(posts: Post[], query: string): Post | undefined {
   return posts.find((post) => {
     return (
       normalize(post.meta.slug) === normalized ||
-      normalize(post.meta.title) === normalized
+      normalize(post.meta.title) === normalized ||
+      normalize(post.meta.titlePinyin) === normalized
     );
   });
 }
@@ -44,6 +45,7 @@ export function searchPosts(posts: Post[], keyword: string): Post[] {
   return posts.filter((post) => {
     const haystack = [
       post.meta.title,
+      post.meta.titlePinyin,
       post.meta.summary,
       post.meta.slug,
       ...post.meta.tags,

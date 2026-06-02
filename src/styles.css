@@ -266,18 +266,6 @@ body {
   animation: logo-flicker 4s infinite;
 }
 
-.terminal .cmd-wrapper {
-  position: relative;
-}
-
-.terminal .cmd-wrapper[data-ghost]::after {
-  content: attr(data-ghost);
-  color: var(--muted);
-  opacity: 0.52;
-  pointer-events: none;
-  white-space: pre;
-}
-
 .boot-line {
   opacity: 0;
   animation: boot-line-in 360ms ease-out both;
@@ -298,6 +286,23 @@ body {
 
 .boot-step-hint {
   animation-delay: 2320ms;
+}
+
+#terminal.is-starting .cmd {
+  opacity: 0;
+  animation: prompt-pop-in 360ms cubic-bezier(0.18, 0.82, 0.28, 1) 2860ms both;
+}
+
+.terminal .cmd-cursor .end[data-ghost]::after {
+  content: attr(data-ghost);
+  color: var(--muted);
+  font-family: var(--prompt-font);
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  opacity: 0.56;
+  pointer-events: none;
+  white-space: pre;
 }
 
 .hint,
@@ -551,6 +556,23 @@ body {
   }
 }
 
+@keyframes prompt-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  70% {
+    opacity: 1;
+    transform: translateY(-1px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes logo-flicker {
   0%,
   100% {
@@ -657,7 +679,8 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .flow-line,
   .welcome-name,
-  .boot-line {
+  .boot-line,
+  #terminal.is-starting .cmd {
     animation: none;
     opacity: 1;
   }

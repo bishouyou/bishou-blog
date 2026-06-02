@@ -35,7 +35,7 @@ export function renderHelp(): string {
     <div class="command-help">
       <div><span>help</span><em>列出可用命令</em></div>
       <div><span>ls</span><em>列出文章，标题可点击</em></div>
-      <div><span>cat &lt;slug|标题&gt;</span><em>阅读文章</em></div>
+      <div><span>cat &lt;slug|拼音|标题&gt;</span><em>阅读文章</em></div>
       <div><span>search &lt;keyword&gt;</span><em>搜索标题、摘要、标签和正文</em></div>
       <div><span>tags</span><em>列出标签</em></div>
       <div><span>tag &lt;name&gt;</span><em>查看某个标签下的文章</em></div>

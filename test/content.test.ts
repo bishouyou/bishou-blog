@@ -2,7 +2,7 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { describe, expect, it } from 'vitest';
-import { estimateReadingTime, loadPosts, parsePost, slugify } from '../src/content/build';
+import { estimateReadingTime, loadPosts, parsePost, slugify, titleToPinyinSlug } from '../src/content/build';
 
 describe('markdown content pipeline', () => {
   it('parses Hexo-style frontmatter and markdown body', () => {
@@ -26,6 +26,7 @@ draft: false
 
     expect(post.meta).toEqual({
       title: '第一篇文章',
+      titlePinyin: 'diyipianwenzhang',
       date: '2026-06-01',
       tags: ['blog', 'terminal'],
       categories: ['notes'],
@@ -82,6 +83,7 @@ draft`
   it('normalizes slugs and estimates reading time', () => {
     expect(slugify('Hello Terminal!!')).toBe('hello-terminal');
     expect(slugify('你好 终端')).toBe('你好-终端');
+    expect(titleToPinyinSlug('文字潮汐')).toBe('wenzichaoxi');
     expect(estimateReadingTime('短文')).toBe(1);
   });
 });
