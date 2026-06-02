@@ -50,4 +50,31 @@ cat post-slug
 
 ## Deploy
 
-项目使用 Vite，`npm run build` 会生成 `dist/`。部署到 GitHub Pages 时发布 `dist` 目录即可；Vite `base` 已配置为相对路径，适合仓库子路径。
+项目使用 Vite，`npm run build` 会生成 `dist/`。Vite `base` 已配置为相对路径，适合 GitHub Pages 的仓库子路径。
+
+### GitHub Pages
+
+1. 在 GitHub 创建一个仓库，例如 `terminal-blog`。
+2. 本地绑定远端并推送当前分支：
+
+```sh
+git remote add origin https://github.com/<你的用户名>/terminal-blog.git
+git push -u origin codex/terminal-markdown-blog
+```
+
+3. 如果你希望直接作为正式站点发布，把当前分支合并到 `main` 或 `master`，或者在 GitHub 上把默认分支切到当前分支。
+4. 打开仓库的 `Settings -> Pages`。
+5. `Build and deployment` 的 `Source` 选择 `GitHub Actions`。
+6. 推送到 `main` 或 `master` 后，`.github/workflows/deploy-pages.yml` 会自动运行测试、构建并发布 `dist/`。
+
+发布完成后访问：
+
+```text
+https://<你的用户名>.github.io/terminal-blog/
+```
+
+如果仓库名是 `<你的用户名>.github.io`，访问地址就是：
+
+```text
+https://<你的用户名>.github.io/
+```
