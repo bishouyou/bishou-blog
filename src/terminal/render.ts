@@ -9,16 +9,25 @@ export function renderWelcome(
   about: string,
   avatarAscii?: AvatarAsciiArt
 ): string {
+  return renderWelcomeParts(asciiArt, nickname, about, avatarAscii).join('');
+}
+
+export function renderWelcomeParts(
+  asciiArt: string,
+  nickname: string,
+  about: string,
+  avatarAscii?: AvatarAsciiArt
+): string[] {
   const avatar = avatarAscii
     ? renderAvatarAscii(avatarAscii)
     : `<pre class="ascii-avatar">${escapeHtml(asciiArt)}</pre>`;
 
   return [
-    `<div class="ascii-avatar-shell" aria-label="${escapeAttr(nickname)} avatar">${avatar}</div>`,
-    `<div class="welcome-name">${escapeHtml(nickname)}</div>`,
-    flowBlock(about, 'welcome-flow'),
-    `<div class="hint">输入 <button class="link-command" data-command="help">help</button> 查看命令，或输入 <button class="link-command" data-command="ls">ls</button> 阅读文章。</div>`
-  ].join('');
+    `<div class="boot-line boot-line-avatar"><div class="ascii-avatar-shell" aria-label="${escapeAttr(nickname)} avatar">${avatar}</div></div>`,
+    `<div class="boot-line welcome-name">${escapeHtml(nickname)}</div>`,
+    `<div class="boot-line">${flowBlock(about, 'welcome-flow')}</div>`,
+    `<div class="boot-line hint">输入 <button class="link-command" data-command="help">help</button> 查看命令，或输入 <button class="link-command" data-command="ls">ls</button> 阅读文章。</div>`
+  ];
 }
 
 export function renderHelp(): string {

@@ -14,7 +14,8 @@ import {
   renderHelp,
   renderPostList,
   renderTags,
-  renderWelcome
+  renderWelcome,
+  renderWelcomeParts
 } from './terminal/render';
 import './styles.css';
 
@@ -42,6 +43,7 @@ const theme = siteConfig.theme;
 const terminal = terminalElement.terminal(
   async (input: string, term: TerminalApi) => {
     execute(input, term);
+    scrollTerminalToBottom();
   },
   {
     greetings: false,
@@ -53,6 +55,7 @@ const terminal = terminalElement.terminal(
       'CTRL+L': (_event: KeyboardEvent, term: TerminalApi) => {
         term.clear();
         printWelcome(term);
+        scrollTerminalToBottom();
         return false;
       }
     }
@@ -61,7 +64,7 @@ const terminal = terminalElement.terminal(
 
 terminal.set_prompt(buildPrompt());
 watchFlowResize(document);
-printWelcome(terminal);
+void printWelcomeAnimated(terminal);
 scheduleFlowHydration(document);
 
 document.addEventListener('click', (event) => {
@@ -74,6 +77,7 @@ document.addEventListener('click', (event) => {
   const command = target.dataset.command;
   if (command) {
     terminal.exec(command);
+    scrollTerminalToBottom();
   }
 });
 
@@ -148,9 +152,51 @@ function printWelcome(term: TerminalApi): void {
   print(term, renderWelcome(siteConfig.asciiArt, siteConfig.nickname, siteConfig.about, siteConfig.avatarAscii));
 }
 
+async function printWelcomeAnimated(term: TerminalApi): Promise<void> {
+  terminalElement.addClass('is-booting');
+
+  const parts = renderWelcomeParts(
+    siteConfig.asciiArt,
+    siteConfig.nickname,
+    siteConfig.about,
+    siteConfig.avatarAscii
+  );
+  const delays = [1350, 430, 680, 540];
+
+  for (const [index, part] of parts.entries()) {
+    print(term, part);
+    scrollTerminalToBottom({ behavior: 'smooth' });
+    await wait(delays[index] ?? 500);
+  }
+
+  terminalElement.removeClass('is-booting');
+  scrollTerminalToBottom({ behavior: 'smooth' });
+}
+
 function print(term: TerminalApi, html: string): void {
   term.echo(html, { raw: true });
   scheduleFlowHydration(document);
+  scrollTerminalToBottom();
+}
+
+function scrollTerminalToBottom(options: ScrollIntoViewOptions = { behavior: 'smooth' }): void {
+  window.requestAnimationFrame(() => {
+    const commandLine =
+      document.querySelector<HTMLElement>('.cmd-wrapper') ??
+      document.querySelector<HTMLElement>('.cmd');
+
+    (commandLine ?? terminalElement.get(0))?.scrollIntoView({
+      block: 'end',
+      inline: 'nearest',
+      ...options
+    });
+  });
+}
+
+function wait(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    window.setTimeout(resolve, ms);
+  });
 }
 
 function buildPrompt(): string {

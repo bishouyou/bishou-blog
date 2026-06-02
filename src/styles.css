@@ -32,6 +32,12 @@ body,
   margin: 0;
 }
 
+html,
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 body {
   background: var(--bg);
   color: var(--text);
@@ -54,7 +60,7 @@ body {
   box-shadow:
     0 0 24px rgba(0, 255, 65, 0.08),
     inset 0 0 28px rgba(0, 0, 0, 0.46);
-  overflow: hidden;
+  overflow: visible;
   isolation: isolate;
 }
 
@@ -173,8 +179,22 @@ body {
 }
 
 .terminal,
+.terminal-wrapper,
+.terminal-output,
+.terminal .terminal-wrapper,
+.terminal .terminal-output {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
 .terminal-output {
-  overflow-x: hidden !important;
+  line-height: 1.38;
+}
+
+#terminal.is-booting .cmd,
+#terminal.is-booting .cmd-wrapper {
+  visibility: hidden;
 }
 
 .ascii-avatar-shell {
@@ -249,6 +269,20 @@ body {
     0 0 8px var(--green),
     0 0 18px rgba(0, 255, 65, 0.28);
   animation: logo-flicker 4s infinite;
+}
+
+.boot-line {
+  animation: boot-line-in 480ms cubic-bezier(0.18, 0.82, 0.28, 1) both;
+  will-change: opacity, transform, filter;
+}
+
+.boot-line-avatar {
+  overflow: visible;
+}
+
+.boot-line-avatar .ascii-avatar-shell {
+  animation: boot-scan 1250ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  transform-origin: left top;
 }
 
 .hint,
@@ -471,6 +505,44 @@ body {
   }
 }
 
+@keyframes boot-line-in {
+  from {
+    opacity: 0;
+    filter: blur(3px) brightness(1.45);
+    transform: translateY(10px);
+  }
+
+  68% {
+    opacity: 1;
+    filter: blur(0) brightness(1.12);
+    transform: translateY(-1px);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0) brightness(1);
+    transform: translateY(0);
+  }
+}
+
+@keyframes boot-scan {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    filter: brightness(1.5) saturate(1.25);
+  }
+
+  45% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+    filter: brightness(1) saturate(1);
+  }
+}
+
 @keyframes logo-flicker {
   0%,
   100% {
@@ -577,7 +649,9 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .flow-line,
-  .welcome-name {
+  .welcome-name,
+  .boot-line,
+  .boot-line-avatar .ascii-avatar-shell {
     animation: none;
   }
 }
