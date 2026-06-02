@@ -2,6 +2,7 @@ node_modules/
 dist/
 coverage/
 .vite/
+.codex/
 *.local
 *.tsbuildinfo
 ascii-art-*.zip

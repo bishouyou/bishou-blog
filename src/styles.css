@@ -1,19 +1,21 @@
 :root {
   color-scheme: dark;
-  --bg: #11111b;
-  --surface: #1e1e2e;
-  --surface-soft: #181825;
-  --text: #cdd6f4;
-  --muted: #6c7086;
+  --bg: #0a0a0a;
+  --surface: #0d1117;
+  --surface-soft: #1a1a1a;
+  --text: #e0e0e0;
+  --muted: #666666;
   --os: #acb0be;
-  --blue: #89b4fa;
-  --pink: #f5c2e7;
-  --lavender: #b4befe;
-  --green: #a6e3a1;
-  --yellow: #f9e2af;
-  --red: #f38ba8;
-  --border: #313244;
-  font-family: "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+  --blue: #00d4ff;
+  --pink: #ff00ff;
+  --lavender: #a855f7;
+  --green: #00ff41;
+  --yellow: #ffb000;
+  --red: #ff3333;
+  --border: #333333;
+  --accent-glow: rgba(0, 255, 65, 0.3);
+  --scanline-opacity: 0.08;
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
 }
 
 * {
@@ -28,10 +30,7 @@ body,
 }
 
 body {
-  background:
-    radial-gradient(circle at 85% 10%, rgba(180, 190, 254, 0.08), transparent 28rem),
-    radial-gradient(circle at 0% 100%, rgba(137, 180, 250, 0.06), transparent 26rem),
-    var(--bg);
+  background: var(--bg);
   color: var(--text);
 }
 
@@ -41,15 +40,36 @@ body {
 }
 
 #terminal {
+  position: relative;
   min-height: calc(100vh - clamp(24px, 4vw, 56px));
   width: min(1160px, 100%);
   margin: 0 auto;
   padding: clamp(14px, 2vw, 24px);
   border: 1px solid var(--border);
   border-radius: 8px;
-  background: rgba(30, 30, 46, 0.94);
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
+  background: var(--surface);
+  box-shadow:
+    0 0 24px rgba(0, 255, 65, 0.08),
+    inset 0 0 28px rgba(0, 0, 0, 0.46);
   overflow: hidden;
+  isolation: isolate;
+}
+
+#terminal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, var(--scanline-opacity)) 0,
+    rgba(255, 255, 255, var(--scanline-opacity)) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: 0.26;
+  mix-blend-mode: screen;
 }
 
 .terminal,
@@ -68,6 +88,8 @@ body {
   --color: var(--text);
   --background: transparent;
   --link-color: var(--blue);
+  position: relative;
+  z-index: 1;
   color: var(--text);
   background: transparent;
 }
@@ -82,6 +104,11 @@ body {
   color: var(--blue);
 }
 
+.terminal,
+.terminal-output {
+  overflow-x: hidden !important;
+}
+
 .ascii-avatar-shell {
   position: relative;
   width: 100%;
@@ -92,8 +119,32 @@ body {
   border-radius: 0;
   background: transparent;
   overflow: hidden;
-  cursor: default;
+  cursor: crosshair;
   box-shadow: none;
+  isolation: isolate;
+}
+
+.ascii-avatar-shell::before,
+.ascii-avatar-shell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.ascii-avatar-shell::before {
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 255, 65, 0.1) 0 1px, transparent 1px 7px),
+    repeating-linear-gradient(0deg, rgba(0, 212, 255, 0.08) 0 1px, transparent 1px 5px);
+  transition: opacity 180ms ease;
+}
+
+.ascii-avatar-shell::after {
+  border-left: 2px solid var(--pink);
+  transform: translateX(-12px);
+  animation: avatar-glitch-scan 2.8s steps(2, end) infinite;
 }
 
 .ascii-avatar-shell:hover,
@@ -101,43 +152,61 @@ body {
   outline: none;
 }
 
+.ascii-avatar-shell:hover::before,
+.ascii-avatar-shell:focus-within::before {
+  opacity: 0.24;
+}
+
+.ascii-avatar-shell:hover::after,
+.ascii-avatar-shell:focus-within::after {
+  opacity: 0.68;
+}
+
 .ascii-avatar {
   position: relative;
   z-index: 1;
   margin: 0;
-  color: #e0e0e0;
+  color: var(--green);
   font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
   font-size: clamp(5px, 0.72vw, 10px);
   line-height: 1;
   letter-spacing: 0;
   white-space: pre;
+  max-width: 100%;
+  overflow: hidden;
   text-shadow:
-    0 0 1.2px #e0e0e0,
-    0 0 2.4px rgba(224, 224, 224, 0.4),
-    0 0 4.8px rgba(224, 224, 224, 0.4);
+    0 0 8px var(--green),
+    0 0 18px rgba(0, 255, 65, 0.42),
+    0 0 30px rgba(0, 255, 65, 0.2);
   animation:
     ascii-rise 480ms cubic-bezier(0.2, 0.8, 0.2, 1) both,
-    ascii-flicker 4s infinite;
+    logo-flicker 4s infinite;
   transition:
     color 180ms ease,
     text-shadow 180ms ease,
-    transform 180ms ease;
+    transform 180ms ease,
+    filter 180ms ease;
 }
 
 .ascii-avatar-shell:hover .ascii-avatar {
-  color: var(--lavender);
+  color: var(--blue);
   text-shadow:
-    0 0 1.2px var(--lavender),
-    0 0 2.4px rgba(180, 190, 254, 0.42),
-    0 0 4.8px rgba(180, 190, 254, 0.42);
-  transform: translateX(2px);
+    0 0 7px var(--blue),
+    0 0 16px rgba(0, 212, 255, 0.48),
+    0 0 26px rgba(255, 0, 255, 0.26);
+  filter: brightness(1.12);
+  transform: translate(2px, -1px);
 }
 
 .welcome-name {
-  color: var(--pink);
+  color: var(--green);
   font-size: 22px;
   font-weight: 700;
   margin-bottom: 4px;
+  text-shadow:
+    0 0 8px var(--green),
+    0 0 18px rgba(0, 255, 65, 0.28);
+  animation: logo-flicker 4s infinite;
 }
 
 .hint,
@@ -171,6 +240,7 @@ body {
   outline: none;
   text-decoration: underline;
   text-underline-offset: 3px;
+  text-shadow: 0 0 10px var(--accent-glow);
 }
 
 .command-help {
@@ -246,11 +316,11 @@ body {
 
 .tag,
 .tag-pill {
-  border: 1px solid rgba(180, 190, 254, 0.28);
+  border: 1px solid rgba(0, 212, 255, 0.28);
   border-radius: 6px;
   padding: 1px 7px;
-  color: var(--lavender);
-  background: rgba(180, 190, 254, 0.07);
+  color: var(--blue);
+  background: rgba(0, 212, 255, 0.07);
   font: inherit;
 }
 
@@ -296,6 +366,7 @@ body {
   border-radius: 6px;
   background: var(--surface-soft);
   color: var(--green);
+  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.35);
 }
 
 .article-body code {
@@ -338,7 +409,7 @@ body {
 @keyframes tide-in {
   from {
     opacity: 0;
-    filter: blur(3px);
+    filter: blur(3px) brightness(1.35);
     transform: translateX(-12px);
   }
 
@@ -349,22 +420,34 @@ body {
   }
 }
 
-@keyframes ascii-flicker {
+@keyframes logo-flicker {
   0%,
   100% {
     opacity: 1;
+    text-shadow:
+      0 0 10px var(--green),
+      0 0 20px rgba(0, 255, 65, 0.4),
+      0 0 30px rgba(0, 255, 65, 0.2);
   }
 
-  92% {
+  50% {
+    opacity: 0.95;
+    text-shadow:
+      0 0 5px var(--green),
+      0 0 15px rgba(0, 255, 65, 0.3),
+      0 0 25px rgba(0, 255, 65, 0.15);
+  }
+
+  52% {
     opacity: 1;
+    text-shadow:
+      0 0 15px var(--green),
+      0 0 25px rgba(0, 255, 65, 0.5),
+      0 0 35px rgba(0, 255, 65, 0.3);
   }
 
-  93% {
-    opacity: 0.78;
-  }
-
-  94% {
-    opacity: 1;
+  54% {
+    opacity: 0.98;
   }
 }
 
@@ -379,6 +462,30 @@ body {
     opacity: 1;
     filter: blur(0);
     transform: translateY(0);
+  }
+}
+
+@keyframes avatar-glitch-scan {
+  0%,
+  88%,
+  100% {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+
+  91% {
+    opacity: 0.55;
+    transform: translateX(28%);
+  }
+
+  93% {
+    opacity: 0;
+    transform: translateX(62%);
+  }
+
+  95% {
+    opacity: 0.42;
+    transform: translateX(98%);
   }
 }
 

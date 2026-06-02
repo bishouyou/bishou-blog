@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">bishou MCP ASCII banner</title>
+  <desc id="desc">An animated terminal-style SVG rendered from the asciify.art MCP generate_text_banner tool.</desc>
+  <defs>
+    <pattern id="scanlines" width="1" height="4" patternUnits="userSpaceOnUse">
+      <rect width="1" height="1" fill="#ffffff" opacity="0.08" />
+    </pattern>
+    <filter id="greenGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0  0 1 0 0 1  0 0 0 0 0.25  0 0 0 0.75 0" result="glow" />
+      <feMerge>
+        <feMergeNode in="glow" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <style>
+      .screen {
+        fill: #0d1117;
+        stroke: #333333;
+        stroke-width: 1;
+      }
+
+      .prompt {
+        fill: #acb0be;
+        font: 22px "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
+      }
+
+      .user {
+        fill: #00d4ff;
+      }
+
+      .path {
+        fill: #ff00ff;
+      }
+
+      .banner {
+        fill: #00ff41;
+        font: 28px "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
+        letter-spacing: 0;
+        filter: url(#greenGlow);
+        animation: logo-flicker 4s infinite;
+      }
+
+      .meta {
+        fill: #666666;
+        font: 18px "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
+      }
+
+      .scan {
+        fill: url(#scanlines);
+        mix-blend-mode: screen;
+        opacity: 0.28;
+      }
+
+      .glitch {
+        fill: #ff00ff;
+        opacity: 0;
+        animation: glitch-scan 2.8s steps(2, end) infinite;
+      }
+
+      .cursor {
+        fill: #00ff41;
+        animation: cursor-blink 1s steps(2, end) infinite;
+      }
+
+      @keyframes logo-flicker {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.95; }
+        52% { opacity: 1; }
+        54% { opacity: 0.98; }
+      }
+
+      @keyframes glitch-scan {
+        0%, 88%, 100% { opacity: 0; transform: translateX(-20px); }
+        91% { opacity: 0.55; transform: translateX(300px); }
+        93% { opacity: 0; transform: translateX(720px); }
+        95% { opacity: 0.42; transform: translateX(1080px); }
+      }
+
+      @keyframes cursor-blink {
+        0%, 50% { opacity: 1; }
+        51%, 100% { opacity: 0; }
+      }
+    </style>
+  </defs>
+  <rect width="1200" height="520" fill="#0a0a0a" />
+  <rect class="screen" x="40" y="40" width="1120" height="440" rx="8" />
+  <rect class="scan" x="40" y="40" width="1120" height="440" rx="8" />
+  <rect class="glitch" x="58" y="40" width="2" height="440" />
+  <text class="prompt" x="86" y="96">
+    <tspan>▦ </tspan><tspan class="user">bishou@blog</tspan><tspan> </tspan><tspan class="path">~</tspan><tspan> › generate_text_banner --font "ANSI Shadow"</tspan>
+  </text>
+  <text class="banner" x="86" y="170" xml:space="preserve">
+    <tspan x="86" dy="0">██████╗ ██╗███████╗██╗  ██╗ ██████╗ ██╗   ██╗</tspan>
+    <tspan x="86" dy="34">██╔══██╗██║██╔════╝██║  ██║██╔═══██╗██║   ██║</tspan>
+    <tspan x="86" dy="34">██████╔╝██║███████╗███████║██║   ██║██║   ██║</tspan>
+    <tspan x="86" dy="34">██╔══██╗██║╚════██║██╔══██║██║   ██║██║   ██║</tspan>
+    <tspan x="86" dy="34">██████╔╝██║███████║██║  ██║╚██████╔╝╚██████╔╝</tspan>
+    <tspan x="86" dy="34">╚═════╝ ╚═╝╚══════╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝ </tspan>
+  </text>
+  <text class="meta" x="86" y="430">asciify.art MCP · #00ff41 / #00d4ff / #ff00ff <tspan class="cursor">█</tspan></text>
+</svg>
