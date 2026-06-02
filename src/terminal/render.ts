@@ -1,3 +1,5 @@
+import { renderAvatarAscii } from '../avatar/render';
+import type { AvatarAsciiArt } from '../avatar/types';
 import type { Post } from '../content/types';
 import { flowBlock } from './flow';
 
@@ -5,10 +7,10 @@ export function renderWelcome(
   asciiArt: string,
   nickname: string,
   about: string,
-  asciiArtHtml?: string
+  avatarAscii?: AvatarAsciiArt
 ): string {
-  const avatar = asciiArtHtml
-    ? `<pre class="ascii-avatar ascii-avatar-colored">${asciiArtHtml}</pre>`
+  const avatar = avatarAscii
+    ? renderAvatarAscii(avatarAscii)
     : `<pre class="ascii-avatar">${escapeHtml(asciiArt)}</pre>`;
 
   return [

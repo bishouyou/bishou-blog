@@ -1,3 +1,5 @@
+import type { AvatarAsciiArt } from '../avatar/types';
+
 export interface SiteTheme {
   os: string;
   blue: string;
@@ -19,7 +21,7 @@ export interface SiteConfig {
   homePath: string;
   about: string;
   asciiArt: string;
-  asciiArtHtmlUrl?: string;
+  avatarAscii: AvatarAsciiArt;
   theme: SiteTheme;
 }
 
