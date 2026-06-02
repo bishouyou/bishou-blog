@@ -15,10 +15,9 @@
   --border: #333333;
   --accent-glow: rgba(0, 255, 65, 0.3);
   --scanline-opacity: 0.08;
-  --terminal-font: "CaskaydiaCove Nerd Font Mono", "CaskaydiaCove Nerd Font", "Cascadia Code", "Cascadia Mono",
-    "Fira Code", "JetBrains Mono", Consolas, monospace;
-  --prompt-font: "CaskaydiaCove Nerd Font Mono", "CaskaydiaCove Nerd Font", "Cascadia Mono", "Cascadia Code",
-    "FiraCode Nerd Font", "Fira Code", Consolas, monospace;
+  --terminal-font: "Cascadia Code", "Cascadia Mono", "Fira Code", "JetBrains Mono", Consolas, monospace;
+  --prompt-font: "Cascadia Code", "Cascadia Mono", "Fira Code", Consolas, monospace;
+  --ubuntu-mark: url("data:image/svg+xml,%3Csvg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='32' cy='32' r='17' fill='none' stroke='black' stroke-width='8'/%3E%3Ccircle cx='32' cy='8' r='7' fill='black'/%3E%3Ccircle cx='11' cy='44' r='7' fill='black'/%3E%3Ccircle cx='53' cy='44' r='7' fill='black'/%3E%3Cpath d='M32 15v10M17 40l9-5M47 40l-9-5' stroke='black' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E");
   font-family: var(--terminal-font);
 }
 
@@ -105,6 +104,38 @@ body {
   font-feature-settings: "calt" 1;
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
+}
+
+.terminal .cmd-prompt > span:first-child,
+.cmd .cmd-prompt > span:first-child {
+  display: inline-flex !important;
+  width: 1.25em;
+  min-width: 1.25em;
+  margin-right: 0.3ch;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: inherit;
+  line-height: 1 !important;
+  position: relative;
+  text-indent: 200%;
+  vertical-align: -0.12em;
+  white-space: nowrap;
+}
+
+.terminal .cmd-prompt > span:first-child::before,
+.cmd .cmd-prompt > span:first-child::before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 1.05em;
+  height: 1.05em;
+  background: currentColor;
+  transform: translateY(-50%);
+  -webkit-mask: var(--ubuntu-mark) center / contain no-repeat;
+  mask: var(--ubuntu-mark) center / contain no-repeat;
 }
 
 .terminal {

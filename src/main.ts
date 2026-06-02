@@ -1,4 +1,7 @@
 import $ from 'jquery';
+import '@fontsource/cascadia-code/latin-400.css';
+import '@fontsource/cascadia-code/latin-600.css';
+import '@fontsource/cascadia-code/latin-700.css';
 import installTerminal from 'jquery.terminal';
 import 'jquery.terminal/css/jquery.terminal.min.css';
 import posts from 'virtual:posts';
@@ -152,7 +155,7 @@ function print(term: TerminalApi, html: string): void {
 
 function buildPrompt(): string {
   return [
-    `[[;${theme.os};]▦ ]`,
+    `[[;${theme.os};]ubuntu ]`,
     `[[;${theme.blue};]${siteConfig.user}@${siteConfig.host} ]`,
     `[[;${theme.pink};]${siteConfig.homePath} ]`,
     `[[;${theme.os};]› ]`

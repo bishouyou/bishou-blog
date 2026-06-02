@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@chenglou/pretext": "^0.0.7",
+    "@fontsource/cascadia-code": "^5.2.3",
     "gray-matter": "^4.0.3",
     "jquery": "^3.7.1",
     "jquery.terminal": "^2.46.1",
