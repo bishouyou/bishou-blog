@@ -42,6 +42,8 @@ type TerminalApi = {
 
 const terminalElement = $('#terminal');
 const theme = siteConfig.theme;
+let articleViewer: HTMLElement | undefined;
+let savedScrollY = 0;
 
 terminalElement.addClass('is-starting');
 const terminal = terminalElement.terminal(
@@ -157,7 +159,8 @@ function openPost(term: TerminalApi, query: string): void {
     return;
   }
 
-  print(term, renderArticle(post));
+  openArticleViewer(post);
+  term.focus?.();
 }
 
 function search(term: TerminalApi, keyword: string): void {
@@ -230,6 +233,64 @@ function getGhostSuffix(command: string): string {
   return findGhostSuffix(command, completeInput(command));
 }
 
+function openArticleViewer(post: (typeof posts)[number]): void {
+  const viewer = getArticleViewer();
+  savedScrollY = window.scrollY;
+  viewer.innerHTML = `
+    <section class="article-viewer-panel" role="dialog" aria-modal="true" aria-label="${escapeAttr(post.meta.title)}">
+      <header class="article-viewer-bar">
+        <button class="article-viewer-close" type="button" data-article-close aria-label="退出阅读">← exit</button>
+        <div class="article-viewer-title">cat ${escapeHtml(post.meta.titlePinyin || post.meta.slug)}</div>
+        <div class="article-viewer-mode">NORMAL</div>
+      </header>
+      <main class="article-viewer-scroll">${renderArticle(post)}</main>
+      <footer class="article-viewer-status">ESC close · terminal history preserved</footer>
+    </section>
+  `;
+  viewer.hidden = false;
+  document.body.classList.add('article-open');
+  scheduleFlowHydration(viewer);
+  viewer.querySelector<HTMLElement>('[data-article-close]')?.focus();
+}
+
+function closeArticleViewer(): void {
+  if (!articleViewer || articleViewer.hidden) {
+    return;
+  }
+
+  articleViewer.hidden = true;
+  articleViewer.innerHTML = '';
+  document.body.classList.remove('article-open');
+  window.scrollTo({ top: savedScrollY, left: 0, behavior: 'auto' });
+  terminal.focus?.();
+  updateGhostHint();
+}
+
+function getArticleViewer(): HTMLElement {
+  if (articleViewer) {
+    return articleViewer;
+  }
+
+  articleViewer = document.createElement('div');
+  articleViewer.className = 'article-viewer';
+  articleViewer.hidden = true;
+  articleViewer.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+    if (target.closest('[data-article-close]')) {
+      closeArticleViewer();
+    }
+  });
+  document.body.append(articleViewer);
+  return articleViewer;
+}
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && articleViewer && !articleViewer.hidden) {
+    event.preventDefault();
+    closeArticleViewer();
+  }
+});
+
 function buildPrompt(): string {
   return [
     `[[;${theme.os};]ubuntu ]`,
@@ -237,4 +298,17 @@ function buildPrompt(): string {
     `[[;${theme.pink};]${siteConfig.homePath} ]`,
     `[[;${theme.os};]› ]`
   ].join('');
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function escapeAttr(value: string): string {
+  return escapeHtml(value).replace(/`/g, '&#96;');
 }

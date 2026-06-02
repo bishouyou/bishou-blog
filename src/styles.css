@@ -43,6 +43,10 @@ body {
   color: var(--text);
 }
 
+body.article-open {
+  overflow: hidden;
+}
+
 #app {
   min-height: 100vh;
   padding: clamp(12px, 2vw, 28px);
@@ -528,6 +532,106 @@ body {
 .article-summary {
   margin-top: 8px;
   color: var(--text);
+}
+
+.article-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: stretch;
+  padding: clamp(10px, 1.6vw, 20px);
+  background:
+    linear-gradient(rgba(24, 24, 37, 0.94), rgba(24, 24, 37, 0.97)),
+    var(--bg);
+  color: var(--text);
+  font-family: var(--terminal-font);
+}
+
+.article-viewer[hidden] {
+  display: none;
+}
+
+.article-viewer-panel {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  min-height: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.42),
+    inset 0 0 28px rgba(0, 0, 0, 0.34);
+  overflow: hidden;
+}
+
+.article-viewer-bar,
+.article-viewer-status {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 34px;
+  padding: 5px 10px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-family: var(--prompt-font);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.article-viewer-status {
+  display: block;
+  border-top: 1px solid var(--border);
+  border-bottom: 0;
+  color: var(--green);
+}
+
+.article-viewer-close {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--green);
+  font: inherit;
+  cursor: pointer;
+}
+
+.article-viewer-close:hover,
+.article-viewer-close:focus-visible {
+  color: var(--blue);
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.article-viewer-title {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.article-viewer-mode {
+  color: var(--pink);
+}
+
+.article-viewer-scroll {
+  min-height: 0;
+  overflow: auto;
+  padding: clamp(14px, 2.6vw, 30px);
+  scrollbar-color: var(--muted) transparent;
+}
+
+.article-viewer-scroll .article {
+  margin: 0;
+}
+
+.article-viewer-scroll .article-body {
+  max-width: 92ch;
 }
 
 @keyframes tide-in {
