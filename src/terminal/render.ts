@@ -23,10 +23,10 @@ export function renderWelcomeParts(
     : `<pre class="ascii-avatar">${escapeHtml(asciiArt)}</pre>`;
 
   return [
-    `<div class="boot-line boot-line-avatar"><div class="ascii-avatar-shell" aria-label="${escapeAttr(nickname)} avatar">${avatar}</div></div>`,
-    `<div class="boot-line welcome-name">${escapeHtml(nickname)}</div>`,
-    `<div class="boot-line">${flowBlock(about, 'welcome-flow')}</div>`,
-    `<div class="boot-line hint">输入 <button class="link-command" data-command="help">help</button> 查看命令，或输入 <button class="link-command" data-command="ls">ls</button> 阅读文章。</div>`
+    `<div class="boot-line boot-step-avatar"><div class="ascii-avatar-shell" aria-label="${escapeAttr(nickname)} avatar">${avatar}</div></div>`,
+    `<div class="boot-line boot-step-name welcome-name">${escapeHtml(nickname)}</div>`,
+    `<div class="boot-line boot-step-about">${flowBlock(about, 'welcome-flow')}</div>`,
+    `<div class="boot-line boot-step-hint hint">输入 <button class="link-command" data-command="help">help</button> 查看命令，或输入 <button class="link-command" data-command="ls">ls</button> 阅读文章。</div>`
   ];
 }
 

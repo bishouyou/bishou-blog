@@ -14,8 +14,7 @@ import {
   renderHelp,
   renderPostList,
   renderTags,
-  renderWelcome,
-  renderWelcomeParts
+  renderWelcome
 } from './terminal/render';
 import './styles.css';
 
@@ -34,6 +33,7 @@ type TerminalApi = {
   echo: (value: string, options?: { raw?: boolean }) => void;
   clear: () => void;
   exec: (command: string) => void;
+  focus?: () => void;
   set_prompt: (prompt: string) => void;
 };
 
@@ -43,6 +43,7 @@ const theme = siteConfig.theme;
 const terminal = terminalElement.terminal(
   async (input: string, term: TerminalApi) => {
     execute(input, term);
+    term.focus?.();
     scrollTerminalToBottom();
   },
   {
@@ -55,7 +56,11 @@ const terminal = terminalElement.terminal(
       'CTRL+L': (_event: KeyboardEvent, term: TerminalApi) => {
         term.clear();
         printWelcome(term);
+        term.focus?.();
         scrollTerminalToBottom();
+        return false;
+      },
+      'CTRL+C': () => {
         return false;
       }
     }
@@ -64,8 +69,21 @@ const terminal = terminalElement.terminal(
 
 terminal.set_prompt(buildPrompt());
 watchFlowResize(document);
-void printWelcomeAnimated(terminal);
+printWelcome(terminal);
 scheduleFlowHydration(document);
+
+terminalElement.get(0)?.addEventListener(
+  'wheel',
+  (event) => {
+    event.preventDefault();
+    window.scrollBy({
+      top: event.deltaY,
+      left: 0,
+      behavior: 'auto'
+    });
+  },
+  { capture: true, passive: false }
+);
 
 document.addEventListener('click', (event) => {
   const target = (event.target as HTMLElement).closest<HTMLElement>('[data-command]');
@@ -77,6 +95,7 @@ document.addEventListener('click', (event) => {
   const command = target.dataset.command;
   if (command) {
     terminal.exec(command);
+    terminal.focus?.();
     scrollTerminalToBottom();
   }
 });
@@ -152,50 +171,19 @@ function printWelcome(term: TerminalApi): void {
   print(term, renderWelcome(siteConfig.asciiArt, siteConfig.nickname, siteConfig.about, siteConfig.avatarAscii));
 }
 
-async function printWelcomeAnimated(term: TerminalApi): Promise<void> {
-  terminalElement.addClass('is-booting');
-
-  const parts = renderWelcomeParts(
-    siteConfig.asciiArt,
-    siteConfig.nickname,
-    siteConfig.about,
-    siteConfig.avatarAscii
-  );
-  const delays = [1350, 430, 680, 540];
-
-  for (const [index, part] of parts.entries()) {
-    print(term, part);
-    scrollTerminalToBottom({ behavior: 'smooth' });
-    await wait(delays[index] ?? 500);
-  }
-
-  terminalElement.removeClass('is-booting');
-  scrollTerminalToBottom({ behavior: 'smooth' });
-}
-
 function print(term: TerminalApi, html: string): void {
   term.echo(html, { raw: true });
   scheduleFlowHydration(document);
   scrollTerminalToBottom();
 }
 
-function scrollTerminalToBottom(options: ScrollIntoViewOptions = { behavior: 'smooth' }): void {
+function scrollTerminalToBottom(): void {
   window.requestAnimationFrame(() => {
-    const commandLine =
-      document.querySelector<HTMLElement>('.cmd-wrapper') ??
-      document.querySelector<HTMLElement>('.cmd');
-
-    (commandLine ?? terminalElement.get(0))?.scrollIntoView({
-      block: 'end',
-      inline: 'nearest',
-      ...options
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      left: 0,
+      behavior: 'auto'
     });
-  });
-}
-
-function wait(ms: number): Promise<void> {
-  return new Promise((resolve) => {
-    window.setTimeout(resolve, ms);
   });
 }
 
