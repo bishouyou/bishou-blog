@@ -195,6 +195,24 @@ body.article-open {
   line-height: 1.38;
 }
 
+.terminal-output > div:not(.raw),
+.terminal-output > div:not(.raw) div,
+.terminal-output > div:not(.raw) span,
+.terminal-output > div:not(.raw) a,
+.terminal-output > :not(.raw),
+.terminal-output > :not(.raw) * {
+  font-family: var(--terminal-font) !important;
+  font-size: 16px !important;
+  line-height: 1.32 !important;
+  letter-spacing: 0 !important;
+  text-align: left;
+}
+
+.terminal-output > div:not(.raw) span[data-text],
+.terminal-output > div:not(.raw) span[data-text] span {
+  font-family: var(--terminal-font) !important;
+}
+
 .ascii-avatar-shell {
   position: relative;
   width: 100%;
