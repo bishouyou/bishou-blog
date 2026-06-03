@@ -347,8 +347,8 @@ body.article-open {
   display: flex;
   flex-direction: column;
   gap: 1px;
-  margin: 4px 0 8px;
-  line-height: 1.28;
+  margin: 0 0 4px;
+  line-height: 1.18;
 }
 
 .command-help div {
@@ -356,13 +356,13 @@ body.article-open {
   gap: 14px;
   align-items: baseline;
   min-height: 0;
-  line-height: 1.28;
+  line-height: 1.18;
 }
 
 .command-help span {
   flex: 0 0 min(260px, 34vw);
   color: var(--green);
-  line-height: 1.28;
+  line-height: 1.18;
 }
 
 .command-help em {
@@ -370,7 +370,7 @@ body.article-open {
   min-width: 0;
   color: var(--muted);
   font-style: normal;
-  line-height: 1.28;
+  line-height: 1.18;
 }
 
 .post-list {
@@ -394,10 +394,12 @@ body.article-open {
 
 .directory-row {
   display: grid;
-  grid-template-columns: minmax(150px, 0.9fr) auto auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 3px 12px;
-  padding: 8px 0;
+  padding: 7px 0 7px 10px;
   border-top: 1px solid var(--border);
+  border-left: 2px solid transparent;
+  text-align: left;
 }
 
 .directory-row:first-of-type {
@@ -406,21 +408,47 @@ body.article-open {
 
 .directory-name {
   min-width: 0;
+  justify-self: start;
   color: var(--blue);
   font-weight: 700;
+  text-align: left;
+}
+
+.directory-row-dir {
+  border-left-color: color-mix(in srgb, var(--green) 42%, transparent);
+}
+
+.directory-row-file {
+  border-left-color: color-mix(in srgb, var(--blue) 38%, transparent);
+}
+
+.directory-row-post {
+  border-left-color: color-mix(in srgb, var(--pink) 42%, transparent);
 }
 
 .directory-row-dir .directory-name {
   color: var(--green);
 }
 
+.directory-row-file .directory-name {
+  color: var(--blue);
+}
+
 .directory-row-post .directory-name {
   color: var(--pink);
 }
 
-.directory-kind,
-.directory-meta {
+.directory-kind {
+  justify-self: end;
+  min-width: 5ch;
   color: var(--muted);
+  text-align: right;
+}
+
+.directory-meta {
+  grid-column: 1 / 2;
+  color: var(--muted);
+  font-size: 0.94em;
 }
 
 .directory-description {

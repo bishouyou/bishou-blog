@@ -39,8 +39,7 @@ export function renderWelcomeParts(
 }
 
 export function renderHelp(): string {
-  return `
-    <div class="command-help">
+  return `<div class="command-help">
       <div><span>help</span><em>列出可用命令</em></div>
       <div><span>ls [path]</span><em>列出当前目录或指定目录</em></div>
       <div><span>cd &lt;path&gt;</span><em>切换目录</em></div>
@@ -52,8 +51,7 @@ export function renderHelp(): string {
       <div><span>tag &lt;name&gt;</span><em>查看某个标签下的文章</em></div>
       <div><span>about</span><em>显示头像和简介</em></div>
       <div><span>clear</span><em>清屏</em></div>
-    </div>
-  `;
+    </div>`;
 }
 
 export function renderDirectoryList(items: DirectoryItem[], heading: string): string {

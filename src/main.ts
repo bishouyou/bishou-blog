@@ -75,6 +75,7 @@ const terminal = terminalElement.terminal(
     prompt: buildPrompt(),
     checkArity: false,
     completion: completeInput,
+    mousewheel: () => true,
     wordAutocomplete: false,
     keymap: {
       'CTRL+L': (_event: KeyboardEvent, term: TerminalApi) => {
