@@ -130,9 +130,13 @@ document.addEventListener('click', (event) => {
 
   event.preventDefault();
   const command = target.dataset.command;
+  const followupCommand = target.dataset.followupCommand;
   if (command) {
     const insideArticleViewer = Boolean(target.closest('.article-viewer'));
     terminal.exec(command);
+    if (followupCommand) {
+      terminal.exec(followupCommand);
+    }
     if (!insideArticleViewer) {
       terminal.focus?.();
       scrollTerminalToBottom();
@@ -263,7 +267,7 @@ function renderSidebarSection(title: string, files: ContentFile[]): string {
 
   return `
     <section class="sidebar-section">
-      <button class="sidebar-section-title link-command" type="button" data-command="cd ${escapeAttr(absolutePathArg([title]))}">${escapeHtml(title)}</button>
+      <button class="sidebar-section-title link-command" type="button" data-command="cd ${escapeAttr(absolutePathArg([title]))}" data-followup-command="ls">${escapeHtml(title)}</button>
       <div class="sidebar-items">${items}</div>
     </section>
   `;
@@ -326,7 +330,7 @@ function getGhostSuffix(command: string): string {
   const parsed = parseCommand(command);
   if (parsed.name === 'cat' || parsed.name === 'open') {
     if (!parsed.rawArgs) {
-      return '';
+      return ' <title|pinyin|path>';
     }
     return findGhostSuffix(parsed.rawArgs, completeInput(command));
   }
@@ -368,6 +372,7 @@ function getDirectoryItems(path: string[]): DirectoryItem[] {
   const directories = listDirectories(contentFiles, path).map((directory): DirectoryItem => ({
     command: `cd ${absolutePathArg(directory.path)}`,
     description: directory.path.length === 1 ? rootDescription(directory.path[0]) : 'folder',
+    followupCommand: 'ls',
     kind: 'dir',
     label: directory.label,
     meta: `${directory.count} files`

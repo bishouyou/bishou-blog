@@ -6,6 +6,7 @@ import { flowBlock } from './flow';
 export interface DirectoryItem {
   command: string;
   description: string;
+  followupCommand?: string;
   kind: 'dir' | 'file' | 'post';
   label: string;
   meta?: string;
@@ -62,9 +63,12 @@ export function renderDirectoryList(items: DirectoryItem[], heading: string): st
   const rows = items
     .map((item) => {
       const marker = item.kind === 'dir' ? '/' : '';
+      const followup = item.followupCommand
+        ? ` data-followup-command="${escapeAttr(item.followupCommand)}"`
+        : '';
       return `
         <div class="directory-row directory-row-${item.kind}">
-          <button class="directory-name link-command" data-command="${escapeAttr(item.command)}">${escapeHtml(item.label)}${marker}</button>
+          <button class="directory-name link-command" data-command="${escapeAttr(item.command)}"${followup}>${escapeHtml(item.label)}${marker}</button>
           <span class="directory-kind">${item.kind}</span>
           <span class="directory-meta">${escapeHtml(item.meta ?? '')}</span>
           <div class="directory-description">${escapeHtml(item.description)}</div>
