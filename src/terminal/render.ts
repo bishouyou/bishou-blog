@@ -86,7 +86,7 @@ export function renderPostList(posts: Post[], heading = 'posts'): string {
       const tags = post.meta.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
       return `
         <article class="post-row">
-          <button class="post-title link-command" data-command="cat ${escapeAttr(post.meta.slug)}">${escapeHtml(post.meta.title)}</button>
+          <button class="post-title link-command" data-command="cat ${escapeAttr(quoteCommandArg(`~/blog/${post.meta.slug}`))}">${escapeHtml(post.meta.title)}</button>
           <span class="post-date">${escapeHtml(post.meta.date)}</span>
           <span class="post-reading">${formatReadingTime(post.readingTime)}</span>
           <div class="post-summary">${flowBlock(post.meta.summary, 'summary-flow')}</div>
@@ -178,6 +178,10 @@ function escapeHtml(value: string): string {
 
 function escapeAttr(value: string): string {
   return escapeHtml(value).replace(/`/g, '&#96;');
+}
+
+function quoteCommandArg(value: string): string {
+  return /[\s"'()]/.test(value) ? `"${value.replace(/"/g, '\\"')}"` : value;
 }
 
 function formatReadingTime(minutes: number): string {

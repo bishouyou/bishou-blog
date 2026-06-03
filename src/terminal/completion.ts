@@ -3,7 +3,6 @@ import {
   buildContentFiles,
   allDirectoryPaths,
   directoryAliases,
-  fileAliases,
   normalizeToken,
   type ContentFile
 } from '../content/file-system';
@@ -27,13 +26,19 @@ export function completeInput(input: string, posts: Post[], tags: TagCount[], co
   const command = (firstSpace === -1 ? trimmed : trimmed.slice(0, firstSpace)).toLowerCase();
   const hasArgs = firstSpace !== -1;
 
+  if (!hasArgs && (command === 'cat' || command === 'open')) {
+    const files = buildCompletionFiles(posts, context);
+    return contentCatTargets(files, context.currentPath ?? []);
+  }
+
   if (!hasArgs) {
     return filterCandidates(input, commandNames.map((name) => `${leading}${name}`));
   }
 
   if (command === 'cat' || command === 'open') {
     const files = buildCompletionFiles(posts, context);
-    return filterCandidates(input, contentCatTargets(command, leading, files, context.currentPath ?? []));
+    const argPrefix = hasArgs ? trimmed.slice(firstSpace + 1) : '';
+    return filterCandidates(argPrefix, contentCatTargets(files, context.currentPath ?? []));
   }
 
   if (command === 'cd') {
@@ -58,12 +63,8 @@ function directoryTargets(leading: string, posts: Post[], context: CompletionCon
   ).sort();
 }
 
-function contentCatTargets(command: string, leading: string, files: ContentFile[], currentPath: string[]): string[] {
-  return unique(
-    files.flatMap((file) =>
-      fileAliases(file, currentPath).map((alias) => `${leading}${command} ${quoteCompletion(alias)}`)
-    )
-  ).sort();
+function contentCatTargets(files: ContentFile[], currentPath: string[]): string[] {
+  return unique(files.map((file) => quoteCompletion(preferredFileTarget(file, currentPath)))).sort();
 }
 
 function buildCompletionFiles(posts: Post[], context: CompletionContext): ContentFile[] {
@@ -99,4 +100,16 @@ function filterCandidates(input: string, candidates: string[]): string[] {
     const unquotedCandidate = normalizedCandidate.replace(/["']/g, '');
     return normalizedCandidate.startsWith(normalizedInput) || unquotedCandidate.startsWith(normalizedInput);
   });
+}
+
+function preferredFileTarget(file: ContentFile, currentPath: string[]): string {
+  if (currentPath.length > 0 && startsWithPath(file.path, currentPath)) {
+    return file.path.slice(currentPath.length).join('/');
+  }
+
+  return `~/${file.path.join('/')}`;
+}
+
+function startsWithPath(value: string[], prefix: string[]): boolean {
+  return prefix.every((segment, index) => value[index] === segment);
 }

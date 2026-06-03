@@ -8,7 +8,11 @@
   </head>
   <body>
     <main id="app" aria-label="bishou terminal blog">
-      <div id="terminal" aria-label="interactive terminal"></div>
+      <aside id="content-sidebar" aria-label="content browser"></aside>
+      <section class="terminal-stage" aria-label="terminal workspace">
+        <div id="terminal" aria-label="interactive terminal"></div>
+      </section>
+      <button id="terminal-handle" type="button" aria-label="focus terminal">terminal</button>
     </main>
     <script type="module" src="/src/main.ts"></script>
   </body>

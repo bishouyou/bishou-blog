@@ -56,6 +56,8 @@ type TerminalApi = {
 };
 
 const terminalElement = $('#terminal');
+const sidebarElement = document.querySelector<HTMLElement>('#content-sidebar');
+const terminalHandle = document.querySelector<HTMLButtonElement>('#terminal-handle');
 const theme = siteConfig.theme;
 let articleViewer: HTMLElement | undefined;
 let currentPath: string[] = [];
@@ -99,7 +101,7 @@ const terminal = terminalElement.terminal(
             echo: true,
             echoCommand: false,
             escape: false,
-            word: false
+            word: isArgumentCompletion(command)
           });
         }
         updateGhostHint();
@@ -112,8 +114,10 @@ const terminal = terminalElement.terminal(
 terminal.set_prompt(buildPrompt());
 watchFlowResize(document);
 printWelcome(terminal);
+renderSidebar();
 scheduleFlowHydration(document);
 installGhostHint();
+installTerminalHandle();
 window.setTimeout(() => {
   terminalElement.removeClass('is-starting');
 }, 3200);
@@ -219,6 +223,52 @@ function printWelcome(term: TerminalApi): void {
   print(term, renderWelcome(siteConfig.asciiArt, siteConfig.nickname, siteConfig.about, siteConfig.avatarAscii));
 }
 
+function renderSidebar(): void {
+  if (!sidebarElement) {
+    return;
+  }
+
+  const blogFiles = contentFiles.filter((file) => file.root === 'blog');
+  const knowledgeFiles = contentFiles.filter((file) => file.root === 'knowledge base');
+  sidebarElement.innerHTML = `
+    <div class="sidebar-header">
+      <span>browse</span>
+      <button class="link-command sidebar-root" type="button" data-command="ls ~">~</button>
+    </div>
+    ${renderSidebarSection('blog', blogFiles)}
+    ${renderSidebarSection('knowledge base', knowledgeFiles)}
+  `;
+}
+
+function renderSidebarSection(title: string, files: ContentFile[]): string {
+  const items = files
+    .map((file) => {
+      const label = file.root === 'knowledge base' ? file.path.slice(1).join('/') : file.title;
+      return `
+        <button class="sidebar-item sidebar-item-${file.kind}" type="button" data-command="cat ${escapeAttr(absolutePathArg(file.path))}">
+          <span>${escapeHtml(label)}</span>
+          <em>${escapeHtml(file.date)}</em>
+        </button>
+      `;
+    })
+    .join('');
+
+  return `
+    <section class="sidebar-section">
+      <button class="sidebar-section-title link-command" type="button" data-command="cd ${escapeAttr(absolutePathArg([title]))}">${escapeHtml(title)}</button>
+      <div class="sidebar-items">${items}</div>
+    </section>
+  `;
+}
+
+function installTerminalHandle(): void {
+  terminalHandle?.addEventListener('click', () => {
+    terminalElement[0]?.scrollIntoView({ block: 'end', behavior: 'smooth' });
+    terminal.focus?.();
+    updateGhostHint();
+  });
+}
+
 function print(term: TerminalApi, html: string): void {
   term.echo(html, { raw: true });
   scheduleFlowHydration(document);
@@ -265,7 +315,16 @@ function updateGhostHint(): void {
 }
 
 function getGhostSuffix(command: string): string {
+  const parsed = parseCommand(command);
+  if (parsed.name === 'cat' || parsed.name === 'open') {
+    return findGhostSuffix(parsed.rawArgs, completeInput(command));
+  }
   return findGhostSuffix(command, completeInput(command));
+}
+
+function isArgumentCompletion(command: string): boolean {
+  const parsed = parseCommand(command);
+  return parsed.name === 'cat' || parsed.name === 'open';
 }
 
 function listPath(term: TerminalApi, pathInput: string): void {
@@ -296,7 +355,7 @@ function setPath(path: string[]): void {
 
 function getDirectoryItems(path: string[]): DirectoryItem[] {
   const directories = listDirectories(contentFiles, path).map((directory): DirectoryItem => ({
-    command: `cd ${quotePath(directory.path)}`,
+    command: `cd ${absolutePathArg(directory.path)}`,
     description: directory.path.length === 1 ? rootDescription(directory.path[0]) : 'folder',
     kind: 'dir',
     label: directory.label,
@@ -312,7 +371,7 @@ function getDirectoryItems(path: string[]): DirectoryItem[] {
 
 function fileToDirectoryItem(file: ContentFile): DirectoryItem {
   return {
-    command: `cat ${quotePath(file.path)}`,
+    command: `cat ${absolutePathArg(file.path)}`,
     description: file.summary,
     kind: file.kind === 'post' ? 'post' : 'file',
     label: file.title,
@@ -372,6 +431,14 @@ function formatPath(path: string[]): string {
 function quotePath(path: string[]): string {
   const rendered = path.join('/');
   return /[\s"'()]/.test(rendered) ? `"${rendered.replace(/"/g, '\\"')}"` : rendered;
+}
+
+function absolutePathArg(path: string[]): string {
+  return quoteArg(`~/${path.join('/')}`);
+}
+
+function quoteArg(value: string): string {
+  return /[\s"'()]/.test(value) ? `"${value.replace(/"/g, '\\"')}"` : value;
 }
 
 function openArticleViewer(articleHtml: string, title: string, commandLabel: string): void {
