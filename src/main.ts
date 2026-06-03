@@ -131,9 +131,12 @@ document.addEventListener('click', (event) => {
   event.preventDefault();
   const command = target.dataset.command;
   if (command) {
+    const insideArticleViewer = Boolean(target.closest('.article-viewer'));
     terminal.exec(command);
-    terminal.focus?.();
-    scrollTerminalToBottom();
+    if (!insideArticleViewer) {
+      terminal.focus?.();
+      scrollTerminalToBottom();
+    }
   }
 });
 
@@ -228,9 +231,14 @@ function renderSidebar(): void {
     return;
   }
 
+  sidebarElement.innerHTML = renderSidebarContent();
+}
+
+function renderSidebarContent(): string {
   const blogFiles = contentFiles.filter((file) => file.root === 'blog');
   const knowledgeFiles = contentFiles.filter((file) => file.root === 'knowledge base');
-  sidebarElement.innerHTML = `
+
+  return `
     <div class="sidebar-header">
       <span>browse</span>
       <button class="link-command sidebar-root" type="button" data-command="ls ~">~</button>
@@ -448,15 +456,18 @@ function openArticleViewer(articleHtml: string, title: string, commandLabel: str
   const viewer = getArticleViewer();
   savedScrollY = window.scrollY;
   viewer.innerHTML = `
-    <section class="article-viewer-panel" role="dialog" aria-modal="true" aria-label="${escapeAttr(title)}">
-      <header class="article-viewer-bar">
-        <button class="article-viewer-close" type="button" data-article-close aria-label="退出阅读">← exit</button>
-        <div class="article-viewer-title">${escapeHtml(commandLabel)}</div>
-        <div class="article-viewer-mode">NORMAL</div>
-      </header>
-      <main class="article-viewer-scroll">${articleHtml}</main>
-      <footer class="article-viewer-status">ESC close · terminal history preserved</footer>
-    </section>
+    <div class="article-viewer-layout">
+      <aside class="article-browser" aria-label="content browser in reader">${renderSidebarContent()}</aside>
+      <section class="article-viewer-panel" role="dialog" aria-modal="true" aria-label="${escapeAttr(title)}">
+        <header class="article-viewer-bar">
+          <button class="article-viewer-close" type="button" data-article-close aria-label="退出阅读">← exit</button>
+          <div class="article-viewer-title">${escapeHtml(commandLabel)}</div>
+          <button class="article-viewer-terminal" type="button" data-article-close aria-label="返回终端">terminal</button>
+        </header>
+        <main class="article-viewer-scroll">${articleHtml}</main>
+        <footer class="article-viewer-status">ESC close · click browse to switch articles</footer>
+      </section>
+    </div>
   `;
   viewer.hidden = false;
   document.body.classList.add('article-open');
