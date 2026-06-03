@@ -1,4 +1,12 @@
 import type { KnowledgeBaseEntry, Post } from '../content/types';
+import {
+  buildContentFiles,
+  allDirectoryPaths,
+  directoryAliases,
+  fileAliases,
+  normalizeToken,
+  type ContentFile
+} from '../content/file-system';
 
 export const commandNames = ['help', 'ls', 'cd', 'kb', 'pwd', 'cat', 'search', 'tags', 'tag', 'about', 'clear'];
 
@@ -20,62 +28,46 @@ export function completeInput(input: string, posts: Post[], tags: TagCount[], co
   const hasArgs = firstSpace !== -1;
 
   if (!hasArgs) {
-    return commandNames.map((name) => `${leading}${name}`);
+    return filterCandidates(input, commandNames.map((name) => `${leading}${name}`));
   }
 
   if (command === 'cat' || command === 'open') {
-    return unique(
-      [
-        ...posts.flatMap((post) => [
-        `${leading}${command} ${quoteCompletion(post.meta.slug)}`,
-        `${leading}${command} ${quoteCompletion(post.meta.titlePinyin)}`,
-        `${leading}${command} ${quoteCompletion(post.meta.title)}`
-        ]),
-        ...knowledgeBaseCatTargets(command, leading, context)
-      ]
-    );
+    const files = buildCompletionFiles(posts, context);
+    return filterCandidates(input, contentCatTargets(command, leading, files, context.currentPath ?? []));
   }
 
   if (command === 'cd') {
-    return directoryTargets(leading, context);
+    return filterCandidates(input, directoryTargets(leading, posts, context));
   }
 
   if (command === 'tag') {
-    return tags.map(({ tag }) => `${leading}tag ${quoteCompletion(tag)}`);
+    return filterCandidates(input, tags.map(({ tag }) => `${leading}tag ${quoteCompletion(tag)}`));
   }
 
   return [];
 }
 
-function directoryTargets(leading: string, context: CompletionContext): string[] {
-  const entries = context.knowledgeBaseEntries ?? [];
-  const folders = new Set(['blog', 'knowledge base']);
-  for (const entry of entries) {
-    const folderParts = entry.segments.slice(0, -1);
-    for (let index = 0; index < folderParts.length; index += 1) {
-      folders.add(['knowledge base', ...folderParts.slice(0, index + 1)].join('/'));
-    }
-  }
-
-  return [...folders].sort().map((folder) => `${leading}cd ${quoteCompletion(folder)}`);
-}
-
-function knowledgeBaseCatTargets(command: string, leading: string, context: CompletionContext): string[] {
-  const entries = context.knowledgeBaseEntries ?? [];
+function directoryTargets(leading: string, posts: Post[], context: CompletionContext): string[] {
+  const files = buildCompletionFiles(posts, context);
   const currentPath = context.currentPath ?? [];
-  const scopedEntries = currentPath[0] === 'knowledge base'
-    ? entries.filter((entry) => startsWithSegments(entry.segments, currentPath.slice(1)))
-    : entries;
 
-  return scopedEntries.flatMap((entry) => [
-    `${leading}${command} ${quoteCompletion(entry.path)}`,
-    `${leading}${command} ${quoteCompletion(entry.meta.slug)}`,
-    `${leading}${command} ${quoteCompletion(entry.meta.title)}`
-  ]);
+  return unique(
+    allDirectoryPaths(files)
+      .filter((path) => path.length > 0)
+      .flatMap((path) => directoryAliases(path, currentPath).map((alias) => `${leading}cd ${quoteCompletion(alias)}`))
+  ).sort();
 }
 
-function startsWithSegments(value: string[], prefix: string[]): boolean {
-  return prefix.every((segment, index) => value[index] === segment);
+function contentCatTargets(command: string, leading: string, files: ContentFile[], currentPath: string[]): string[] {
+  return unique(
+    files.flatMap((file) =>
+      fileAliases(file, currentPath).map((alias) => `${leading}${command} ${quoteCompletion(alias)}`)
+    )
+  ).sort();
+}
+
+function buildCompletionFiles(posts: Post[], context: CompletionContext): ContentFile[] {
+  return buildContentFiles(posts, context.knowledgeBaseEntries ?? []);
 }
 
 export function getGhostSuffix(input: string, candidates: string[]): string {
@@ -98,4 +90,13 @@ function quoteCompletion(value: string): string {
 
 function unique(values: string[]): string[] {
   return [...new Set(values)];
+}
+
+function filterCandidates(input: string, candidates: string[]): string[] {
+  const normalizedInput = normalizeToken(input);
+  return unique(candidates.filter(Boolean)).filter((candidate) => {
+    const normalizedCandidate = normalizeToken(candidate);
+    const unquotedCandidate = normalizedCandidate.replace(/["']/g, '');
+    return normalizedCandidate.startsWith(normalizedInput) || unquotedCandidate.startsWith(normalizedInput);
+  });
 }

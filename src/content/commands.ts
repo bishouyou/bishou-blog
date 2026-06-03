@@ -31,7 +31,8 @@ export function findPost(posts: Post[], query: string): Post | undefined {
     return (
       normalize(post.meta.slug) === normalized ||
       normalize(post.meta.title) === normalized ||
-      normalize(post.meta.titlePinyin) === normalized
+      normalize(post.meta.titlePinyin) === normalized ||
+      (post.meta.aliases ?? []).some((alias) => normalize(alias) === normalized)
     );
   });
 }
@@ -48,6 +49,7 @@ export function searchPosts(posts: Post[], keyword: string): Post[] {
       post.meta.titlePinyin,
       post.meta.summary,
       post.meta.slug,
+      ...(post.meta.aliases ?? []),
       ...post.meta.tags,
       ...post.meta.categories,
       post.plainText

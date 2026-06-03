@@ -28,6 +28,7 @@ export interface SiteConfig {
 export interface PostMeta {
   title: string;
   titlePinyin: string;
+  aliases?: string[];
   date: string;
   slug: string;
   tags: string[];
@@ -45,6 +46,8 @@ export interface Post {
 
 export interface KnowledgeBaseEntryMeta {
   title: string;
+  titlePinyin?: string;
+  aliases?: string[];
   date: string;
   slug: string;
   summary: string;
@@ -54,6 +57,7 @@ export interface KnowledgeBaseEntryMeta {
 export interface KnowledgeBaseEntry {
   meta: KnowledgeBaseEntryMeta;
   path: string;
+  pathAliases?: string[];
   segments: string[];
   html: string;
   plainText: string;

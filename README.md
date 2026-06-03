@@ -1,20 +1,16 @@
 # bishou terminal blog
 
-一个终端式个人 Markdown 博客。首屏展示彩色 ASCII 头像和昵称，访客可以像使用命令行一样通过 `ls`、`cat`、`search` 等命令浏览文章，也可以点击文章标题打开阅读界面。
-
-当前站点面向静态部署设计，文章放在 `content/posts/*.md`，构建时解析 frontmatter 并生成前端可用的文章数据。
+一个终端式个人 Markdown Blog。页面以 `jquery.terminal` 模拟命令行，首屏显示彩色 ASCII 头像和昵称，访客可以用 `ls`、`cd`、`cat`、`search` 等命令浏览内容，也可以点击终端里的目录和文章标题。
 
 ## Features
 
-- 终端交互：基于 `jquery.terminal` 实现命令输入、历史、Tab 补全和快捷键。
+- 终端交互：命令输入、历史、Tab 补全、ghost hint、快捷键。
+- 虚拟文件系统：根目录包含 `blog/` 和 `knowledge base/`，两者在命令层都是目录树里的文件。
+- 自动拼音体系：构建 Markdown 时自动生成标题拼音、slug、路径别名；`cat`、`search`、`cd`、Tab 补全共用同一套索引。
 - Markdown 写作：支持 Hexo 风格 YAML frontmatter。
-- 虚拟文件系统：根目录包含 `blog/` 和 `knowledge base/` 两个基础文件夹，`cd` 会改变 prompt 路径。
-- Knowledge Base：`content/kb/` 按文件夹层级组织知识库，`kb` 可快速进入。
-- 独立阅读界面：`cat <文章>` 会打开类似 vim/nano 的全屏阅读层，按 `Esc` 或点击左上角 `exit` 返回终端，终端历史保留。
-- 拼音打开文章：中文标题会生成连续拼音别名，例如 `文字潮汐` 可用 `cat wenzichaoxi` 打开。
-- 输入虚影提示：输入行会显示命令补全 ghost hint，并和 Tab 补全联动。
-- Pretext 动效：摘要、欢迎语和正文段落使用 `@chenglou/pretext` 做文字行布局与进入动画。
-- 彩色 ASCII 头像：构建期用 `sharp` 从头像图生成静态 ASCII JSON。
+- 阅读界面：`cat <name>` 打开类似 vim/nano 的覆盖层，按 `Esc` 或点击左上角退出，终端历史保留。
+- Pretext 动效：欢迎语、摘要、正文段落使用 `@chenglou/pretext` 做文字行布局和流动重排。
+- 彩色 ASCII 头像：构建期用 `sharp` 从头像源图生成静态 ASCII 数据。
 - GitHub Pages：内置 Actions workflow，可直接部署静态站点。
 
 ## Tech Stack
@@ -24,8 +20,8 @@
 - jQuery Terminal
 - Markdown + `gray-matter` + `marked`
 - `@chenglou/pretext`
-- `sharp`
 - `pinyin-pro`
+- `sharp`
 - Vitest
 
 ## Local Development
@@ -35,7 +31,7 @@ npm install
 npm run dev
 ```
 
-开发地址：
+本地地址：
 
 ```text
 http://127.0.0.1:5173/
@@ -59,59 +55,76 @@ npm run preview
 | `cd <path>` | 切换目录 |
 | `kb` | 快速进入 `knowledge base/` |
 | `pwd` | 显示当前路径 |
-| `cat <slug\|拼音\|标题>` | 打开文章阅读界面 |
-| `open <slug\|拼音\|标题>` | `cat` 的别名 |
-| `search <keyword>` | 搜索标题、摘要、标签、分类和正文 |
-| `tags` | 列出所有标签 |
-| `tag <name>` | 查看某个标签下的文章 |
+| `cat <slug\|拼音\|标题\|路径>` | 打开 blog 或 knowledge base 文件 |
+| `open <slug\|拼音\|标题\|路径>` | `cat` 的别名 |
+| `search <keyword>` | 搜索标题、拼音、路径、摘要、标签和正文 |
+| `tags` | 列出 blog 标签 |
+| `tag <name>` | 查看某个标签下的 blog 文章 |
 | `about` | 显示头像和简介 |
 | `clear` | 清屏 |
 
 快捷键：
 
-- `Tab`：按当前输入上下文补全命令、文章或标签。
-- `Esc`：在文章阅读界面中退出。
+- `Tab`：按当前输入和当前目录补全命令、目录、文件、标签。
+- `Esc`：在阅读界面中退出。
 - `Ctrl+L`：清屏并重新显示欢迎内容。
 
-## Writing Posts
+## Content Model
 
-在 `content/posts/` 下新增 Markdown 文件：
+终端命令层只有一套内容文件系统：
+
+```text
+~/
+  blog/
+    <post files>
+  knowledge base/
+    <kb folders and files>
+```
+
+`blog` 和 `knowledge base` 的区别只在内容来源和渲染元信息：
+
+- `content/posts/*.md` 会出现在 `~/blog/`
+- `content/kb/**/*.md` 会按文件夹层级出现在 `~/knowledge base/`
+
+新增 Markdown 后，构建流程会自动生成：
+
+- `slug`
+- 标题拼音，例如 `文字潮汐` -> `wenzichaoxi`
+- 文件路径别名，例如 `tools/terminal-workflow`
+- 目录别名和相对路径补全
+
+所以新增内容不需要手动维护补全表。
+
+## Writing Blog Posts
+
+在 `content/posts/` 下新增 Markdown：
 
 ```md
 ---
-title: "文章标题"
+title: "文字潮汐"
 date: "2026-06-01"
-tags: ["blog", "terminal"]
-categories: ["notes"]
-summary: "文章摘要"
-slug: "post-slug"
+tags: ["pretext", "terminal"]
+categories: ["lab"]
+summary: "用 Pretext 做文字流动重排。"
+slug: "pretext-flow"
 draft: false
 ---
 
 正文内容。
 ```
 
-字段说明：
-
-- `title`：文章标题，也会用于生成拼音别名。
-- `date`：文章日期，建议使用 `YYYY-MM-DD`。
-- `tags`：标签数组。
-- `categories`：分类数组。
-- `summary`：摘要，会显示在文章列表和文章页。
-- `slug`：命令行打开文章时使用的稳定英文标识。
-- `draft`：为 `true` 时不会进入构建结果。
-
-打开文章的三种方式：
+打开方式示例：
 
 ```sh
-cat post-slug
+cd blog
+cat pretext-flow
 cat wenzichaoxi
 cat "文字潮汐"
 ```
 
 ## Knowledge Base
 
-知识库放在 `content/kb/`，目录结构会映射到终端里的 `knowledge base/`：
+知识库放在 `content/kb/`，目录结构会映射到终端：
 
 ```text
 content/kb/
@@ -121,7 +134,7 @@ content/kb/
     pretext.md
 ```
 
-知识库 Markdown 同样使用 frontmatter：
+KB Markdown 也使用 frontmatter：
 
 ```md
 ---
@@ -135,24 +148,19 @@ draft: false
 正文内容。
 ```
 
-终端中可以这样访问：
+访问方式示例：
 
 ```sh
-ls
 kb
 ls
 cd tools
 ls
 cat terminal-workflow
-cd ..
-cd blog
+cat zhongduangongzuoliu
+cat tools/terminal-workflow
 ```
 
-根目录 `ls` 会显示：
-
-- `blog/`
-- `knowledge base/`
-- 最近上传的 blog 文章
+当前目录会影响匹配优先级：在 `~/knowledge base` 内执行 `cat <拼音>` 时，会优先匹配知识库文件，再回退到全局文件。
 
 ## Images
 
@@ -162,13 +170,13 @@ cd blog
 public/images/example.png
 ```
 
-Markdown 中这样引用：
+Markdown 中引用：
 
 ```md
 ![图片描述](/images/example.png)
 ```
 
-这种方式对 Vite 本地开发和 GitHub Pages 都稳定。远程图片 URL 也可以使用，但可能受防盗链、跨域策略或远端服务可用性影响。
+这种方式对 Vite 本地开发和 GitHub Pages 都稳定。
 
 ## Site Config
 
@@ -207,7 +215,7 @@ npm run build
 dist/
 ```
 
-`vite.config.ts` 使用 `base: './'`，适合 GitHub Pages 的仓库子路径部署。
+`vite.config.ts` 使用 `base: './'`，适合 GitHub Pages 仓库子路径部署。
 
 ## Deploy To GitHub Pages
 
@@ -217,7 +225,7 @@ dist/
 .github/workflows/deploy-pages.yml
 ```
 
-推送到 `main` 或 `master` 后，GitHub Actions 会自动：
+推送到 `main` 后，GitHub Actions 会自动：
 
 1. 使用 Node.js 24 安装依赖。
 2. 运行测试。
@@ -225,19 +233,13 @@ dist/
 4. 上传 `dist/`。
 5. 发布到 GitHub Pages。
 
-在 GitHub 仓库中确认：
+GitHub 仓库设置里确认：
 
 ```text
 Settings -> Pages -> Build and deployment -> Source: GitHub Actions
 ```
 
-当前仓库地址：
-
-```text
-https://github.com/bishouyou/bishou-blog
-```
-
-Pages 地址通常为：
+Pages 地址通常是：
 
 ```text
 https://bishouyou.github.io/bishou-blog/
@@ -246,20 +248,20 @@ https://bishouyou.github.io/bishou-blog/
 ## Project Structure
 
 ```text
-content/posts/              Markdown 文章
-content/kb/                 分层知识库 Markdown
+content/posts/              Blog Markdown
+content/kb/                 Knowledge base Markdown
 scripts/generate-ascii.mjs  头像转 ASCII 数据脚本
 src/assets/                 头像源图、ASCII 文本和生成数据
 src/avatar/                 ASCII 头像渲染
-src/content/                Markdown 构建与命令数据逻辑
+src/content/                Markdown 构建、命令数据、统一文件系统
 src/terminal/               终端渲染、补全、Pretext 流式文本
 src/main.ts                 应用入口和终端交互
-src/styles.css              终端、文章阅读界面和主题样式
+src/styles.css              终端、阅读界面和主题样式
 test/                       Vitest 测试
 ```
 
 ## Notes
 
-- 构建时会自动运行 `npm run generate:ascii`。
+- `npm run build` 会自动运行 `npm run generate:ascii`。
 - `jquery.terminal` 在构建日志中可能出现 direct `eval` 警告，这是依赖自身行为，不影响当前部署。
-- 文章阅读界面是覆盖层，不会清除终端历史。
+- 阅读界面是覆盖层，不会清除终端历史。

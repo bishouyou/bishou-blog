@@ -6,8 +6,18 @@ import installTerminal from 'jquery.terminal';
 import 'jquery.terminal/css/jquery.terminal.min.css';
 import knowledgeBaseEntries from 'virtual:knowledge-base';
 import posts from 'virtual:posts';
-import { findPost, listTags, parseCommand, postsByTag, searchPosts } from './content/commands';
-import type { KnowledgeBaseEntry } from './content/types';
+import { listTags, parseCommand, postsByTag } from './content/commands';
+import {
+  buildContentFiles,
+  findContentFile,
+  findDirectoryPath,
+  isDirectoryPath,
+  listDirectories,
+  listFiles,
+  searchContentFiles,
+  unquote,
+  type ContentFile
+} from './content/file-system';
 import { siteConfig } from './site.config';
 import { completeInput as buildCompletions, getGhostSuffix as findGhostSuffix } from './terminal/completion';
 import { scheduleFlowHydration, watchFlowResize } from './terminal/flow';
@@ -50,6 +60,7 @@ const theme = siteConfig.theme;
 let articleViewer: HTMLElement | undefined;
 let currentPath: string[] = [];
 let savedScrollY = 0;
+const contentFiles = buildContentFiles(posts, knowledgeBaseEntries);
 
 terminalElement.addClass('is-starting');
 const terminal = terminalElement.terminal(
@@ -169,20 +180,17 @@ function execute(input: string, term: TerminalApi): void {
 }
 
 function openPost(term: TerminalApi, query: string): void {
-  const kbEntry = findKnowledgeEntry(query);
-  if (kbEntry) {
-    openArticleViewer(renderKnowledgeEntry(kbEntry), kbEntry.meta.title, `kb ${kbEntry.path}`);
-    term.focus?.();
+  const file = findContentFile(contentFiles, query, currentPath);
+  if (!file) {
+    print(term, renderError(`没有找到文件: ${query || '(空)'}`));
     return;
   }
 
-  const post = findPost(posts, query);
-  if (!post) {
-    print(term, renderError(`没有找到文章: ${query || '(空)'}`));
-    return;
+  if (file.post) {
+    openArticleViewer(renderArticle(file.post), file.title, `cat ${file.post.meta.titlePinyin || file.post.meta.slug}`);
+  } else if (file.entry) {
+    openArticleViewer(renderKnowledgeEntry(file.entry), file.title, `cat ${file.entry.meta.titlePinyin || file.entry.path}`);
   }
-
-  openArticleViewer(renderArticle(post), post.meta.title, `cat ${post.meta.titlePinyin || post.meta.slug}`);
   term.focus?.();
 }
 
@@ -192,8 +200,8 @@ function search(term: TerminalApi, keyword: string): void {
     return;
   }
 
-  const results = searchPosts(posts, keyword);
-  print(term, renderPostList(results, `search: ${keyword}`));
+  const results = searchContentFiles(contentFiles, keyword);
+  print(term, renderDirectoryList(results.map(fileToDirectoryItem), `search: ${keyword}`));
 }
 
 function showTag(term: TerminalApi, tag: string): void {
@@ -261,13 +269,8 @@ function getGhostSuffix(command: string): string {
 
 function listPath(term: TerminalApi, pathInput: string): void {
   const targetPath = pathInput.trim() ? resolvePath(pathInput) : currentPath;
-  if (!targetPath || !isDirectory(targetPath)) {
-    print(term, renderError(`路径不存在: ${pathInput}`));
-    return;
-  }
-
-  if (isBlogPath(targetPath)) {
-    print(term, renderPostList(posts, 'blog / recent'));
+  if (!targetPath || !isDirectoryPath(contentFiles, targetPath)) {
+    print(term, renderError(`路径不存在: ${pathInput || formatPath(currentPath)}`));
     return;
   }
 
@@ -276,7 +279,7 @@ function listPath(term: TerminalApi, pathInput: string): void {
 
 function changeDirectory(term: TerminalApi, pathInput: string): void {
   const targetPath = resolvePath(pathInput || '~');
-  if (!targetPath || !isDirectory(targetPath)) {
+  if (!targetPath || !isDirectoryPath(contentFiles, targetPath)) {
     print(term, renderError(`路径不存在: ${pathInput || '~'}`));
     return;
   }
@@ -291,111 +294,45 @@ function setPath(path: string[]): void {
 }
 
 function getDirectoryItems(path: string[]): DirectoryItem[] {
-  if (path.length === 0) {
-    return [
-      {
-        command: 'cd blog',
-        description: '最近上传的 blog 文章',
-        kind: 'dir',
-        label: 'blog',
-        meta: `${posts.length} posts`
-      },
-      {
-        command: 'kb',
-        description: '分层知识库',
-        kind: 'dir',
-        label: 'knowledge base',
-        meta: `${knowledgeBaseEntries.length} notes`
-      },
-      ...posts.slice(0, 3).map((post): DirectoryItem => ({
-        command: `cat ${post.meta.slug}`,
-        description: post.meta.summary,
-        kind: 'post',
-        label: post.meta.title,
-        meta: post.meta.date
-      }))
-    ];
-  }
+  const directories = listDirectories(contentFiles, path).map((directory): DirectoryItem => ({
+    command: `cd ${quotePath(directory.path)}`,
+    description: directory.path.length === 1 ? rootDescription(directory.path[0]) : 'folder',
+    kind: 'dir',
+    label: directory.label,
+    meta: `${directory.count} files`
+  }));
+  const files = listFiles(contentFiles, path).map(fileToDirectoryItem);
+  const recentPosts = path.length === 0
+    ? contentFiles.filter((file) => file.kind === 'post').slice(0, 3).map(fileToDirectoryItem)
+    : [];
 
-  if (isBlogPath(path)) {
-    return posts.map((post): DirectoryItem => ({
-      command: `cat ${post.meta.slug}`,
-      description: post.meta.summary,
-      kind: 'post',
-      label: post.meta.title,
-      meta: post.meta.date
-    }));
-  }
-
-  const kbSegments = path.slice(1);
-  const folders = new Set<string>();
-  const files: DirectoryItem[] = [];
-
-  for (const entry of knowledgeBaseEntries) {
-    if (!startsWithSegments(entry.segments, kbSegments)) {
-      continue;
-    }
-
-    const rest = entry.segments.slice(kbSegments.length);
-    if (rest.length === 1) {
-      files.push({
-        command: `cat ${entry.path}`,
-        description: entry.meta.summary,
-        kind: 'file',
-        label: entry.meta.title,
-        meta: entry.meta.date
-      });
-    } else if (rest[0]) {
-      folders.add(rest[0]);
-    }
-  }
-
-  return [
-    ...[...folders].sort().map((folder): DirectoryItem => ({
-      command: `cd ${quotePath([...path, folder])}`,
-      description: 'knowledge base folder',
-      kind: 'dir',
-      label: folder
-    })),
-    ...files.sort((a, b) => a.label.localeCompare(b.label))
-  ];
+  return [...directories, ...files, ...recentPosts];
 }
 
-function findKnowledgeEntry(query: string): KnowledgeBaseEntry | undefined {
-  const normalized = normalizePathToken(query);
-  if (!normalized) {
-    return undefined;
+function fileToDirectoryItem(file: ContentFile): DirectoryItem {
+  return {
+    command: `cat ${quotePath(file.path)}`,
+    description: file.summary,
+    kind: file.kind === 'post' ? 'post' : 'file',
+    label: file.title,
+    meta: file.date
+  };
+}
+
+function rootDescription(root: string): string {
+  if (root === 'blog') {
+    return '最近上传的 blog 文章';
   }
-
-  const scopedEntries = isKnowledgeBasePath(currentPath)
-    ? knowledgeBaseEntries.filter((entry) => startsWithSegments(entry.segments, currentPath.slice(1)))
-    : knowledgeBaseEntries;
-
-  return scopedEntries.find((entry) => {
-    const fileName = entry.segments.at(-1) ?? '';
-    return [
-      entry.path,
-      entry.meta.slug,
-      entry.meta.title,
-      fileName
-    ].some((value) => normalizePathToken(value) === normalized);
-  });
+  if (root === 'knowledge base') {
+    return '分层知识库';
+  }
+  return 'folder';
 }
 
 function resolvePath(input: string): string[] | undefined {
-  const normalizedInput = unquoteInput(input.trim());
+  const normalizedInput = unquote(input.trim());
   if (!normalizedInput || normalizedInput === '~' || normalizedInput === '/') {
     return [];
-  }
-
-  if (normalizedInput.toLowerCase() === 'kb') {
-    return ['knowledge base'];
-  }
-  if (normalizedInput.toLowerCase() === 'blog') {
-    return ['blog'];
-  }
-  if (['knowledge base', 'knowledge-base'].includes(normalizedInput.toLowerCase())) {
-    return ['knowledge base'];
   }
 
   const absolute = normalizedInput.startsWith('/') || normalizedInput.startsWith('~/');
@@ -424,39 +361,7 @@ function resolvePath(input: string): string[] | undefined {
 }
 
 function normalizePath(path: string[]): string[] | undefined {
-  if (path.length === 0) {
-    return [];
-  }
-  if (path[0] === 'blog') {
-    return path.length === 1 ? ['blog'] : undefined;
-  }
-  if (path[0] === 'knowledge base') {
-    return path;
-  }
-  return undefined;
-}
-
-function isDirectory(path: string[]): boolean {
-  if (path.length === 0 || isBlogPath(path)) {
-    return true;
-  }
-  if (!isKnowledgeBasePath(path)) {
-    return false;
-  }
-  const kbSegments = path.slice(1);
-  return knowledgeBaseEntries.some((entry) => startsWithSegments(entry.segments.slice(0, -1), kbSegments));
-}
-
-function isBlogPath(path: string[]): boolean {
-  return path.length === 1 && path[0] === 'blog';
-}
-
-function isKnowledgeBasePath(path: string[]): boolean {
-  return path.length >= 1 && path[0] === 'knowledge base';
-}
-
-function startsWithSegments(value: string[], prefix: string[]): boolean {
-  return prefix.every((segment, index) => value[index] === segment);
+  return findDirectoryPath(contentFiles, path.length === 0 ? '~' : path.join('/'), []);
 }
 
 function formatPath(path: string[]): string {
@@ -466,20 +371,6 @@ function formatPath(path: string[]): string {
 function quotePath(path: string[]): string {
   const rendered = path.join('/');
   return /[\s"'()]/.test(rendered) ? `"${rendered.replace(/"/g, '\\"')}"` : rendered;
-}
-
-function normalizePathToken(value: string): string {
-  return unquoteInput(value).trim().toLowerCase();
-}
-
-function unquoteInput(value: string): string {
-  if (
-    (value.startsWith('"') && value.endsWith('"')) ||
-    (value.startsWith("'") && value.endsWith("'"))
-  ) {
-    return value.slice(1, -1);
-  }
-  return value;
 }
 
 function openArticleViewer(articleHtml: string, title: string, commandLabel: string): void {

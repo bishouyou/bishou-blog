@@ -1,4 +1,4 @@
-import { mkdtemp, rm, writeFile } from 'node:fs/promises';
+﻿import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { describe, expect, it } from 'vitest';
@@ -32,7 +32,7 @@ draft: false
       'fallback'
     );
 
-    expect(post.meta).toEqual({
+    expect(post.meta).toMatchObject({
       title: '第一篇文章',
       titlePinyin: 'diyipianwenzhang',
       date: '2026-06-01',
@@ -42,6 +42,8 @@ draft: false
       slug: 'first-post',
       draft: false
     });
+    expect(post.meta.aliases).toContain('first-post');
+    expect(post.meta.aliases).toContain('diyipianwenzhang');
     expect(post.html).toContain('<h1>Hello</h1>');
     expect(post.plainText).toContain('正文 with code');
     expect(post.readingTime).toBeGreaterThanOrEqual(1);
@@ -104,6 +106,8 @@ KB body.
     );
 
     expect(entry.path).toBe('tools/terminal-workflow');
+    expect(entry.pathAliases).toContain('tools/terminal-workflow');
+    expect(entry.meta.aliases).toContain('terminal-workflow');
     expect(entry.segments).toEqual(['tools', 'terminal-workflow']);
     expect(entry.meta.title).toBe('Terminal Workflow');
     expect(entry.plainText).toContain('KB body');
@@ -145,3 +149,4 @@ draft`
     expect(estimateReadingTime('短文')).toBe(1);
   });
 });
+

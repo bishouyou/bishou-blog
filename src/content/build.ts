@@ -66,6 +66,7 @@ export function parsePost(source: string, defaultSlug: string): Post {
   const meta: PostMeta = {
     title,
     titlePinyin: titleToPinyinSlug(title),
+    aliases: contentAliases(title, stringValue(data.slug) ?? defaultSlug),
     date: normalizeDate(data.date),
     slug: slugify(stringValue(data.slug) ?? defaultSlug),
     tags: stringArray(data.tags),
@@ -96,6 +97,8 @@ export function parseKnowledgeBaseEntry(source: string, relativePath: string): K
   const summary = stringValue(data.summary) ?? '';
   const meta: KnowledgeBaseEntryMeta = {
     title,
+    titlePinyin: titleToPinyinSlug(title),
+    aliases: contentAliases(title, stringValue(data.slug) ?? defaultSlug),
     date: normalizeDate(data.date),
     slug: slugify(stringValue(data.slug) ?? defaultSlug),
     summary,
@@ -107,6 +110,7 @@ export function parseKnowledgeBaseEntry(source: string, relativePath: string): K
   return {
     meta,
     path: pathParts.join('/').replace(/\.md$/i, ''),
+    pathAliases: pathAliases(pathParts.map((part, index) => (index === pathParts.length - 1 ? part.replace(/\.md$/i, '') : part))),
     segments: pathParts.map((part, index) => (index === pathParts.length - 1 ? part.replace(/\.md$/i, '') : part)),
     html,
     plainText,
@@ -140,6 +144,36 @@ export function titleToPinyinSlug(title: string): string {
     .join('')
     .replace(/[^A-Za-z0-9]/g, '')
     .toLowerCase();
+}
+
+export function contentAliases(title: string, slug: string): string[] {
+  return unique([
+    slugify(slug),
+    title,
+    slugify(title),
+    titleToPinyinSlug(title)
+  ].filter(Boolean));
+}
+
+export function pathAliases(segments: string[]): string[] {
+  const normalizedSegments = segments.map((segment) => segment.trim()).filter(Boolean);
+  const fileName = normalizedSegments.at(-1) ?? '';
+  const joined = normalizedSegments.join('/');
+  const joinedPinyin = normalizedSegments.map(titleToPinyinSlug).filter(Boolean).join('/');
+  const compactPinyin = normalizedSegments.map(titleToPinyinSlug).filter(Boolean).join('');
+
+  return unique([
+    joined,
+    fileName,
+    slugify(fileName),
+    titleToPinyinSlug(fileName),
+    joinedPinyin,
+    compactPinyin
+  ].filter(Boolean));
+}
+
+function unique(values: string[]): string[] {
+  return [...new Set(values)];
 }
 
 function fallbackSlug(filePath: string): string {

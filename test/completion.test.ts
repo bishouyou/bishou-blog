@@ -55,6 +55,23 @@ const knowledgeBaseEntries: KnowledgeBaseEntry[] = [
     html: '<p>Shell notes</p>',
     plainText: 'Shell notes',
     readingTime: 1
+  },
+  {
+    meta: {
+      title: '文字潮汐',
+      titlePinyin: 'wenzichaoxi',
+      slug: 'text-flow',
+      aliases: ['text-flow', '文字潮汐', 'wenzichaoxi'],
+      date: '2026-06-02',
+      summary: 'Pretext notes',
+      draft: false
+    },
+    path: 'reading/text-flow',
+    pathAliases: ['reading/text-flow', 'text-flow', 'readingtextflow'],
+    segments: ['reading', 'text-flow'],
+    html: '<p>Pretext notes</p>',
+    plainText: 'Pretext notes',
+    readingTime: 1
   }
 ];
 
@@ -101,8 +118,9 @@ describe('terminal completion', () => {
   });
 
   it('completes cd targets for blog and knowledge base folders', () => {
+    expect(completeInput('cd b', posts, tags, { knowledgeBaseEntries })).toContain('cd blog');
+
     const candidates = completeInput('cd k', posts, tags, { knowledgeBaseEntries });
-    expect(candidates).toContain('cd blog');
     expect(candidates).toContain('cd "knowledge base"');
     expect(candidates).toContain('cd "knowledge base/tools"');
   });
@@ -115,6 +133,15 @@ describe('terminal completion', () => {
     expect(candidates).toContain('cat tools/terminal-workflow');
     expect(candidates).toContain('cat terminal-workflow');
     expect(candidates).toContain('cat "Terminal Workflow"');
+  });
+
+  it('completes knowledge base targets by generated pinyin aliases', () => {
+    const candidates = completeInput('cat w', posts, tags, {
+      currentPath: ['knowledge base'],
+      knowledgeBaseEntries
+    });
+    expect(candidates).toContain('cat wenzichaoxi');
+    expect(getGhostSuffix('cat w', candidates)).toBe('enzichaoxi');
   });
 
   it('does not complete free-form search text', () => {
