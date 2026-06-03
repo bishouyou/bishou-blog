@@ -317,6 +317,9 @@ function updateGhostHint(): void {
 function getGhostSuffix(command: string): string {
   const parsed = parseCommand(command);
   if (parsed.name === 'cat' || parsed.name === 'open') {
+    if (!parsed.rawArgs) {
+      return '';
+    }
     return findGhostSuffix(parsed.rawArgs, completeInput(command));
   }
   return findGhostSuffix(command, completeInput(command));
