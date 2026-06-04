@@ -27,7 +27,8 @@
 
 ::selection {
   background: var(--text);
-  color: var(--bg);
+  color: #11111b;
+  -webkit-text-fill-color: #11111b;
   text-shadow: none;
 }
 
@@ -38,18 +39,23 @@
 }
 
 #terminal ::selection,
+#terminal *::selection,
 #content-sidebar ::selection,
+#content-sidebar *::selection,
 .article-viewer ::selection {
   background: var(--text);
-  color: var(--bg);
+  color: #11111b !important;
+  -webkit-text-fill-color: #11111b !important;
   text-shadow: none;
 }
 
 #terminal ::-moz-selection,
+#terminal *::-moz-selection,
 #content-sidebar ::-moz-selection,
+#content-sidebar *::-moz-selection,
 .article-viewer ::-moz-selection {
   background: var(--text);
-  color: var(--bg);
+  color: #11111b !important;
   text-shadow: none;
 }
 
