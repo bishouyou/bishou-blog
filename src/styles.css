@@ -25,6 +25,11 @@
   box-sizing: border-box;
 }
 
+::selection {
+  background: var(--text);
+  color: var(--blue);
+}
+
 html,
 body,
 #app {

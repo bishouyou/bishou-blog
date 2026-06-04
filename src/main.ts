@@ -103,6 +103,7 @@ const terminal = terminalElement.terminal(
             escape: false,
             word: isArgumentCompletion(command)
           });
+          window.requestAnimationFrame(scrollTerminalToBottom);
         }
         updateGhostHint();
         return false;
