@@ -332,6 +332,11 @@ body.article-open {
   font-family: var(--terminal-font) !important;
 }
 
+.command-output-enter {
+  animation: command-output-in 180ms ease-out both;
+  will-change: opacity, transform;
+}
+
 .ascii-avatar-shell {
   position: relative;
   width: 100%;
@@ -817,7 +822,8 @@ body.article-open {
 }
 
 .article-viewer-status {
-  display: block;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   border-top: 1px solid var(--border);
   border-bottom: 0;
   color: var(--green);
@@ -856,6 +862,29 @@ body.article-open {
   color: var(--pink);
 }
 
+.article-viewer-terminal-handle {
+  appearance: none;
+  min-width: 118px;
+  margin: -1px -1px -6px 10px;
+  padding: 7px 14px 8px;
+  border: 1px solid var(--border);
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  background: var(--surface-soft);
+  color: var(--pink);
+  font: inherit;
+  cursor: pointer;
+  box-shadow: 0 -8px 22px rgba(0, 0, 0, 0.22);
+}
+
+.article-viewer-terminal-handle:hover,
+.article-viewer-terminal-handle:focus-visible {
+  color: var(--green);
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .article-viewer-scroll {
   min-height: 0;
   overflow: auto;
@@ -889,6 +918,18 @@ body.article-open {
   from {
     opacity: 0;
     transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes command-output-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
   }
 
   to {

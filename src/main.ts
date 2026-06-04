@@ -282,7 +282,7 @@ function installTerminalHandle(): void {
 }
 
 function print(term: TerminalApi, html: string): void {
-  term.echo(html, { raw: true });
+  term.echo(`<div class="command-output-enter">${html}</div>`, { raw: true });
   scheduleFlowHydration(document);
   scrollTerminalToBottom();
 }
@@ -470,7 +470,10 @@ function openArticleViewer(articleHtml: string, title: string, commandLabel: str
           <button class="article-viewer-terminal" type="button" data-article-close aria-label="返回终端">terminal</button>
         </header>
         <main class="article-viewer-scroll">${articleHtml}</main>
-        <footer class="article-viewer-status">ESC close · click browse to switch articles</footer>
+        <footer class="article-viewer-status">
+          <span>ESC close · click browse to switch articles</span>
+          <button class="article-viewer-terminal-handle" type="button" data-article-close aria-label="返回终端">terminal</button>
+        </footer>
       </section>
     </div>
   `;
