@@ -73,12 +73,17 @@ body.article-open {
 }
 
 .terminal-stage {
+  grid-column: 2;
   min-width: 0;
 }
 
 #content-sidebar {
-  position: sticky;
+  position: fixed;
   top: clamp(12px, 2vw, 28px);
+  bottom: clamp(12px, 2vw, 28px);
+  left: max(clamp(12px, 2vw, 28px), calc((100vw - 1160px) / 2));
+  z-index: 11;
+  width: clamp(220px, 22vw, 280px);
   max-height: calc(100vh - clamp(24px, 4vw, 56px));
   overflow: auto;
   padding: 14px 12px;
@@ -1001,7 +1006,10 @@ body.article-open {
   #content-sidebar {
     position: sticky;
     top: 0;
+    bottom: auto;
+    left: auto;
     z-index: 12;
+    width: auto;
     max-height: 42vh;
     border-width: 0 0 1px;
     border-radius: 0;
