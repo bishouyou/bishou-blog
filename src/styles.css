@@ -334,7 +334,12 @@ body.article-open {
 
 .command-output-enter {
   animation: command-output-in 180ms ease-out both;
+  margin-top: 2px;
   will-change: opacity, transform;
+}
+
+.command-output-enter > .directory-list:first-child {
+  margin-top: 2px;
 }
 
 .ascii-avatar-shell {
@@ -520,7 +525,7 @@ body.article-open {
 }
 
 .directory-list {
-  margin: 8px 0 18px;
+  margin: 6px 0 18px;
 }
 
 .post-list h2,
@@ -994,8 +999,9 @@ body.article-open {
   }
 
   #content-sidebar {
-    position: relative;
-    top: auto;
+    position: sticky;
+    top: 0;
+    z-index: 12;
     max-height: 42vh;
     border-width: 0 0 1px;
     border-radius: 0;
