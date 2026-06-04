@@ -595,6 +595,7 @@ body.article-open {
 
 .directory-description {
   flex: 0 0 100%;
+  margin-top: 5px;
   color: var(--text);
 }
 

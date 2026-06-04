@@ -88,12 +88,11 @@ describe('terminal completion', () => {
     expect(allCandidates.every((candidate) => !candidate.startsWith('cat '))).toBe(true);
 
     const candidates = completeInput('cat h', posts, tags);
-    expect(candidates).toEqual([]);
+    expect(candidates).toContain('helloterminal');
+    expect(candidates).toContain('hello-terminal');
 
     const pathCandidates = completeInput('cat ~/blog/h', posts, tags);
     expect(pathCandidates).toContain('~/blog/hello-terminal');
-    expect(pathCandidates).not.toContain('hello-terminal');
-    expect(pathCandidates).not.toContain('"Hello Terminal"');
     expect(getGhostSuffix('~/blog/h', pathCandidates)).toBe('ello-terminal');
   });
 
@@ -116,7 +115,8 @@ describe('terminal completion', () => {
       }
     ];
     const candidates = completeInput('cat w', chinesePosts, []);
-    expect(candidates).toEqual([]);
+    expect(candidates).toContain('wenzichaoxi');
+    expect(getGhostSuffix('w', candidates)).toBe('enzichaoxi');
   });
 
   it('completes tag names', () => {
@@ -139,8 +139,8 @@ describe('terminal completion', () => {
       knowledgeBaseEntries
     });
     expect(candidates).toContain('tools/terminal-workflow');
-    expect(candidates).not.toContain('terminal-workflow');
-    expect(candidates).not.toContain('"Terminal Workflow"');
+    expect(candidates).toContain('terminal-workflow');
+    expect(candidates).toContain('"Terminal Workflow"');
   });
 
   it('completes knowledge base targets by generated pinyin aliases', () => {
@@ -148,7 +148,7 @@ describe('terminal completion', () => {
       currentPath: ['knowledge base'],
       knowledgeBaseEntries
     });
-    expect(candidates).toEqual([]);
+    expect(candidates).toContain('wenzichaoxi');
   });
 
   it('does not complete free-form search text', () => {

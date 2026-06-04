@@ -38,7 +38,7 @@ export function completeInput(input: string, posts: Post[], tags: TagCount[], co
   if (command === 'cat' || command === 'open') {
     const files = buildCompletionFiles(posts, context);
     const argPrefix = hasArgs ? trimmed.slice(firstSpace + 1) : '';
-    return filterCandidates(argPrefix, contentCatTargets(files, context.currentPath ?? []));
+    return filterCandidates(argPrefix, contentCatTargets(files, context.currentPath ?? [], argPrefix.trim().length > 0));
   }
 
   if (command === 'cd') {
@@ -63,8 +63,14 @@ function directoryTargets(leading: string, posts: Post[], context: CompletionCon
   ).sort();
 }
 
-function contentCatTargets(files: ContentFile[], currentPath: string[]): string[] {
-  return unique(files.map((file) => quoteCompletion(preferredFileTarget(file, currentPath)))).sort();
+function contentCatTargets(files: ContentFile[], currentPath: string[], includeAliases = false): string[] {
+  return unique(
+    files.flatMap((file) => {
+      const preferred = preferredFileTarget(file, currentPath);
+      const aliases = includeAliases ? file.aliases : [];
+      return [preferred, ...aliases].map(quoteCompletion);
+    })
+  ).sort();
 }
 
 function buildCompletionFiles(posts: Post[], context: CompletionContext): ContentFile[] {
