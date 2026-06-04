@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
 import { defineConfig, type Plugin } from 'vite';
-import { loadKnowledgeBase, loadPosts } from './src/content/build';
+import { isContentImagePath, loadKnowledgeBase, loadPosts, prepareContentAssets } from './src/content/build';
 
 const virtualPostsId = 'virtual:posts';
 const resolvedVirtualPostsId = `\0${virtualPostsId}`;
@@ -8,6 +8,16 @@ const virtualKnowledgeBaseId = 'virtual:knowledge-base';
 const resolvedVirtualKnowledgeBaseId = `\0${virtualKnowledgeBaseId}`;
 
 function markdownPostsPlugin(): Plugin {
+  const projectRoot = process.cwd();
+  let assetIndexPromise: ReturnType<typeof prepareContentAssets> | undefined;
+  const loadAssetIndex = () => {
+    assetIndexPromise ??= prepareContentAssets(projectRoot);
+    return assetIndexPromise;
+  };
+  const invalidateAssetIndex = () => {
+    assetIndexPromise = undefined;
+  };
+
   return {
     name: 'markdown-posts',
     resolveId(id) {
@@ -21,23 +31,30 @@ function markdownPostsPlugin(): Plugin {
     },
     async load(id) {
       if (id === resolvedVirtualPostsId) {
-        const posts = await loadPosts(resolve(process.cwd(), 'content/posts'));
+        const assetIndex = await loadAssetIndex();
+        const posts = await loadPosts(resolve(projectRoot, 'content/posts'), { assetIndex, projectRoot });
         return `const posts = ${JSON.stringify(posts)};\nexport default posts;\n`;
       }
       if (id === resolvedVirtualKnowledgeBaseId) {
-        const entries = await loadKnowledgeBase(resolve(process.cwd(), 'content/kb'));
+        const assetIndex = await loadAssetIndex();
+        const entries = await loadKnowledgeBase(resolve(projectRoot, 'content/kb'), { assetIndex, projectRoot });
         return `const entries = ${JSON.stringify(entries)};\nexport default entries;\n`;
       }
       return null;
     },
     configureServer(server) {
-      const postsDir = resolve(process.cwd(), 'content/posts');
-      const kbDir = resolve(process.cwd(), 'content/kb');
+      const postsDir = resolve(projectRoot, 'content/posts');
+      const kbDir = resolve(projectRoot, 'content/kb');
       server.watcher.add(postsDir);
       server.watcher.add(kbDir);
       server.watcher.on('all', (_event, changedPath) => {
-        if (!changedPath.includes(postsDir) && !changedPath.includes(kbDir)) {
+        const markdownChanged = changedPath.includes(postsDir) || changedPath.includes(kbDir);
+        const imageChanged = isContentImagePath(changedPath);
+        if (!markdownChanged && !imageChanged) {
           return;
+        }
+        if (imageChanged) {
+          invalidateAssetIndex();
         }
         for (const id of [resolvedVirtualPostsId, resolvedVirtualKnowledgeBaseId]) {
           const mod = server.moduleGraph.getModuleById(id);

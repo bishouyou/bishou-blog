@@ -3,6 +3,7 @@ dist/
 coverage/
 .vite/
 .codex/
+public/content-assets/
 *.local
 *.tsbuildinfo
 ascii-art-*.zip

@@ -1,5 +1,5 @@
-import { readFile } from 'node:fs/promises';
-import { basename, extname, join, relative } from 'node:path';
+import { copyFile, mkdir, readFile } from 'node:fs/promises';
+import { basename, dirname, extname, join, relative, resolve } from 'node:path';
 import fg from 'fast-glob';
 import matter from 'gray-matter';
 import { marked } from 'marked';
@@ -16,53 +16,129 @@ interface RawFrontmatter {
   draft?: unknown;
 }
 
+interface AssetCandidate {
+  absolutePath: string;
+  relativePath: string;
+  url: string;
+}
+
+interface AssetIndex {
+  byBasename: Map<string, AssetCandidate[]>;
+  byRelativePath: Map<string, AssetCandidate>;
+  projectRoot: string;
+}
+
+interface ContentBuildOptions {
+  assetIndex?: AssetIndex;
+  projectRoot?: string;
+}
+
+const imageExtensions = new Set(['.avif', '.gif', '.jpeg', '.jpg', '.png', '.svg', '.webp']);
+const generatedAssetDir = 'content-assets';
+
 marked.setOptions({
   async: false,
   gfm: true
 });
 
-export async function loadPosts(postsDir: string): Promise<Post[]> {
+export async function prepareContentAssets(projectRoot = process.cwd()): Promise<AssetIndex> {
+  const normalizedRoot = resolve(projectRoot);
+  const files = await fg('**/*.{avif,gif,jpeg,jpg,png,svg,webp}', {
+    cwd: normalizedRoot,
+    absolute: true,
+    caseSensitiveMatch: false,
+    dot: false,
+    ignore: [
+      '.git/**',
+      'dist/**',
+      'node_modules/**',
+      `public/${generatedAssetDir}/**`
+    ],
+    onlyFiles: true
+  });
+
+  const index: AssetIndex = {
+    byBasename: new Map(),
+    byRelativePath: new Map(),
+    projectRoot: normalizedRoot
+  };
+
+  await mkdir(join(normalizedRoot, 'public', generatedAssetDir), { recursive: true });
+
+  for (const file of files) {
+    const relativePath = normalizePath(relative(normalizedRoot, file));
+    const url = assetUrl(relativePath);
+    const candidate: AssetCandidate = {
+      absolutePath: file,
+      relativePath,
+      url
+    };
+
+    index.byRelativePath.set(relativePath.toLowerCase(), candidate);
+    const basenameKey = basename(relativePath).toLowerCase();
+    index.byBasename.set(basenameKey, [...(index.byBasename.get(basenameKey) ?? []), candidate]);
+
+    const outputPath = join(normalizedRoot, 'public', generatedAssetDir, ...relativePath.split('/'));
+    await mkdir(dirname(outputPath), { recursive: true });
+    await copyFile(file, outputPath);
+  }
+
+  return index;
+}
+
+export function isContentImagePath(filePath: string): boolean {
+  return imageExtensions.has(extname(filePath).toLowerCase());
+}
+
+export async function loadPosts(postsDir: string, options: ContentBuildOptions = {}): Promise<Post[]> {
   const files = await fg('**/*.md', {
     cwd: postsDir,
     absolute: true,
     onlyFiles: true
   });
 
-  const posts = await Promise.all(files.map((file) => loadPost(file)));
+  const assetIndex = options.assetIndex;
+  const posts = await Promise.all(files.map((file) => loadPost(file, { ...options, assetIndex })));
   return posts
     .filter((post) => !post.meta.draft)
     .sort((a, b) => b.meta.date.localeCompare(a.meta.date));
 }
 
-export async function loadKnowledgeBase(kbDir: string): Promise<KnowledgeBaseEntry[]> {
+export async function loadKnowledgeBase(kbDir: string, options: ContentBuildOptions = {}): Promise<KnowledgeBaseEntry[]> {
   const files = await fg('**/*.md', {
     cwd: kbDir,
     absolute: true,
     onlyFiles: true
   });
 
-  const entries = await Promise.all(files.map((file) => loadKnowledgeBaseEntry(file, kbDir)));
+  const assetIndex = options.assetIndex;
+  const entries = await Promise.all(files.map((file) => loadKnowledgeBaseEntry(file, kbDir, { ...options, assetIndex })));
   return entries
     .filter((entry) => !entry.meta.draft)
     .sort((a, b) => a.path.localeCompare(b.path));
 }
 
-export async function loadPost(filePath: string): Promise<Post> {
+export async function loadPost(filePath: string, options: ContentBuildOptions = {}): Promise<Post> {
   const source = await readFile(filePath, 'utf8');
-  return parsePost(source, fallbackSlug(filePath));
+  return parsePost(source, fallbackSlug(filePath), { ...options, projectRoot: options.projectRoot ?? process.cwd(), sourcePath: filePath });
 }
 
-export async function loadKnowledgeBaseEntry(filePath: string, kbDir: string): Promise<KnowledgeBaseEntry> {
+export async function loadKnowledgeBaseEntry(
+  filePath: string,
+  kbDir: string,
+  options: ContentBuildOptions = {}
+): Promise<KnowledgeBaseEntry> {
   const source = await readFile(filePath, 'utf8');
   const relativePath = relative(kbDir, filePath);
-  return parseKnowledgeBaseEntry(source, relativePath);
+  return parseKnowledgeBaseEntry(source, relativePath, { ...options, projectRoot: options.projectRoot ?? process.cwd(), sourcePath: filePath });
 }
 
-export function parsePost(source: string, defaultSlug: string): Post {
+export function parsePost(source: string, defaultSlug: string, options: ContentBuildOptions & { sourcePath?: string } = {}): Post {
   const parsed = matter(source);
   const data = parsed.data as RawFrontmatter;
   const title = stringValue(data.title) ?? defaultSlug;
   const summary = stringValue(data.summary) ?? '';
+  const markdown = rewriteMarkdownAssets(parsed.content, options);
   const meta: PostMeta = {
     title,
     titlePinyin: titleToPinyinSlug(title),
@@ -75,8 +151,8 @@ export function parsePost(source: string, defaultSlug: string): Post {
     draft: Boolean(data.draft)
   };
 
-  const html = marked.parse(parsed.content) as string;
-  const plainText = markdownToPlainText(parsed.content);
+  const html = marked.parse(markdown) as string;
+  const plainText = markdownToPlainText(markdown);
   const readingTime = estimateReadingTime(plainText);
 
   return {
@@ -87,7 +163,11 @@ export function parsePost(source: string, defaultSlug: string): Post {
   };
 }
 
-export function parseKnowledgeBaseEntry(source: string, relativePath: string): KnowledgeBaseEntry {
+export function parseKnowledgeBaseEntry(
+  source: string,
+  relativePath: string,
+  options: ContentBuildOptions & { sourcePath?: string } = {}
+): KnowledgeBaseEntry {
   const parsed = matter(source);
   const data = parsed.data as RawFrontmatter;
   const pathParts = relativePath.replace(/\\/g, '/').split('/');
@@ -95,6 +175,7 @@ export function parseKnowledgeBaseEntry(source: string, relativePath: string): K
   const defaultSlug = fallbackSlug(filename);
   const title = stringValue(data.title) ?? defaultSlug;
   const summary = stringValue(data.summary) ?? '';
+  const markdown = rewriteMarkdownAssets(parsed.content, options);
   const meta: KnowledgeBaseEntryMeta = {
     title,
     titlePinyin: titleToPinyinSlug(title),
@@ -104,8 +185,8 @@ export function parseKnowledgeBaseEntry(source: string, relativePath: string): K
     summary,
     draft: Boolean(data.draft)
   };
-  const html = marked.parse(parsed.content) as string;
-  const plainText = markdownToPlainText(parsed.content);
+  const html = marked.parse(markdown) as string;
+  const plainText = markdownToPlainText(markdown);
 
   return {
     meta,
@@ -116,6 +197,31 @@ export function parseKnowledgeBaseEntry(source: string, relativePath: string): K
     plainText,
     readingTime: estimateReadingTime(plainText)
   };
+}
+
+export function rewriteMarkdownAssets(
+  markdown: string,
+  options: ContentBuildOptions & { sourcePath?: string } = {}
+): string {
+  const withObsidianImages = markdown.replace(/!\[\[([^\]]+)]]/g, (match, rawTarget: string) => {
+    const target = rawTarget.split('|')[0]?.trim() ?? '';
+    if (!isImageReference(target)) {
+      return match;
+    }
+
+    const url = resolveAssetUrl(target, options);
+    return url ? `![${basename(target)}](${url})` : match;
+  });
+
+  return withObsidianImages.replace(/!\[([^\]]*)]\(([^)]+)\)/g, (match, alt: string, rawTarget: string) => {
+    const target = rawTarget.trim().replace(/^["']|["']$/g, '');
+    if (!isImageReference(target) || isExternalReference(target)) {
+      return match;
+    }
+
+    const url = resolveAssetUrl(target, options);
+    return url ? `![${alt}](${url})` : match;
+  });
 }
 
 export function slugify(input: string): string {
@@ -172,6 +278,96 @@ export function pathAliases(segments: string[]): string[] {
   ].filter(Boolean));
 }
 
+function resolveAssetUrl(target: string, options: ContentBuildOptions & { sourcePath?: string }): string | undefined {
+  if (!options.assetIndex) {
+    return undefined;
+  }
+
+  const normalizedTarget = normalizePath(decodeURIComponentSafe(target));
+  const relativeCandidate = resolveRelativeAsset(normalizedTarget, options);
+  if (relativeCandidate) {
+    return relativeCandidate.url;
+  }
+
+  const rootCandidate = options.assetIndex.byRelativePath.get(normalizedTarget.replace(/^\/+/, '').toLowerCase());
+  if (rootCandidate) {
+    return rootCandidate.url;
+  }
+
+  const basenameKey = basename(normalizedTarget).toLowerCase();
+  const basenameCandidates = options.assetIndex.byBasename.get(basenameKey) ?? [];
+  return chooseNearestAsset(basenameCandidates, options)?.url;
+}
+
+function resolveRelativeAsset(
+  target: string,
+  options: ContentBuildOptions & { sourcePath?: string }
+): AssetCandidate | undefined {
+  if (!options.assetIndex || !options.sourcePath) {
+    return undefined;
+  }
+
+  const sourceDir = dirname(options.sourcePath);
+  const absoluteCandidate = resolve(sourceDir, target);
+  const relativeCandidate = normalizePath(relative(options.assetIndex.projectRoot, absoluteCandidate));
+
+  if (relativeCandidate.startsWith('..')) {
+    return undefined;
+  }
+
+  return options.assetIndex.byRelativePath.get(relativeCandidate.toLowerCase());
+}
+
+function chooseNearestAsset(
+  candidates: AssetCandidate[],
+  options: ContentBuildOptions & { sourcePath?: string }
+): AssetCandidate | undefined {
+  if (candidates.length <= 1 || !options.sourcePath || !options.assetIndex) {
+    return candidates[0];
+  }
+
+  const sourceDir = normalizePath(relative(options.assetIndex.projectRoot, dirname(options.sourcePath)));
+  return [...candidates].sort((a, b) => assetDistance(a.relativePath, sourceDir) - assetDistance(b.relativePath, sourceDir))[0];
+}
+
+function assetDistance(assetPath: string, sourceDir: string): number {
+  const assetParts = assetPath.split('/').slice(0, -1);
+  const sourceParts = sourceDir.split('/').filter(Boolean);
+  let shared = 0;
+  while (assetParts[shared] === sourceParts[shared] && shared < assetParts.length && shared < sourceParts.length) {
+    shared += 1;
+  }
+
+  return assetParts.length + sourceParts.length - shared * 2;
+}
+
+function isImageReference(target: string): boolean {
+  return imageExtensions.has(extname(target.split('?')[0] ?? '').toLowerCase());
+}
+
+function isExternalReference(target: string): boolean {
+  return /^(?:https?:|data:|blob:|#)/i.test(target);
+}
+
+function assetUrl(relativePath: string): string {
+  return `${generatedAssetDir}/${normalizePath(relativePath)
+    .split('/')
+    .map((part) => encodeURIComponent(part))
+    .join('/')}`;
+}
+
+function normalizePath(path: string): string {
+  return path.replace(/\\/g, '/').replace(/^\.\/+/, '');
+}
+
+function decodeURIComponentSafe(value: string): string {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
+
 function unique(values: string[]): string[] {
   return [...new Set(values)];
 }
@@ -220,6 +416,7 @@ function markdownToPlainText(markdown: string): string {
   return markdown
     .replace(/```[\s\S]*?```/g, ' ')
     .replace(/`([^`]+)`/g, '$1')
+    .replace(/!\[\[[^\]]+]]/g, ' ')
     .replace(/!\[[^\]]*]\([^)]*\)/g, ' ')
     .replace(/\[([^\]]+)]\([^)]*\)/g, '$1')
     .replace(/[#>*_\-[\]()`]/g, ' ')
