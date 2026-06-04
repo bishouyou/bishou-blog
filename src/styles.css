@@ -27,7 +27,30 @@
 
 ::selection {
   background: var(--text);
-  color: var(--blue);
+  color: var(--bg);
+  text-shadow: none;
+}
+
+::-moz-selection {
+  background: var(--text);
+  color: var(--bg);
+  text-shadow: none;
+}
+
+#terminal ::selection,
+#content-sidebar ::selection,
+.article-viewer ::selection {
+  background: var(--text);
+  color: var(--bg);
+  text-shadow: none;
+}
+
+#terminal ::-moz-selection,
+#content-sidebar ::-moz-selection,
+.article-viewer ::-moz-selection {
+  background: var(--text);
+  color: var(--bg);
+  text-shadow: none;
 }
 
 html,
