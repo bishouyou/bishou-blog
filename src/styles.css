@@ -81,7 +81,7 @@ body.article-open {
   position: fixed;
   top: clamp(12px, 2vw, 28px);
   bottom: clamp(12px, 2vw, 28px);
-  left: max(clamp(12px, 2vw, 28px), calc((100vw - 1160px) / 2));
+  left: clamp(12px, 2vw, 28px);
   z-index: 11;
   width: clamp(220px, 22vw, 280px);
   max-height: calc(100vh - clamp(24px, 4vw, 56px));
