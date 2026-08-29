@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+  {% if page %}
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Bishou Blog" />
+  <meta property="og:title" content="{{ page.title | default('Bishou Blog') }}" />
+  <meta property="og:description" content="{{ page.meta.get('description', 'CTF 学习笔记与博客') }}" />
+  <meta property="og:url" content="{{ page.canonical_url }}" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@bishouyou" />
+  {% endif %}
+{% endblock %}
