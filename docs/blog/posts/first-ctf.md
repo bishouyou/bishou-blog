@@ -17,4 +17,4 @@ comments: true
 
 ## 复盘
 
-把学到的东西沉淀进「[学习笔记](../notes/index.md)」。
+把学到的东西沉淀进「[学习笔记](../../notes/index.md)」。
