@@ -48,6 +48,7 @@ theme:
 # 插件:blog = Material 内置时间轴博客(无需额外依赖)
 plugins:
   - search
+  - roamlinks
   - blog:
       blog_dir: blog
       post_date_format: yyyy-MM-dd
