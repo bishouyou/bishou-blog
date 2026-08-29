@@ -1,0 +1,97 @@
+# 站点信息
+site_name: Bishou Blog
+site_url: https://bishouyou.github.io/bishou-blog/
+site_author: bishouyou
+site_description: CTF 学习笔记与博客
+
+# 仓库信息
+repo_name: bishou-blog
+repo_url: https://github.com/bishouyou/bishou-blog
+edit_uri: edit/main/docs/
+
+copyright: Copyright &copy; 2026 bishouyou
+
+# 主题:Material for MkDocs(同 Hello-CTF 技术栈)
+theme:
+  name: material
+  custom_dir: overrides            # giscus 评论注入
+  language: zh
+  features:
+    - content.code.annotate
+    - content.code.copy
+    - content.tabs.link
+    - content.tooltips
+    - header.autohide
+    - navigation.indexes
+    - navigation.instant
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: 切换到深色模式
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: 切换到浅色模式
+  icon:
+    repo: fontawesome/brands/github
+
+# 插件:blog = Material 内置时间轴博客(无需额外依赖)
+plugins:
+  - search
+  - blog:
+      blog_dir: blog
+      post_date_format: yyyy-MM-dd
+      post_url_format: "{slug}"
+      archive: true                # 按年归档
+      archive_name: 归档
+      categories: true             # 按分类
+      categories_name: 分类
+      pagination: true
+      pagination_per_page: 5
+      authors: false
+  - minify:
+      minify_html: true
+
+markdown_extensions:
+  - abbr
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - toc:
+      permalink: true
+
+nav:
+  - 首页: index.md
+  - 博客: blog/index.md
+  - 赛事日程: events.md
+  - 学习笔记:
+      - notes/index.md
+      - 入门指南: notes/getting-started.md
+      - Crypto: notes/crypto.md
+      - Pwn: notes/pwn.md
+      - Reverse: notes/reverse.md
+      - Misc: notes/misc.md
+  - 关于: about.md

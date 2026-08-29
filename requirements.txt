@@ -1,0 +1,4 @@
+# 与 CI 保持一致;升级需本地回归
+mkdocs==1.6.1
+mkdocs-material==9.7.7
+mkdocs-minify-plugin==0.8.0
