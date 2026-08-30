@@ -15,8 +15,7 @@ copyright: Copyright &copy; 2026 bishouyou
 theme:
   name: material
   custom_dir: overrides            # giscus 评论注入
-  font:
-    code: JetBrains Mono        # 代码块用终端字体(自托管)
+  font: false                      # 全部字体自托管(extra.css),彻底禁用 Google Fonts
   language: zh
   features:
     - content.code.annotate
