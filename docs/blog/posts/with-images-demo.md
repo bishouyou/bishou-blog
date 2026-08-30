@@ -7,6 +7,10 @@ comments: true
 
 # 在 Markdown 中引用图片和文件
 
+本站图片统一放在 `docs/assets/images/`,这篇演示各种图片、附件、流程图的引用写法。
+
+<!-- more -->
+
 本站的图片统一放在 `docs/assets/images/` 目录下。
 
 ## 基本图片

@@ -7,6 +7,10 @@ comments: true
 
 # 博客开张
 
+第一篇博客,站点用 [MkDocs Material](https://squidfunk.github.io/mkdocs-material/) 搭建,从此开始记录安全学习的点滴。
+
+<!-- more -->
+
 第一篇文章,站点用 [MkDocs Material](https://squidfunk.github.io/mkdocs-material/) 搭建:
 
 - **学习笔记**放在「笔记」区,按主题长期维护、持续修订;

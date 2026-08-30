@@ -7,6 +7,10 @@ comments: true
 
 # Obsidian 语法引用图片测试
 
+验证 Obsidian 的双中括号嵌入语法能否在 MkDocs 里正常显示。
+
+<!-- more -->
+
 ## 直接用 Obsidian 嵌入语法
 
 ![[Pasted image 20260207190449.png]]

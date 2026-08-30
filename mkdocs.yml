@@ -16,6 +16,7 @@ theme:
   name: material
   custom_dir: overrides            # giscus 评论注入
   language: zh
+  font: false                      # 禁用 Google Fonts(国内被墙导致加载慢),改用系统字体
   features:
     - content.code.annotate
     - content.code.copy
