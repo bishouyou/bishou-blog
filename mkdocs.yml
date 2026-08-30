@@ -15,6 +15,8 @@ copyright: Copyright &copy; 2026 bishouyou
 theme:
   name: material
   custom_dir: overrides            # giscus 评论注入
+  font:
+    code: Cascadia Code          # 代码块用 Windows Terminal 默认字体(自托管)
   language: zh
   features:
     - content.code.annotate
@@ -44,6 +46,10 @@ theme:
         name: 切换到浅色模式
   icon:
     repo: fontawesome/brands/github
+
+# 自托管字体(@font-face 定义在 extra.css)
+extra_css:
+  - assets/stylesheets/extra.css
 
 # 插件:blog = Material 内置时间轴博客(无需额外依赖)
 plugins:
