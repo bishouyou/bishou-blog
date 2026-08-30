@@ -16,7 +16,7 @@ theme:
   name: material
   custom_dir: overrides            # giscus 评论注入
   font:
-    code: Cascadia Code          # 代码块用 Windows Terminal 默认字体(自托管)
+    code: JetBrains Mono        # 代码块用终端字体(自托管)
   language: zh
   features:
     - content.code.annotate
