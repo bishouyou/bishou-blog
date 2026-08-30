@@ -6,14 +6,10 @@ hide:
 
 # CTF 赛事日程
 
-> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-08-29 20:17 UTC+8
+> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-08-30 14:18 UTC+8
 
 | 比赛 | 开始 | 结束 | 形式 | 详情 |
 | --- | --- | --- | --- | --- |
-| [ASIS CTF Quals 2026](https://ctftime.org/event/3033/) | 2026-08-29 22:00 | 2026-08-30 22:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3033/) |
-| [UND CyberHawks National CTF Competition 2026 Qualifiers](https://ctftime.org/event/3347/) | 2026-08-29 22:00 | 2026-08-30 13:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3347/) |
-| [Iran Tech Olympics CTF 2026](https://ctftime.org/event/3413/) | 2026-08-29 22:00 | 2026-08-30 22:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3413/) |
-| [DiceCTF 2026 Finals](https://ctftime.org/event/3416/) | 2026-08-30 00:00 | 2026-08-31 06:00 | Hack quest | [CTFtime](https://ctftime.org/event/3416/) |
 | [NNS CTF 2026](https://ctftime.org/event/3097/) | 2026-09-05 00:00 | 2026-09-07 00:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3097/) |
 | [TFC CTF 2026](https://ctftime.org/event/3344/) | 2026-09-05 18:00 | 2026-09-06 18:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3344/) |
 | [SUNCTF 2026](https://ctftime.org/event/3389/) | 2026-09-06 08:00 | 2026-09-06 17:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3389/) |
@@ -40,3 +36,7 @@ hide:
 | [DEADFACE CTF 2026](https://ctftime.org/event/3279/) | 2026-10-17 22:00 | 2026-10-19 08:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3279/) |
 | [SAS CTF 2026 Finals](https://ctftime.org/event/3409/) | 2026-10-20 11:00 | 2026-10-20 22:00 | Attack-Defense | [CTFtime](https://ctftime.org/event/3409/) |
 | [HITCON CTF 2026](https://ctftime.org/event/3340/) | 2026-10-23 22:00 | 2026-10-25 22:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3340/) |
+| [Hack.lu CTF 2026](https://ctftime.org/event/3207/) | 2026-10-24 02:00 | 2026-10-26 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3207/) |
+| [H7CTF 2026 Finals](https://ctftime.org/event/3094/) | 2026-10-24 14:30 | 2026-10-25 14:30 | Attack-Defense | [CTFtime](https://ctftime.org/event/3094/) |
+| [Sudocrypt v16.0](https://ctftime.org/event/3404/) | 2026-10-27 11:30 | 2026-10-28 23:30 | Hack quest | [CTFtime](https://ctftime.org/event/3404/) |
+| [Hacker's Gambit 2026 (Round 2 – Grand Finale)](https://ctftime.org/event/3381/) | 2026-10-30 14:30 | 2026-10-31 14:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3381/) |
