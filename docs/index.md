@@ -10,37 +10,37 @@ hide:
 
 <div class="grid cards" markdown>
 
-- :material-book-open-page-variant:{ .lg .middle } __学习笔记__
+-   :material-book-open-page-variant:{ .lg .middle } __学习笔记__
 
-  ---
+    ---
 
-  按方向组织的知识库:入门、Crypto、Pwn、Reverse、Misc,持续修订。
+    按方向组织的知识库:入门、Crypto、Pwn、Reverse、Misc,持续修订。
 
-  [:arrow-right: 去看笔记](notes/index.md)
+    [:octicons-arrow-right-24: 去看笔记](notes/index.md)
 
-- :material-rss:{ .lg .middle } __博客__
+-   :material-rss:{ .lg .middle } __博客__
 
-  ---
+    ---
 
-  按时间归档的比赛记录、折腾日志与随笔。
+    按时间归档的比赛记录、折腾日志与随笔。
 
-  [:arrow-right: 去看博客](blog/index.md)
+    [:octicons-arrow-right-24: 去看博客](blog/index.md)
 
-- :material-calendar-clock:{ .lg .middle } __赛事日程__
+-   :material-calendar-clock:{ .lg .middle } __赛事日程__
 
-  ---
+    ---
 
-  每日自动同步 CTFtime 的近期 CTF 赛事,方便报名。
+    每日自动同步 CTFtime 的近期 CTF 赛事,方便报名。
 
-  [:arrow-right: 看看最近有什么比赛](events.md)
+    [:octicons-arrow-right-24: 看看最近有什么比赛](events.md)
 
-- :material-flag:{ .lg .middle } __入门指南__
+-   :material-flag:{ .lg .middle } __入门指南__
 
-  ---
+    ---
 
-  还没听说过 CTF?从这里开始。
+    还没听说过 CTF?从这里开始。
 
-  [:arrow-right: 从零开始](notes/getting-started.md)
+    [:octicons-arrow-right-24: 从零开始](notes/getting-started.md)
 
 </div>
 
