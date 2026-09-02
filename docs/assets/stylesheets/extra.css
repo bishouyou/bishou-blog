@@ -63,3 +63,9 @@
 .md-post--excerpt .md-post__content p:has(> img:only-child) {
   display: none;
 }
+
+/* 标题 ¶ 永久链接:悬停可点复制,但复制/选中正文时不带入 ¶ */
+.md-typeset .headerlink {
+  -webkit-user-select: none;
+  user-select: none;
+}
