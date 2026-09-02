@@ -50,6 +50,10 @@ theme:
 extra_css:
   - assets/stylesheets/extra.css
 
+# 构建钩子:自动从 docs/notes/ 生成"学习笔记"导航(nav:false 隐藏)
+hooks:
+  - scripts/notesnav.py
+
 # 插件:blog = Material 内置时间轴博客(无需额外依赖)
 plugins:
   - search
