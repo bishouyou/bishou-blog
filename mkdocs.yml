@@ -96,6 +96,7 @@ markdown_extensions:
 nav:
   - 首页: index.md
   - 博客: blog/index.md
+  - 上传博客: 上传博客.md
   - 赛事日程: events.md
   - 学习笔记:
       - notes/index.md
