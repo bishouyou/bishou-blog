@@ -100,4 +100,5 @@ nav:
       - Pwn: notes/pwn.md
       - Reverse: notes/reverse.md
       - Misc: notes/misc.md
+  - 发布指南: 发布指南.md
   - 关于: about.md
