@@ -13,11 +13,11 @@ comments: true
 
 ## 直接用 Obsidian 嵌入语法
 
-![[Pasted image 20260207190449.png]]
+!Pasted image 20260207190449.png
 
 ## 带尺寸参数
 
-![[Pasted image 20260207190449.png|300]]
+!300
 
 ## 说明
 

@@ -24,6 +24,8 @@ jobs:
           python-version: "3.13"
           cache: pip
       - run: pip install -r requirements.txt
+      # 构建前:把指向不存在笔记的 [[...]] 转纯文本,避免 strict 构建因缺失链接失败
+      - run: python scripts/fix_missing_wikilinks.py
       - run: mkdocs build --strict --site-dir site
       - uses: actions/upload-pages-artifact@v3
         with:
