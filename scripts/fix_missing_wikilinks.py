@@ -3,22 +3,21 @@
 """
 fix_missing_wikilinks: 构建前预处理。
 
-把指向"不存在笔记"的 Obsidian [[...]] 内部链接转成纯文本,
-避免 roamlinks 报 "unable to find" 警告导致 mkdocs build --strict 失败。
+把指向"不存在笔记"的 Obsidian [[...]] 内部链接转成纯文本,避免 roamlinks 报
+"unable to find" 警告导致 mkdocs build --strict 失败。已存在的 [[...]] 保留
+(交给 roamlinks 正常转成 markdown 链接)。代码块与行内代码里的 [[...]] 不受
+影响(不会误转文档里的语法示例)。
 
-已存在的 [[...]] 保留(交给 roamlinks 正常转成 markdown 链接)。
-
-用法(构建前运行):
-    python scripts/fix_missing_wikilinks.py
-
-注意:会原地修改 docs/**/*.md(CI 工作树里跑,不影响 GitHub 上的源文件)。
+用法: python scripts/fix_missing_wikilinks.py
 """
 import os
 import re
-import sys
 
 DOCS = "docs"
 LINK = re.compile(r"\[\[([^\[\]]+)\]\]")
+bt = chr(96)
+FENCE = re.compile(r"^\s*(" + bt + "{3,}|~{3,})")
+INLINE_CODE = re.compile(bt + "[^" + bt + r"\n]+" + bt)
 
 
 def _find(target):
@@ -52,21 +51,51 @@ def _fix(m):
     return alias if alias else tgt
 
 
+def process_line(line):
+    """行内代码保护:stash 成占位符 -> 转链接 -> 恢复。"""
+    spans = []
+
+    def _stash(m):
+        spans.append(m.group(0))
+        return "%%SPAN%d%%" % (len(spans) - 1)
+
+    line = INLINE_CODE.sub(_stash, line)
+    line = LINK.sub(_fix, line)
+    for i, sp in enumerate(spans):
+        line = line.replace("%%SPAN%d%%" % i, sp)
+    return line
+
+
+def process_text(text):
+    out = []
+    in_fence = False
+    for line in text.splitlines(True):
+        if FENCE.match(line):
+            in_fence = not in_fence
+            out.append(line)
+            continue
+        if in_fence:
+            out.append(line)
+            continue
+        out.append(process_line(line))
+    return "".join(out)
+
+
 def main():
-    fixed_files = 0
-    fixed_links = 0
+    n_files = 0
+    n_links = 0
     for root, _dirs, files in os.walk(DOCS):
         for f in files:
             if not f.endswith(".md"):
                 continue
             path = os.path.join(root, f)
             s = open(path, encoding="utf-8").read()
-            new = LINK.sub(_fix, s)
+            new = process_text(s)
             if new != s:
-                fixed_links += 1
+                n_files += 1
+                n_links += s.count("[[") - new.count("[[")
                 open(path, "w", encoding="utf-8").write(new)
-                fixed_files += 1
-    print("fix_missing_wikilinks: 处理 %d 个文件, 转换 %d 处缺失链接" % (fixed_files, fixed_links))
+    print("fix_missing_wikilinks: 修改 %d 个文件, 兜底 %d 处缺失链接" % (n_files, n_links))
 
 
 if __name__ == "__main__":
