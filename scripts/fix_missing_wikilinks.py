@@ -3,10 +3,13 @@
 """
 fix_missing_wikilinks: 构建前预处理。
 
-把指向"不存在笔记"的 Obsidian [[...]] 内部链接转成纯文本,避免 roamlinks 报
-"unable to find" 警告导致 mkdocs build --strict 失败。已存在的 [[...]] 保留
-(交给 roamlinks 正常转成 markdown 链接)。代码块与行内代码里的 [[...]] 不受
-影响(不会误转文档里的语法示例)。
+把指向"不存在笔记"的 [[...]] 内部链接转成纯文本,避免 roamlinks 报
+"unable to find" 警告导致 mkdocs build --strict 失败。
+
+注意:roamlinks 对原始 markdown 做 re.sub,连代码块里的 [[...]] 也会匹配。
+所以这里把任何指向不存在笔记的 [[...]] 都转成纯文本(代码块也不例外)。
+要展示 [[...]] 语法请用 HTML 实体(如 &#91;&#91;笔记&#93;&#93;),它不会被
+roamlinks 或本脚本匹配。
 
 用法: python scripts/fix_missing_wikilinks.py
 """
@@ -15,9 +18,6 @@ import re
 
 DOCS = "docs"
 LINK = re.compile(r"\[\[([^\[\]]+)\]\]")
-bt = chr(96)
-FENCE = re.compile(r"^\s*(" + bt + "{3,}|~{3,})")
-INLINE_CODE = re.compile(bt + "[^" + bt + r"\n]+" + bt)
 
 
 def _find(target):
@@ -51,36 +51,6 @@ def _fix(m):
     return alias if alias else tgt
 
 
-def process_line(line):
-    """行内代码保护:stash 成占位符 -> 转链接 -> 恢复。"""
-    spans = []
-
-    def _stash(m):
-        spans.append(m.group(0))
-        return "%%SPAN%d%%" % (len(spans) - 1)
-
-    line = INLINE_CODE.sub(_stash, line)
-    line = LINK.sub(_fix, line)
-    for i, sp in enumerate(spans):
-        line = line.replace("%%SPAN%d%%" % i, sp)
-    return line
-
-
-def process_text(text):
-    out = []
-    in_fence = False
-    for line in text.splitlines(True):
-        if FENCE.match(line):
-            in_fence = not in_fence
-            out.append(line)
-            continue
-        if in_fence:
-            out.append(line)
-            continue
-        out.append(process_line(line))
-    return "".join(out)
-
-
 def main():
     n_files = 0
     n_links = 0
@@ -90,7 +60,7 @@ def main():
                 continue
             path = os.path.join(root, f)
             s = open(path, encoding="utf-8").read()
-            new = process_text(s)
+            new = LINK.sub(_fix, s)
             if new != s:
                 n_files += 1
                 n_links += s.count("[[") - new.count("[[")
