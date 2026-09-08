@@ -54,6 +54,7 @@ extra_css:
 hooks:
   - scripts/notesnav.py
   - scripts/obsidian_callouts.py
+  - scripts/obsidian_inline.py
 
 # 插件:blog = Material 内置时间轴博客(无需额外依赖)
 plugins:
