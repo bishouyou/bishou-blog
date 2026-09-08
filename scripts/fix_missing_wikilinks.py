@@ -26,6 +26,9 @@ def _find(target):
         t = t.split("#")[0]
     if t in ("", "."):
         return True
+    # 先按原始写法找:图片/附件等非 md 资产也在这里,别误当缺失链接吃掉
+    if os.path.isfile(os.path.join(DOCS, t)):
+        return True
     if os.path.isfile(os.path.join(DOCS, t + ".md")):
         return True
     if os.path.isfile(os.path.join(DOCS, t, "index.md")):
@@ -33,7 +36,8 @@ def _find(target):
     base = os.path.basename(t)
     if base:
         for _r, _d, files in os.walk(DOCS):
-            if (base + ".md") in files:
+            # 任意文件(含图片/附件)都算找到;不带扩展名时按 .md 找
+            if base in files or (base + ".md") in files:
                 return True
     return False
 
