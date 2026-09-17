@@ -13,6 +13,8 @@ Material 写法:
 支持:
   - 嵌套 callout (> > [!TYPE])
   - 类型映射 NOTE/TIP/INFO/WARNING/DANGER/QUESTION/EXAMPLE/BUG/FAILURE/SUCCESS/HINT
+  - 任意未识别类型(含中文,如 [!本地模型很傻？])按 Obsidian 语义回落为 note,
+    标识符本身作为标题
   - 折叠/切换后缀 [-] [=] 会被忽略(按展开渲染)
   - 代码块(```)内的内容跳过,不误转
 
@@ -27,7 +29,9 @@ TYPE_MAP = {
     "CAUTION": "danger", "QUOTE": "quote", "CUSTOM-TITLE": "note",
 }
 
-_HDR = re.compile(r'^((?:>\s*)+)(\s*)\[!([A-Z][\w-]*)\]([-=])?\s?(.*)$')
+# 类型标识符:Obsidian 允许任意标识符(不限于 ASCII),未识别的类型回落为 note。
+# 故这里不做字符白名单,只要 [!...] 非空即可;中英文/符号都接受。
+_HDR = re.compile(r'^((?:>\s*)+)(\s*)\[!([^\]\s][^\]]*?)\]([-=])?\s?(.*)$')
 _CONT = re.compile(r'^((?:>\s*)+)\s?(.*)$')
 _FENCE = re.compile(r'^\s*`(\S+)?`{2,}')
 
@@ -58,9 +62,17 @@ def _convert(md):
             continue
         chevrons = m.group(1)
         depth = chevrons.count(">")
-        raw_type = m.group(3).upper()
+        raw_type = m.group(3).strip()
         title = m.group(5).strip()
-        mtype = TYPE_MAP.get(raw_type, "note")
+        # Obsidian 语义:未识别的类型标识符回落为 note,且该标识符本身成为标题。
+        # 例:> [!本地模型很傻？]  =>  note 类型,标题 "本地模型很傻？"
+        mapped = TYPE_MAP.get(raw_type.upper())
+        if mapped is None:
+            mtype = "note"
+            if not title:
+                title = raw_type
+        else:
+            mtype = mapped
         indent = "    " * (depth - 1)
         hdr = indent + "!!! " + mtype
         if title:
