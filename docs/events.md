@@ -6,11 +6,10 @@ hide:
 
 # CTF 赛事日程
 
-> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-09-16 13:42 UTC+8
+> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-09-17 13:51 UTC+8
 
 | 比赛 | 开始 | 结束 | 形式 | 详情 |
 | --- | --- | --- | --- | --- |
-| [VolgaCTF 2026 Final](https://ctftime.org/event/3265/) | 2026-09-17 13:00 | 2026-09-17 23:00 | Attack-Defense | [CTFtime](https://ctftime.org/event/3265/) |
 | [NullOrigin CTF Qualifiers](https://ctftime.org/event/3346/) | 2026-09-18 12:30 | 2026-09-19 00:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3346/) |
 | [DefCamp Capture the Flag (D-CTF) 2026 Quals](https://ctftime.org/event/3392/) | 2026-09-18 18:00 | 2026-09-20 18:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3392/) |
 | [CSAW CTF Qualification Round 2026](https://ctftime.org/event/3355/) | 2026-09-19 00:00 | 2026-09-21 00:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3355/) |
@@ -40,3 +39,4 @@ hide:
 | [HITCON CTF 2026](https://ctftime.org/event/3340/) | 2026-10-23 22:00 | 2026-10-25 22:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3340/) |
 | [Hack.lu CTF 2026](https://ctftime.org/event/3207/) | 2026-10-24 02:00 | 2026-10-26 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3207/) |
 | [H7CTF 2026 Finals](https://ctftime.org/event/3094/) | 2026-10-24 14:30 | 2026-10-25 14:30 | Attack-Defense | [CTFtime](https://ctftime.org/event/3094/) |
+| [Hacker's Gambit 2026 (Round 2 – Grand Finale)](https://ctftime.org/event/3381/) | 2026-10-30 14:30 | 2026-10-31 14:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3381/) |
