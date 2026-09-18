@@ -54,6 +54,7 @@ extra_css:
 hooks:
   - scripts/notesnav.py
   - scripts/obsidian_title.py
+  - scripts/obsidian_tables.py
   - scripts/obsidian_callouts.py
   - scripts/obsidian_inline.py
 
@@ -80,6 +81,7 @@ markdown_extensions:
   - attr_list
   - def_list
   - footnotes
+  - nl2br            # 单换行即换行(与 Obsidian 默认语义一致)
   - md_in_html
   - admonition
   - pymdownx.details
