@@ -6,16 +6,10 @@ hide:
 
 # CTF 赛事日程
 
-> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-09-18 13:36 UTC+8
+> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-09-19 13:32 UTC+8
 
 | 比赛 | 开始 | 结束 | 形式 | 详情 |
 | --- | --- | --- | --- | --- |
-| [DefCamp Capture the Flag (D-CTF) 2026 Quals](https://ctftime.org/event/3392/) | 2026-09-18 18:00 | 2026-09-20 18:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3392/) |
-| [CSAW CTF Qualification Round 2026](https://ctftime.org/event/3355/) | 2026-09-19 00:00 | 2026-09-21 00:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3355/) |
-| [Cyber League 2026 - Major](https://ctftime.org/event/3412/) | 2026-09-19 10:00 | 2026-09-20 10:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3412/) |
-| [Haruulzangi CTF 2026 Semi-Final](https://ctftime.org/event/3431/) | 2026-09-19 10:00 | 2026-09-19 16:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3431/) |
-| [WATCHLIST](https://ctftime.org/event/3326/) | 2026-09-19 11:30 | 2026-09-20 11:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3326/) |
-| [z0d1ak CTF Finals](https://ctftime.org/event/3428/) | 2026-09-19 11:30 | 2026-09-19 20:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3428/) |
 | [OmniCTF 2026 Finals](https://ctftime.org/event/3401/) | 2026-09-19 14:00 | 2026-09-20 00:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3401/) |
 | [07CTF 2026](https://ctftime.org/event/3365/) | 2026-09-19 20:00 | 2026-09-20 20:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3365/) |
 | [LUN4R CTF Quals](https://ctftime.org/event/3435/) | 2026-09-20 12:30 | 2026-09-21 00:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3435/) |
@@ -40,3 +34,9 @@ hide:
 | [SAS CTF 2026 Finals](https://ctftime.org/event/3409/) | 2026-10-20 11:00 | 2026-10-20 22:00 | Attack-Defense | [CTFtime](https://ctftime.org/event/3409/) |
 | [HITCON CTF 2026](https://ctftime.org/event/3340/) | 2026-10-23 22:00 | 2026-10-25 22:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3340/) |
 | [RSTCON 2026 CTF](https://ctftime.org/event/3377/) | 2026-10-24 01:00 | 2026-10-26 01:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3377/) |
+| [Hack.lu CTF 2026](https://ctftime.org/event/3207/) | 2026-10-24 02:00 | 2026-10-26 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3207/) |
+| [H7CTF 2026 Finals](https://ctftime.org/event/3094/) | 2026-10-24 14:30 | 2026-10-25 14:30 | Attack-Defense | [CTFtime](https://ctftime.org/event/3094/) |
+| [Sudocrypt v16.0](https://ctftime.org/event/3443/) | 2026-10-27 11:30 | 2026-10-28 23:30 | Hack quest | [CTFtime](https://ctftime.org/event/3443/) |
+| [Srdnlen CTF 2026 Finals (Sardinia Cyber Camp)](https://ctftime.org/event/3444/) | 2026-10-29 17:00 | 2026-10-30 01:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3444/) |
+| [Hacker's Gambit 2026 (Round 2 – Grand Finale)](https://ctftime.org/event/3381/) | 2026-10-30 14:30 | 2026-10-31 14:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3381/) |
+| [HKCERT CTF 2026 (Qualifying Round)](https://ctftime.org/event/3418/) | 2026-11-06 18:00 | 2026-11-07 18:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3418/) |
