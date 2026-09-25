@@ -6,12 +6,10 @@ hide:
 
 # CTF 赛事日程
 
-> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-09-24 13:55 UTC+8
+> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-09-25 13:55 UTC+8
 
 | 比赛 | 开始 | 结束 | 形式 | 详情 |
 | --- | --- | --- | --- | --- |
-| [BreachPoint 2026](https://ctftime.org/event/3451/) | 2026-09-25 12:00 | 2026-09-26 16:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3451/) |
-| [Null Origin CTF 2026: Grand finale ](https://ctftime.org/event/3454/) | 2026-09-25 12:30 | 2026-09-26 00:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3454/) |
 | [NileCTF](https://ctftime.org/event/3449/) | 2026-09-25 20:00 | 2026-09-27 20:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3449/) |
 | [FlightPath2026](https://ctftime.org/event/3422/) | 2026-09-25 21:30 | 2026-09-28 05:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3422/) |
 | [BCS CTF 2026](https://ctftime.org/event/3374/) | 2026-09-25 22:00 | 2026-09-27 22:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3374/) |
@@ -40,3 +38,5 @@ hide:
 | [Srdnlen CTF 2026 Finals (Sardinia Cyber Camp)](https://ctftime.org/event/3444/) | 2026-10-29 17:00 | 2026-10-30 01:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3444/) |
 | [Hacker's Gambit 2026 (Round 2 – Grand Finale)](https://ctftime.org/event/3381/) | 2026-10-30 14:30 | 2026-10-31 14:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3381/) |
 | [HKCERT CTF 2026 (Qualifying Round)](https://ctftime.org/event/3418/) | 2026-11-06 18:00 | 2026-11-07 18:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3418/) |
+| [PINK+ CTF 2026](https://ctftime.org/event/3331/) | 2026-11-06 20:00 | 2026-11-09 20:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3331/) |
+| [CSCTF 2026](https://ctftime.org/event/3333/) | 2026-11-06 21:00 | 2026-11-08 21:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3333/) |
