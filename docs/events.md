@@ -6,12 +6,10 @@ hide:
 
 # CTF 赛事日程
 
-> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-09-26 13:56 UTC+8
+> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-09-27 14:21 UTC+8
 
 | 比赛 | 开始 | 结束 | 形式 | 详情 |
 | --- | --- | --- | --- | --- |
-| [FAUST CTF 2026](https://ctftime.org/event/3312/) | 2026-09-26 20:00 | 2026-09-27 05:00 | Attack-Defense | [CTFtime](https://ctftime.org/event/3312/) |
-| [SunshineCTF 2026](https://ctftime.org/event/3399/) | 2026-09-26 22:00 | 2026-09-28 22:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3399/) |
 | [Pointer Overflow CTF - 2026](https://ctftime.org/event/3020/) | 2026-09-27 22:00 | 2026-12-06 22:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3020/) |
 | [SCAN 2026 Final](https://ctftime.org/event/3417/) | 2026-09-28 09:00 | 2026-09-28 16:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3417/) |
 | [CSS CTF 2026: Return of Nexus](https://ctftime.org/event/3434/) | 2026-09-30 14:00 | 2026-10-02 06:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3434/) |
@@ -40,3 +38,5 @@ hide:
 | [BlackAlps CTF 2026](https://ctftime.org/event/3242/) | 2026-11-07 02:15 | 2026-11-07 06:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3242/) |
 | [CSAW CTF Final Round 2026](https://ctftime.org/event/3410/) | 2026-11-13 01:00 | 2026-11-14 13:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3410/) |
 | [Platypwn 2026](https://ctftime.org/event/3082/) | 2026-11-14 01:00 | 2026-11-14 19:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3082/) |
+| [WolvCTF 2026](https://ctftime.org/event/3049/) | 2026-11-14 07:00 | 2026-11-16 07:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3049/) |
+| [International Battle of Hackers 2026](https://ctftime.org/event/3390/) | 2026-11-14 08:30 | 2026-11-14 18:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3390/) |
