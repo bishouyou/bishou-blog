@@ -6,13 +6,12 @@ hide:
 
 # CTF 赛事日程
 
-> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-09-28 14:24 UTC+8
+> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-09-29 14:38 UTC+8
 
 | 比赛 | 开始 | 结束 | 形式 | 详情 |
 | --- | --- | --- | --- | --- |
 | [CSS CTF 2026: Return of Nexus](https://ctftime.org/event/3434/) | 2026-09-30 14:00 | 2026-10-02 06:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3434/) |
 | [Hacker's Gambit 2026 (Round 1 – Online Qualifier)](https://ctftime.org/event/3380/) | 2026-10-02 14:30 | 2026-10-04 14:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3380/) |
-| [Securinets CTF Quals 2026](https://ctftime.org/event/3364/) | 2026-10-03 17:00 | 2026-10-05 05:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3364/) |
 | [CubeCTF 2026](https://ctftime.org/event/3352/) | 2026-10-03 22:00 | 2026-10-04 06:00 | Attack-Defense | [CTFtime](https://ctftime.org/event/3352/) |
 | [CDCTF 2026](https://ctftime.org/event/3293/) | 2026-10-03 23:00 | 2026-10-04 11:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3293/) |
 | [AltayCTF 2026](https://ctftime.org/event/3432/) | 2026-10-04 11:00 | 2026-10-04 20:00 | Attack-Defense | [CTFtime](https://ctftime.org/event/3432/) |
@@ -20,6 +19,7 @@ hide:
 | [KubSTU CTF](https://ctftime.org/event/3446/) | 2026-10-10 15:00 | 2026-10-11 21:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3446/) |
 | [Narxoz CTF](https://ctftime.org/event/3437/) | 2026-10-10 18:00 | 2026-10-11 02:00 | Hack quest | [CTFtime](https://ctftime.org/event/3437/) |
 | [GaianSpace CTF 2026](https://ctftime.org/event/3354/) | 2026-10-11 05:00 | 2026-10-15 05:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3354/) |
+| [Securinets CTF Quals 2026](https://ctftime.org/event/3364/) | 2026-10-17 17:00 | 2026-10-19 05:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3364/) |
 | [DEADFACE CTF 2026](https://ctftime.org/event/3279/) | 2026-10-17 22:00 | 2026-10-19 08:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3279/) |
 | [SAS CTF 2026 Finals](https://ctftime.org/event/3409/) | 2026-10-20 11:00 | 2026-10-20 22:00 | Attack-Defense | [CTFtime](https://ctftime.org/event/3409/) |
 | [HITCON CTF 2026](https://ctftime.org/event/3340/) | 2026-10-23 22:00 | 2026-10-25 22:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3340/) |
