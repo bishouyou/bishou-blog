@@ -6,15 +6,15 @@ hide:
 
 # CTF 赛事日程
 
-> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-09-29 14:38 UTC+8
+> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-09-30 14:21 UTC+8
 
 | 比赛 | 开始 | 结束 | 形式 | 详情 |
 | --- | --- | --- | --- | --- |
-| [CSS CTF 2026: Return of Nexus](https://ctftime.org/event/3434/) | 2026-09-30 14:00 | 2026-10-02 06:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3434/) |
 | [Hacker's Gambit 2026 (Round 1 – Online Qualifier)](https://ctftime.org/event/3380/) | 2026-10-02 14:30 | 2026-10-04 14:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3380/) |
 | [CubeCTF 2026](https://ctftime.org/event/3352/) | 2026-10-03 22:00 | 2026-10-04 06:00 | Attack-Defense | [CTFtime](https://ctftime.org/event/3352/) |
 | [CDCTF 2026](https://ctftime.org/event/3293/) | 2026-10-03 23:00 | 2026-10-04 11:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3293/) |
 | [AltayCTF 2026](https://ctftime.org/event/3432/) | 2026-10-04 11:00 | 2026-10-04 20:00 | Attack-Defense | [CTFtime](https://ctftime.org/event/3432/) |
+| [ByteMe CTF 26](https://ctftime.org/event/3438/) | 2026-10-09 12:30 | 2026-10-09 20:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3438/) |
 | [FortID CTF 2026](https://ctftime.org/event/3440/) | 2026-10-10 02:00 | 2026-10-12 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3440/) |
 | [KubSTU CTF](https://ctftime.org/event/3446/) | 2026-10-10 15:00 | 2026-10-11 21:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3446/) |
 | [Narxoz CTF](https://ctftime.org/event/3437/) | 2026-10-10 18:00 | 2026-10-11 02:00 | Hack quest | [CTFtime](https://ctftime.org/event/3437/) |
