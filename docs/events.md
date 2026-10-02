@@ -6,11 +6,10 @@ hide:
 
 # CTF 赛事日程
 
-> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-10-01 14:57 UTC+8
+> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-10-02 14:47 UTC+8
 
 | 比赛 | 开始 | 结束 | 形式 | 详情 |
 | --- | --- | --- | --- | --- |
-| [Hacker's Gambit 2026 (Round 1 – Online Qualifier)](https://ctftime.org/event/3380/) | 2026-10-02 14:30 | 2026-10-04 14:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3380/) |
 | [CubeCTF 2026](https://ctftime.org/event/3352/) | 2026-10-03 22:00 | 2026-10-04 06:00 | Attack-Defense | [CTFtime](https://ctftime.org/event/3352/) |
 | [CDCTF 2026](https://ctftime.org/event/3293/) | 2026-10-03 23:00 | 2026-10-04 11:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3293/) |
 | [AltayCTF 2026](https://ctftime.org/event/3432/) | 2026-10-04 11:00 | 2026-10-04 20:00 | Attack-Defense | [CTFtime](https://ctftime.org/event/3432/) |
@@ -40,3 +39,4 @@ hide:
 | [International Battle of Hackers 2026](https://ctftime.org/event/3390/) | 2026-11-14 08:30 | 2026-11-14 18:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3390/) |
 | [EyesOpenCTF 7th edition](https://ctftime.org/event/3419/) | 2026-11-20 18:00 | 2026-11-22 18:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3419/) |
 | [GlacierCTF 2026](https://ctftime.org/event/3337/) | 2026-11-21 02:00 | 2026-11-22 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3337/) |
+| [Outback Overflow](https://ctftime.org/event/3425/) | 2026-11-21 07:00 | 2026-11-22 07:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3425/) |
