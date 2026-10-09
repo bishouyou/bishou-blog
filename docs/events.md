@@ -6,11 +6,10 @@ hide:
 
 # CTF 赛事日程
 
-> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-10-08 15:03 UTC+8
+> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-10-09 15:11 UTC+8
 
 | 比赛 | 开始 | 结束 | 形式 | 详情 |
 | --- | --- | --- | --- | --- |
-| [ByteMe CTF 26](https://ctftime.org/event/3438/) | 2026-10-09 12:30 | 2026-10-09 20:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3438/) |
 | [FortID CTF 2026](https://ctftime.org/event/3440/) | 2026-10-10 02:00 | 2026-10-12 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3440/) |
 | [kBxAc CTF 2026](https://ctftime.org/event/3456/) | 2026-10-10 02:30 | 2026-10-11 02:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3456/) |
 | [Cryovault 2026 Quals](https://ctftime.org/event/3441/) | 2026-10-10 12:30 | 2026-10-11 12:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3441/) |
@@ -23,7 +22,6 @@ hide:
 | [SAS CTF 2026 Finals](https://ctftime.org/event/3409/) | 2026-10-20 11:00 | 2026-10-20 22:00 | Attack-Defense | [CTFtime](https://ctftime.org/event/3409/) |
 | [cruXipher 2026 - ATMoS '26, BITS Hyderabad](https://ctftime.org/event/3369/) | 2026-10-23 08:30 | 2026-10-25 08:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3369/) |
 | [HITCON CTF 2026](https://ctftime.org/event/3340/) | 2026-10-23 22:00 | 2026-10-25 22:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3340/) |
-| [h4ckc0n 2026](https://ctftime.org/event/3464/) | 2026-10-23 23:30 | 2026-10-24 23:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3464/) |
 | [RSTCON 2026 CTF](https://ctftime.org/event/3377/) | 2026-10-24 01:00 | 2026-10-26 01:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3377/) |
 | [Hack.lu CTF 2026](https://ctftime.org/event/3207/) | 2026-10-24 02:00 | 2026-10-26 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3207/) |
 | [Cryovault 2026 Finals](https://ctftime.org/event/3442/) | 2026-10-24 11:30 | 2026-10-25 14:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3442/) |
@@ -40,3 +38,5 @@ hide:
 | [SpookyCTF 2026](https://ctftime.org/event/3339/) | 2026-11-07 01:00 | 2026-11-08 01:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3339/) |
 | [BlackAlps CTF 2026](https://ctftime.org/event/3242/) | 2026-11-07 02:15 | 2026-11-07 06:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3242/) |
 | [Mimic](https://ctftime.org/event/3455/) | 2026-11-07 20:00 | 2026-11-08 20:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3455/) |
+| [CSAW CTF Final Round 2026](https://ctftime.org/event/3410/) | 2026-11-13 01:00 | 2026-11-14 13:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3410/) |
+| [Platypwn 2026](https://ctftime.org/event/3082/) | 2026-11-14 01:00 | 2026-11-14 19:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3082/) |
