@@ -6,12 +6,10 @@ hide:
 
 # CTF 赛事日程
 
-> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-10-22 13:49 UTC+8
+> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-10-23 13:48 UTC+8
 
 | 比赛 | 开始 | 结束 | 形式 | 详情 |
 | --- | --- | --- | --- | --- |
-| [cruXipher 2026 - ATMoS '26, BITS Hyderabad](https://ctftime.org/event/3369/) | 2026-10-23 08:30 | 2026-10-25 08:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3369/) |
-| [CREST CTF 2.0](https://ctftime.org/event/3477/) | 2026-10-23 13:30 | 2026-10-23 19:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3477/) |
 | [HITCON CTF 2026](https://ctftime.org/event/3340/) | 2026-10-23 22:00 | 2026-10-25 22:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3340/) |
 | [RSTCON 2026 CTF](https://ctftime.org/event/3377/) | 2026-10-24 01:00 | 2026-10-26 01:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3377/) |
 | [Hack.lu CTF 2026](https://ctftime.org/event/3207/) | 2026-10-24 02:00 | 2026-10-26 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3207/) |
@@ -40,3 +38,5 @@ hide:
 | [GlacierCTF 2026](https://ctftime.org/event/3337/) | 2026-11-21 02:00 | 2026-11-22 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3337/) |
 | [Outback Overflow](https://ctftime.org/event/3425/) | 2026-11-21 07:00 | 2026-11-22 07:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3425/) |
 | [Seize da Flaq](https://ctftime.org/event/3408/) | 2026-11-21 14:30 | 2026-11-22 10:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3408/) |
+| [Crate-CTF 2026](https://ctftime.org/event/3336/) | 2026-11-21 21:00 | 2026-11-22 05:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3336/) |
+| [CyberSci Regional Qualifiers 2026-27](https://ctftime.org/event/3436/) | 2026-11-21 23:00 | 2026-11-22 06:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3436/) |
