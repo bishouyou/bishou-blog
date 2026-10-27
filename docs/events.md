@@ -6,11 +6,10 @@ hide:
 
 # CTF 赛事日程
 
-> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-10-26 13:49 UTC+8
+> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-10-27 14:02 UTC+8
 
 | 比赛 | 开始 | 结束 | 形式 | 详情 |
 | --- | --- | --- | --- | --- |
-| [Sudocrypt v16.0](https://ctftime.org/event/3443/) | 2026-10-27 11:30 | 2026-10-28 23:30 | Hack quest | [CTFtime](https://ctftime.org/event/3443/) |
 | [Srdnlen CTF 2026 Finals (Sardinia Cyber Camp)](https://ctftime.org/event/3444/) | 2026-10-29 17:00 | 2026-10-30 01:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3444/) |
 | [Hacker's Gambit 2026 (Round 2 – Grand Finale)](https://ctftime.org/event/3381/) | 2026-10-30 14:30 | 2026-10-31 14:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3381/) |
 | [CTF@AC26 - Finals](https://ctftime.org/event/3463/) | 2026-10-30 18:00 | 2026-11-01 18:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3463/) |
@@ -40,3 +39,4 @@ hide:
 | [LakeCTF Quals 26-27](https://ctftime.org/event/3474/) | 2026-11-28 02:00 | 2026-11-29 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3474/) |
 | [L3m0n CTF 2026 (Quals)](https://ctftime.org/event/3485/) | 2026-11-28 12:30 | 2026-11-29 00:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3485/) |
 | [CyberNSK2027-Qualifier](https://ctftime.org/event/3489/) | 2026-11-28 17:00 | 2026-11-29 05:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3489/) |
+| [BlackHat MEA CTF Final 2026](https://ctftime.org/event/3386/) | 2026-12-01 23:14 | 2026-12-03 23:14 | Jeopardy | [CTFtime](https://ctftime.org/event/3386/) |
