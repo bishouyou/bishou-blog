@@ -6,14 +6,10 @@ hide:
 
 # CTF 赛事日程
 
-> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-10-30 14:51 UTC+8
+> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-10-31 14:43 UTC+8
 
 | 比赛 | 开始 | 结束 | 形式 | 详情 |
 | --- | --- | --- | --- | --- |
-| [CTF@AC26 - Finals](https://ctftime.org/event/3463/) | 2026-10-30 18:00 | 2026-11-01 18:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3463/) |
-| [HI Cyber Con 2026 CTF](https://ctftime.org/event/3460/) | 2026-10-30 22:00 | 2026-11-01 22:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3460/) |
-| [2026 Qiangwang Challenge on Cyber Mimic Defense Qualification](https://ctftime.org/event/3459/) | 2026-10-31 10:00 | 2026-11-01 10:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3459/) |
-| [HAM-DEFCON](https://ctftime.org/event/3491/) | 2026-10-31 11:30 | 2026-10-31 15:30 | Attack-Defense | [CTFtime](https://ctftime.org/event/3491/) |
 | [Russian CTF Cup X Qualifier](https://ctftime.org/event/3469/) | 2026-10-31 17:00 | 2026-11-01 17:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3469/) |
 | [StealthCup 2026](https://ctftime.org/event/3482/) | 2026-10-31 21:00 | 2026-11-01 05:00 | Hack quest | [CTFtime](https://ctftime.org/event/3482/) |
 | [HKCERT CTF 2026 (Qualifying Round)](https://ctftime.org/event/3418/) | 2026-11-06 18:00 | 2026-11-07 18:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3418/) |
@@ -31,7 +27,6 @@ hide:
 | [GlacierCTF 2026](https://ctftime.org/event/3337/) | 2026-11-21 02:00 | 2026-11-22 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3337/) |
 | [Outback Overflow](https://ctftime.org/event/3425/) | 2026-11-21 07:00 | 2026-11-22 07:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3425/) |
 | [Seize da Flaq](https://ctftime.org/event/3408/) | 2026-11-21 14:30 | 2026-11-22 10:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3408/) |
-| [Cyber Ninja CTF 2026 - BLACKOUT](https://ctftime.org/event/3490/) | 2026-11-21 17:00 | 2026-11-22 17:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3490/) |
 | [Crate-CTF 2026](https://ctftime.org/event/3336/) | 2026-11-21 21:00 | 2026-11-22 05:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3336/) |
 | [CyberSci Regional Qualifiers 2026-27](https://ctftime.org/event/3436/) | 2026-11-21 23:00 | 2026-11-22 06:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3436/) |
 | [LakeCTF Quals 26-27](https://ctftime.org/event/3474/) | 2026-11-28 02:00 | 2026-11-29 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3474/) |
@@ -40,3 +35,8 @@ hide:
 | [BlackHat MEA CTF Final 2026](https://ctftime.org/event/3386/) | 2026-12-01 23:14 | 2026-12-03 23:14 | Jeopardy | [CTFtime](https://ctftime.org/event/3386/) |
 | [x3CTF 2026](https://ctftime.org/event/3450/) | 2026-12-05 02:00 | 2026-12-07 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3450/) |
 | [bi0sCTF 2026](https://ctftime.org/event/3480/) | 2026-12-05 13:00 | 2026-12-07 01:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3480/) |
+| [niteCTF 2026](https://ctftime.org/event/3367/) | 2026-12-11 20:00 | 2026-12-13 20:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3367/) |
+| [BSides Algiers 2026](https://ctftime.org/event/3475/) | 2026-12-18 03:00 | 2026-12-19 15:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3475/) |
+| [BackdoorCTF 2026](https://ctftime.org/event/3472/) | 2026-12-19 20:00 | 2026-12-20 20:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3472/) |
+| [ASIS CTF Finals 2026](https://ctftime.org/event/3062/) | 2026-12-27 22:00 | 2026-12-28 22:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3062/) |
+| [GaianSpace Perihelion CTF 2027](https://ctftime.org/event/3492/) | 2027-01-03 02:00 | 2027-01-04 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3492/) |
