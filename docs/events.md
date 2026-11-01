@@ -6,12 +6,10 @@ hide:
 
 # CTF 赛事日程
 
-> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-10-31 14:43 UTC+8
+> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-11-01 15:11 UTC+8
 
 | 比赛 | 开始 | 结束 | 形式 | 详情 |
 | --- | --- | --- | --- | --- |
-| [Russian CTF Cup X Qualifier](https://ctftime.org/event/3469/) | 2026-10-31 17:00 | 2026-11-01 17:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3469/) |
-| [StealthCup 2026](https://ctftime.org/event/3482/) | 2026-10-31 21:00 | 2026-11-01 05:00 | Hack quest | [CTFtime](https://ctftime.org/event/3482/) |
 | [HKCERT CTF 2026 (Qualifying Round)](https://ctftime.org/event/3418/) | 2026-11-06 18:00 | 2026-11-07 18:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3418/) |
 | [PINK+ CTF 2026](https://ctftime.org/event/3331/) | 2026-11-06 20:00 | 2026-11-09 20:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3331/) |
 | [CSCTF 2026](https://ctftime.org/event/3333/) | 2026-11-06 21:00 | 2026-11-08 21:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3333/) |
@@ -40,3 +38,5 @@ hide:
 | [BackdoorCTF 2026](https://ctftime.org/event/3472/) | 2026-12-19 20:00 | 2026-12-20 20:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3472/) |
 | [ASIS CTF Finals 2026](https://ctftime.org/event/3062/) | 2026-12-27 22:00 | 2026-12-28 22:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3062/) |
 | [GaianSpace Perihelion CTF 2027](https://ctftime.org/event/3492/) | 2027-01-03 02:00 | 2027-01-04 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3492/) |
+| [JerseyCTF VII](https://ctftime.org/event/3458/) | 2027-03-14 01:00 | 2027-03-15 00:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3458/) |
+| [Undutmaning 2027](https://ctftime.org/event/3481/) | 2027-03-20 19:00 | 2027-03-21 03:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3481/) |
