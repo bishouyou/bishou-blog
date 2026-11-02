@@ -6,7 +6,7 @@ hide:
 
 # CTF 赛事日程
 
-> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-11-01 15:11 UTC+8
+> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-11-02 15:23 UTC+8
 
 | 比赛 | 开始 | 结束 | 形式 | 详情 |
 | --- | --- | --- | --- | --- |
