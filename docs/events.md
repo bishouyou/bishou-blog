@@ -6,7 +6,7 @@ hide:
 
 # CTF 赛事日程
 
-> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-11-03 15:39 UTC+8
+> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-11-04 15:18 UTC+8
 
 | 比赛 | 开始 | 结束 | 形式 | 详情 |
 | --- | --- | --- | --- | --- |
@@ -20,6 +20,7 @@ hide:
 | [TVX CTF 2026](https://ctftime.org/event/3486/) | 2026-11-13 18:00 | 2026-11-14 04:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3486/) |
 | [Platypwn 2026](https://ctftime.org/event/3082/) | 2026-11-14 01:00 | 2026-11-14 19:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3082/) |
 | [WolvCTF 2026](https://ctftime.org/event/3049/) | 2026-11-14 07:00 | 2026-11-16 07:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3049/) |
+| [h4ckc0n 2026](https://ctftime.org/event/3464/) | 2026-11-14 23:30 | 2026-11-15 23:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3464/) |
 | [InIt CTF](https://ctftime.org/event/3467/) | 2026-11-14 23:30 | 2026-11-15 07:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3467/) |
 | [EyesOpenCTF 7th edition](https://ctftime.org/event/3419/) | 2026-11-20 18:00 | 2026-11-22 18:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3419/) |
 | [GlacierCTF 2026](https://ctftime.org/event/3337/) | 2026-11-21 02:00 | 2026-11-22 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3337/) |
@@ -39,4 +40,3 @@ hide:
 | [BackdoorCTF 2026](https://ctftime.org/event/3472/) | 2026-12-19 20:00 | 2026-12-20 20:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3472/) |
 | [ASIS CTF Finals 2026](https://ctftime.org/event/3062/) | 2026-12-27 22:00 | 2026-12-28 22:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3062/) |
 | [GaianSpace Perihelion CTF 2027](https://ctftime.org/event/3492/) | 2027-01-03 02:00 | 2027-01-04 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3492/) |
-| [JerseyCTF VII](https://ctftime.org/event/3458/) | 2027-03-14 01:00 | 2027-03-15 00:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3458/) |
