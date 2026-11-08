@@ -6,11 +6,10 @@ hide:
 
 # CTF 赛事日程
 
-> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-11-07 14:52 UTC+8
+> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-11-08 14:58 UTC+8
 
 | 比赛 | 开始 | 结束 | 形式 | 详情 |
 | --- | --- | --- | --- | --- |
-| [Mimic](https://ctftime.org/event/3455/) | 2026-11-07 20:00 | 2026-11-08 20:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3455/) |
 | [CyberZerk CTF 2026](https://ctftime.org/event/3499/) | 2026-11-09 21:00 | 2026-11-23 01:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3499/) |
 | [CSAW CTF Final Round 2026](https://ctftime.org/event/3410/) | 2026-11-13 01:00 | 2026-11-14 13:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3410/) |
 | [TVX CTF 2026](https://ctftime.org/event/3486/) | 2026-11-13 18:00 | 2026-11-14 04:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3486/) |
