@@ -6,7 +6,7 @@ hide:
 
 # CTF 赛事日程
 
-> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-11-17 16:52 UTC+8
+> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-11-18 16:16 UTC+8
 
 | 比赛 | 开始 | 结束 | 形式 | 详情 |
 | --- | --- | --- | --- | --- |
@@ -18,6 +18,7 @@ hide:
 | [Crate-CTF 2026](https://ctftime.org/event/3336/) | 2026-11-21 21:00 | 2026-11-22 05:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3336/) |
 | [CyberSci Regional Qualifiers 2026-27](https://ctftime.org/event/3436/) | 2026-11-21 23:00 | 2026-11-22 06:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3436/) |
 | [RedReaper CTF](https://ctftime.org/event/3502/) | 2026-11-27 19:00 | 2026-11-28 03:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3502/) |
+| [N0v4CTF 2026](https://ctftime.org/event/3512/) | 2026-11-28 01:00 | 2026-11-29 01:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3512/) |
 | [LakeCTF Quals 26-27](https://ctftime.org/event/3474/) | 2026-11-28 02:00 | 2026-11-29 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3474/) |
 | [L3m0n CTF 2026 (Quals)](https://ctftime.org/event/3485/) | 2026-11-28 12:30 | 2026-11-29 00:30 | Jeopardy | [CTFtime](https://ctftime.org/event/3485/) |
 | [CyberNSK2027-Qualifier](https://ctftime.org/event/3489/) | 2026-11-28 17:00 | 2026-11-29 05:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3489/) |
@@ -31,6 +32,7 @@ hide:
 | [OTERIA Cyber Cup #4](https://ctftime.org/event/3505/) | 2026-12-12 17:00 | 2026-12-13 01:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3505/) |
 | [BSides Algiers 2026](https://ctftime.org/event/3475/) | 2026-12-18 03:00 | 2026-12-19 15:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3475/) |
 | [BackdoorCTF 2026](https://ctftime.org/event/3472/) | 2026-12-19 20:00 | 2026-12-20 20:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3472/) |
+| [idktheCTF 2026](https://ctftime.org/event/3429/) | 2026-12-26 09:00 | 2026-12-28 12:59 | Jeopardy | [CTFtime](https://ctftime.org/event/3429/) |
 | [ASIS CTF Finals 2026](https://ctftime.org/event/3062/) | 2026-12-27 22:00 | 2026-12-28 22:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3062/) |
 | [THE FINAL EXPLOIT CTF 2026—QUALIFIERS](https://ctftime.org/event/3511/) | 2026-12-29 20:00 | 2026-12-31 20:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3511/) |
 | [GaianSpace Perihelion CTF 2027](https://ctftime.org/event/3492/) | 2027-01-03 02:00 | 2027-01-04 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3492/) |
