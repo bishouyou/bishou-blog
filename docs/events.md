@@ -6,7 +6,7 @@ hide:
 
 # CTF 赛事日程
 
-> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-11-19 16:28 UTC+8
+> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-11-20 16:10 UTC+8
 
 | 比赛 | 开始 | 结束 | 形式 | 详情 |
 | --- | --- | --- | --- | --- |
@@ -25,6 +25,7 @@ hide:
 | [Black Hat India 2026 Official CTF](https://ctftime.org/event/3510/) | 2026-11-28 22:00 | 2026-11-29 22:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3510/) |
 | [BlackHat MEA CTF Final 2026](https://ctftime.org/event/3386/) | 2026-12-01 23:14 | 2026-12-03 23:14 | Jeopardy | [CTFtime](https://ctftime.org/event/3386/) |
 | [2026 Qiangwang Challenge on Cyber Mimic Defense Finals](https://ctftime.org/event/3509/) | 2026-12-03 12:00 | 2026-12-06 12:00 | Hack quest | [CTFtime](https://ctftime.org/event/3509/) |
+| [TUCTF 2026](https://ctftime.org/event/3518/) | 2026-12-04 18:00 | 2026-12-07 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3518/) |
 | [x3CTF 2026](https://ctftime.org/event/3450/) | 2026-12-05 02:00 | 2026-12-07 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3450/) |
 | [bi0sCTF 2026](https://ctftime.org/event/3480/) | 2026-12-05 13:00 | 2026-12-07 01:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3480/) |
 | [niteCTF 2026](https://ctftime.org/event/3367/) | 2026-12-11 20:00 | 2026-12-13 20:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3367/) |
