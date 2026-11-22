@@ -6,12 +6,10 @@ hide:
 
 # CTF 赛事日程
 
-> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-11-21 16:03 UTC+8
+> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-11-22 15:50 UTC+8
 
 | 比赛 | 开始 | 结束 | 形式 | 详情 |
 | --- | --- | --- | --- | --- |
-| [Crate-CTF 2026](https://ctftime.org/event/3336/) | 2026-11-21 21:00 | 2026-11-22 05:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3336/) |
-| [CyberSci Regional Qualifiers 2026-27](https://ctftime.org/event/3436/) | 2026-11-21 23:00 | 2026-11-22 06:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3436/) |
 | [RedReaper CTF](https://ctftime.org/event/3502/) | 2026-11-27 19:00 | 2026-11-28 03:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3502/) |
 | [N0v4CTF 2026](https://ctftime.org/event/3512/) | 2026-11-28 01:00 | 2026-11-29 01:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3512/) |
 | [LakeCTF Quals 26-27](https://ctftime.org/event/3474/) | 2026-11-28 02:00 | 2026-11-29 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3474/) |
