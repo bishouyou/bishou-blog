@@ -6,7 +6,7 @@ hide:
 
 # CTF 赛事日程
 
-> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-11-22 15:50 UTC+8
+> 自动同步自 [CTFtime](https://ctftime.org) · 最近更新 2026-11-23 16:39 UTC+8
 
 | 比赛 | 开始 | 结束 | 形式 | 详情 |
 | --- | --- | --- | --- | --- |
@@ -25,11 +25,14 @@ hide:
 | [Leo's 20th Birthday Bash](https://ctftime.org/event/3498/) | 2026-12-12 09:00 | 2026-12-13 09:00 | Hack quest | [CTFtime](https://ctftime.org/event/3498/) |
 | [OTERIA Cyber Cup #4](https://ctftime.org/event/3505/) | 2026-12-12 17:00 | 2026-12-13 01:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3505/) |
 | [BSides Algiers 2026](https://ctftime.org/event/3475/) | 2026-12-18 03:00 | 2026-12-19 15:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3475/) |
+| [Cyber Ninja CTF 2026 - BLACKOUT](https://ctftime.org/event/3490/) | 2026-12-19 17:00 | 2026-12-20 17:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3490/) |
 | [BackdoorCTF 2026](https://ctftime.org/event/3472/) | 2026-12-19 20:00 | 2026-12-20 20:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3472/) |
 | [idktheCTF 2026](https://ctftime.org/event/3429/) | 2026-12-26 09:00 | 2026-12-28 12:59 | Jeopardy | [CTFtime](https://ctftime.org/event/3429/) |
 | [ASIS CTF Finals 2026](https://ctftime.org/event/3062/) | 2026-12-27 22:00 | 2026-12-28 22:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3062/) |
+| [pothloe CTF 2026](https://ctftime.org/event/3516/) | 2026-12-28 04:00 | 2026-12-30 04:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3516/) |
 | [THE FINAL EXPLOIT CTF 2026—QUALIFIERS](https://ctftime.org/event/3511/) | 2026-12-29 20:00 | 2026-12-31 20:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3511/) |
 | [GaianSpace Perihelion CTF 2027](https://ctftime.org/event/3492/) | 2027-01-03 02:00 | 2027-01-04 02:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3492/) |
 | [UofTCTF 2027](https://ctftime.org/event/3508/) | 2027-01-09 08:00 | 2027-01-11 08:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3508/) |
+| [LA CTF 2027](https://ctftime.org/event/3515/) | 2027-02-20 10:00 | 2027-02-22 10:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3515/) |
 | [JerseyCTF VII](https://ctftime.org/event/3458/) | 2027-03-14 01:00 | 2027-03-15 00:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3458/) |
 | [Undutmaning 2027](https://ctftime.org/event/3481/) | 2027-03-20 19:00 | 2027-03-21 03:00 | Jeopardy | [CTFtime](https://ctftime.org/event/3481/) |
